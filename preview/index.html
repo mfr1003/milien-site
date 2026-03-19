@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiLien — Document Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117;
+    --ink-soft: #1c2333;
+    --steel: #2a3347;
+    --amber: #f5a623;
+    --amber-dark: #d4891a;
+    --amber-glow: rgba(245,166,35,0.12);
+    --white: #ffffff;
+    --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .logo { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--amber); }
+  .header-right { display: flex; gap: 12px; align-items: center; }
+  .admin-badge { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
+  .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; }
+  .nav-link:hover { color: var(--white); }
+
+  .login-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 57px); padding: 40px 20px; }
+  .login-card { background: var(--ink-soft); border: 1px solid var(--border); border-radius: 12px; padding: 40px 32px; width: 100%; max-width: 380px; text-align: center; }
+  .login-card h2 { font-family: var(--font-display); font-size: 28px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
+  .login-card p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .error-msg { color: #e84040; font-size: 13px; margin-top: 10px; display: none; }
+
+  .main { display: none; }
+  .layout { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 57px); }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  .sidebar {
+    background: var(--ink-soft);
+    border-right: 1px solid var(--border);
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(100vh - 57px);
+    position: sticky;
+    top: 57px;
+  }
+
+  .sidebar-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; color: var(--amber); }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 5px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: var(--steel);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--amber); }
+  .field input::placeholder { color: rgba(255,255,255,0.2); }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8499' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; -webkit-appearance: none; appearance: none; }
+  .field textarea { resize: vertical; min-height: 70px; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .section-divider { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 20px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .btn-generate {
+    width: 100%;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-generate:hover { background: var(--amber-dark); }
+  .btn-generate:active { transform: scale(0.98); }
+  .btn-generate:disabled { background: var(--steel); color: var(--muted); cursor: not-allowed; transform: none; }
+
+  .preview-pane { padding: 32px; overflow-y: auto; }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+  .empty-state h3 { font-family: var(--font-display); font-size: 24px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: rgba(255,255,255,0.3); }
+  .empty-state p { font-size: 14px; max-width: 320px; line-height: 1.6; }
+
+  .generating-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(245,166,35,0.2);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .generating-state p { font-size: 14px; color: var(--muted); }
+
+  .doc-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .doc-tab {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 10px 18px;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .doc-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+  .doc-tab:hover:not(.active) { color: rgba(255,255,255,0.6); }
+
+  .doc-panel { display: none; }
+  .doc-panel.active { display: block; }
+
+  .document-render {
+    background: #ffffff;
+    color: #1a1a1a;
+    border-radius: 8px;
+    padding: 48px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .doc-actions { display: flex; gap: 10px; margin-bottom: 16px; }
+  .btn-copy {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-copy:hover { color: var(--white); border-color: rgba(255,255,255,0.25); }
+  .btn-copy.copied { color: #2ea043; border-color: rgba(46,160,67,0.4); }
+
+  .error-banner {
+    background: rgba(232,64,64,0.1);
+    border: 1px solid rgba(232,64,64,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: rgba(255,180,180,0.9);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  input[type="password"] { width: 100%; background: var(--steel); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; font-family: var(--font-body); font-size: 16px; color: var(--white); outline: none; margin-bottom: 12px; transition: border-color 0.15s; }
+  input[type="password"]:focus { border-color: var(--amber); }
+  .btn-login { width: 100%; background: var(--amber); color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; border: none; border-radius: 8px; padding: 14px; cursor: pointer; transition: background 0.15s; }
+  .btn-login:hover { background: var(--amber-dark); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Mi<span>Lien</span></a>
+  <div class="header-right">
+    <a href="/admin" class="nav-link">Orders</a>
+    <div class="admin-badge">Document Preview</div>
+  </div>
+</header>
+
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <h2>Preview Tool</h2>
+    <p>Admin access required.</p>
+    <input type="password" id="password-input" placeholder="Admin password" onkeydown="if(event.key==='Enter') login()">
+    <button class="btn-login" onclick="login()">Sign In</button>
+    <div class="error-msg" id="error-msg">Incorrect password.</div>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="sidebar-title">Case Details</div>
+
+      <div class="section-divider">Claimant</div>
+      <div class="field"><label>Role</label>
+        <select id="role">
+          <option value="General Contractor / Prime">General Contractor / Prime</option>
+          <option value="Subcontractor">Subcontractor</option>
+          <option value="Material Supplier">Material Supplier</option>
+          <option value="Laborer / Sole Proprietor">Laborer / Sole Proprietor</option>
+        </select>
+      </div>
+      <div class="field"><label>Claimant Name</label><input type="text" id="claimantName" placeholder="Russo Roofing LLC"></div>
+      <div class="field"><label>Claimant Address</label><input type="text" id="claimantAddress" placeholder="1234 Main St, Troy, MI 48084"></div>
+      <div class="field"><label>Claimant Phone</label><input type="text" id="claimantPhone" placeholder="(248) 555-0100"></div>
+      <div class="field"><label>Claimant Email</label><input type="email" id="claimantEmail" placeholder="you@example.com"></div>
+
+      <div class="section-divider">Property</div>
+      <div class="field"><label>Property Address</label><input type="text" id="propertyAddress" placeholder="5403 Livernois Rd"></div>
+      <div class="field-row">
+        <div class="field"><label>City</label><input type="text" id="propertyCity" placeholder="Troy"></div>
+        <div class="field"><label>County</label>
+          <select id="propertyCounty">
+            <option>Wayne</option><option selected>Oakland</option><option>Macomb</option>
+            <option>Kent</option><option>Washtenaw</option><option>Ingham</option>
+            <option>Kalamazoo</option><option>Genesee</option><option>Ottawa</option>
+            <option>Saginaw</option><option>Muskegon</option><option>St. Clair</option>
+            <option>Jackson</option><option>Monroe</option><option>Berrien</option>
+            <option>Calhoun</option><option>Eaton</option><option>Bay</option>
+            <option>Livingston</option><option>Allegan</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-divider">Property Owner</div>
+      <div class="field"><label>Owner Name</label><input type="text" id="ownerName" placeholder="Smith Properties LLC"></div>
+      <div class="field"><label>Owner Address (if different)</label><input type="text" id="ownerAddress" placeholder="Same as property"></div>
+
+      <div class="section-divider">Work Details</div>
+      <div class="field"><label>Work Description</label><textarea id="workDescription" placeholder="Roofing installation, 3,200 sq ft, including tear-off and materials"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>First Furnished</label><input type="date" id="dateFirst"></div>
+        <div class="field"><label>Last Furnished</label><input type="date" id="dateLast"></div>
+      </div>
+      <div class="field"><label>Amount Owed ($)</label><input type="number" id="amountOwed" placeholder="15000"></div>
+
+      <div class="section-divider">Package</div>
+      <div class="field"><label>Package Type</label>
+        <select id="packageType">
+          <option value="full">Full Lien Package (all 3 documents)</option>
+          <option value="demand">Demand Letter Only</option>
+        </select>
+      </div>
+
+      <button class="btn-generate" id="generate-btn" onclick="generateDocuments()">Generate Documents</button>
+    </div>
+
+    <div class="preview-pane" id="preview-pane">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">📄</div>
+        <h3>No Documents Yet</h3>
+        <p>Fill in the case details on the left and click Generate Documents to preview the output.</p>
+      </div>
+      <div class="generating-state" id="generating-state">
+        <div class="spinner"></div>
+        <p>Generating documents via Claude — usually takes 15-25 seconds...</p>
+      </div>
+      <div id="documents-output" style="display:none;"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let adminToken = '';
+  let currentDocs = [];
+
+  function login() {
+    const pw = document.getElementById('password-input').value;
+    if (!pw) return;
+    adminToken = pw;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+
+    const today = new Date();
+    const lastMonth = new Date(today);
+    lastMonth.setDate(today.getDate() - 30);
+    const twoMonthsAgo = new Date(today);
+    twoMonthsAgo.setDate(today.getDate() - 60);
+
+    document.getElementById('dateLast').value = lastMonth.toISOString().split('T')[0];
+    document.getElementById('dateFirst').value = twoMonthsAgo.toISOString().split('T')[0];
+  }
+
+  async function generateDocuments() {
+    const btn = document.getElementById('generate-btn');
+    const emptyState = document.getElementById('empty-state');
+    const generatingState = document.getElementById('generating-state');
+    const output = document.getElementById('documents-output');
+
+    const data = {
+      role: document.getElementById('role').value,
+      claimantName: document.getElementById('claimantName').value,
+      claimantAddress: document.getElementById('claimantAddress').value,
+      claimantPhone: document.getElementById('claimantPhone').value,
+      claimantEmail: document.getElementById('claimantEmail').value,
+      propertyAddress: document.getElementById('propertyAddress').value,
+      propertyCity: document.getElementById('propertyCity').value,
+      propertyCounty: document.getElementById('propertyCounty').value,
+      ownerName: document.getElementById('ownerName').value,
+      ownerAddress: document.getElementById('ownerAddress').value,
+      workDescription: document.getElementById('workDescription').value,
+      dateFirst: document.getElementById('dateFirst').value,
+      dateLast: document.getElementById('dateLast').value,
+      amountOwed: document.getElementById('amountOwed').value,
+      packageType: document.getElementById('packageType').value,
+    };
+
+    if (!data.claimantName || !data.propertyAddress || !data.ownerName || !data.amountOwed) {
+      alert('Please fill in at minimum: Claimant Name, Property Address, Owner Name, and Amount Owed.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+    emptyState.style.display = 'none';
+    generatingState.style.display = 'flex';
+    output.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/preview-documents', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 401) {
+        alert('Session expired. Please refresh and log in again.');
+        return;
+      }
+
+      const result = await res.json();
+
+      if (result.error) {
+        generatingState.style.display = 'none';
+        output.style.display = 'block';
+        output.innerHTML = `<div class="error-banner"><strong>Generation failed:</strong> ${result.error}</div>`;
+        return;
+      }
+
+      currentDocs = result.documents;
+      renderDocuments(currentDocs, data.packageType);
+
+    } catch (err) {
+      generatingState.style.display = 'none';
+      output.style.display = 'block';
+      output.innerHTML = `<div class="error-banner"><strong>Request failed:</strong> ${err.message}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Generate Documents';
+    }
+  }
+
+  function renderDocuments(docs, packageType) {
+    const generatingState = document.getElementById('generating-state');
+    const output = document.getElementById('documents-output');
+
+    generatingState.style.display = 'none';
+    output.style.display = 'block';
+
+    const tabLabels = packageType === 'full'
+      ? ['Demand Letter', 'Claim of Lien', 'Filing Instructions']
+      : ['Demand Letter'];
+
+    const tabs = tabLabels.map((label, i) =>
+      `<button class="doc-tab ${i === 0 ? 'active' : ''}" onclick="switchTab(${i})">${label}</button>`
+    ).join('');
+
+    const panels = docs.map((doc, i) => `
+      <div class="doc-panel ${i === 0 ? 'active' : ''}" id="panel-${i}">
+        <div class="doc-actions">
+          <button class="btn-copy" onclick="copyDoc(${i}, this)">Copy Text</button>
+        </div>
+        <div class="document-render">${escapeHtml(doc)}</div>
+      </div>
+    `).join('');
+
+    output.innerHTML = `
+      <div class="doc-tabs">${tabs}</div>
+      ${panels}
+    `;
+  }
+
+  function switchTab(index) {
+    document.querySelectorAll('.doc-tab').forEach((t, i) => t.classList.toggle('active', i === index));
+    document.querySelectorAll('.doc-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+  }
+
+  function copyDoc(index, btn) {
+    navigator.clipboard.writeText(currentDocs[index]).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy Text'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+
+</body>
+</html>
