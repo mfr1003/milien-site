@@ -1,1 +1,390 @@
+Index · HTML
+Copy
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiLien Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117;
+    --ink-soft: #1c2333;
+    --steel: #2a3347;
+    --amber: #f5a623;
+    --amber-dark: #d4891a;
+    --white: #ffffff;
+    --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --success: #2ea043;
+    --danger: #e84040;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .logo span { color: var(--amber); }
+  .admin-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 57px);
+    padding: 40px 20px;
+  }
+  .login-card {
+    background: var(--ink-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .login-card h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .login-card p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  input[type="password"] {
+    width: 100%;
+    background: var(--steel);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--white);
+    outline: none;
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  input[type="password"]:focus { border-color: var(--amber); }
+  .btn-login {
+    width: 100%;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-login:hover { background: var(--amber-dark); }
+  .error-msg {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+  }
+  .dashboard { display: none; padding: 24px; }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--steel);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 16px;
+  }
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .orders-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .orders-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .orders-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .badge-full { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .badge-demand { background: rgba(255,255,255,0.08); color: var(--muted); }
+  .badge-rush { background: rgba(232,64,64,0.15); color: #e84040; }
+  .customer-name { font-weight: 500; color: var(--white); }
+  .customer-detail { color: var(--muted); font-size: 12px; }
+  .amount { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--amber); }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  @media (max-width: 768px) {
+    .orders-table { display: none; }
+    .order-cards { display: flex; flex-direction: column; gap: 12px; }
+    .order-card {
+      background: var(--steel);
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+  }
+  @media (min-width: 769px) {
+    .order-cards { display: none; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="logo">Mi<span>Lien</span></div>
+  <div class="admin-badge">Admin</div>
+</header>
+ 
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <h2>Admin Access</h2>
+    <p>Enter your admin password to view orders.</p>
+    <input type="password" id="password-input" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
+    <button class="btn-login" onclick="login()">Sign In</button>
+    <div class="error-msg" id="error-msg">Incorrect password. Try again.</div>
+  </div>
+</div>
+ 
+<div class="dashboard" id="dashboard">
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Orders</div>
+      <div class="stat-value" id="stat-orders">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Revenue</div>
+      <div class="stat-value" id="stat-revenue">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Rush Orders</div>
+      <div class="stat-value" id="stat-rush">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Order Value</div>
+      <div class="stat-value" id="stat-avg">—</div>
+    </div>
+  </div>
+ 
+  <div class="section-title">Orders</div>
+  <div id="orders-container">
+    <div class="loading">Loading orders...</div>
+  </div>
+</div>
+ 
+<script>
+  let adminToken = '';
+ 
+  async function login() {
+    const pw = document.getElementById('password-input').value;
+    if (!pw) return;
+ 
+    adminToken = pw;
+    const success = await loadOrders();
+    if (success) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    } else {
+      document.getElementById('error-msg').style.display = 'block';
+      adminToken = '';
+    }
+  }
+ 
+  async function loadOrders() {
+    try {
+      const res = await fetch('/api/admin-orders', {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      if (res.status === 401) return false;
+      const data = await res.json();
+      renderOrders(data.orders);
+      renderStats(data.orders);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+ 
+  function renderStats(orders) {
+    const total = orders.length;
+    const revenue = orders.reduce((sum, o) => sum + parseFloat(o.total), 0);
+    const rush = orders.filter(o => o.rush).length;
+    const avg = total > 0 ? revenue / total : 0;
+ 
+    document.getElementById('stat-orders').textContent = total;
+    document.getElementById('stat-revenue').textContent = '$' + revenue.toFixed(0);
+    document.getElementById('stat-rush').textContent = rush;
+    document.getElementById('stat-avg').textContent = '$' + avg.toFixed(0);
+  }
+ 
+  function renderOrders(orders) {
+    const container = document.getElementById('orders-container');
+    if (!orders.length) {
+      container.innerHTML = '<div class="empty-state">No orders yet. Share the site with your first customer.</div>';
+      return;
+    }
+ 
+    const tableRows = orders.map(o => `
+      <tr>
+        <td>
+          <div class="customer-name">${o.customer}</div>
+          <div class="customer-detail">${o.email}</div>
+          <div class="customer-detail">${o.phone}</div>
+        </td>
+        <td>
+          <div>${o.property}</div>
+          <div class="customer-detail">${o.county} County</div>
+        </td>
+        <td>$${parseInt(o.amount).toLocaleString()} disputed<br><div class="customer-detail">Last furnished: ${o.dateLast}</div></td>
+        <td>
+          <span class="badge ${o.package === 'full' ? 'badge-full' : 'badge-demand'}">${o.package === 'full' ? 'Full Package' : 'Demand Letter'}</span>
+          ${o.rush ? '<br><span class="badge badge-rush" style="margin-top:4px">Rush</span>' : ''}
+        </td>
+        <td><div class="amount">$${o.total}</div></td>
+        <td><div class="customer-detail">${o.created}</div></td>
+      </tr>
+    `).join('');
+ 
+    const mobileCards = orders.map(o => `
+      <div class="order-card">
+        <div class="order-card-header">
+          <div>
+            <div class="customer-name">${o.customer}</div>
+            <div class="customer-detail">${o.email}</div>
+          </div>
+          <div class="amount">$${o.total}</div>
+        </div>
+        <div class="customer-detail">${o.property}, ${o.county} County</div>
+        <div class="customer-detail" style="margin-top:6px">${o.created}</div>
+        <div style="margin-top:8px">
+          <span class="badge ${o.package === 'full' ? 'badge-full' : 'badge-demand'}">${o.package === 'full' ? 'Full Package' : 'Demand Letter'}</span>
+          ${o.rush ? '<span class="badge badge-rush" style="margin-left:6px">Rush</span>' : ''}
+        </div>
+      </div>
+    `).join('');
+ 
+    container.innerHTML = `
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Property</th>
+            <th>Dispute</th>
+            <th>Package</th>
+            <th>Paid</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+      <div class="order-cards">${mobileCards}</div>
+    `;
+  }
+</script>
+ 
+</body>
+</html>
+ 
