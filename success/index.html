@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiLien — Payment Confirmed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117;
+    --ink-soft: #1c2333;
+    --steel: #2a3347;
+    --amber: #f5a623;
+    --white: #ffffff;
+    --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    background: var(--ink-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
+  .check-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(245,166,35,0.12);
+    border: 2px solid var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 32px;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 32px;
+    display: block;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--amber); }
+  h1 {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  h1 em { font-style: normal; color: var(--amber); display: block; }
+  p {
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .steps {
+    background: var(--steel);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 28px 0;
+    text-align: left;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    color: var(--amber);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 20px;
+  }
+  .disclaimer {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <a href="/" class="logo">Mi<span>Lien</span></a>
+    <div class="check-circle">✓</div>
+    <h1>Payment<em>Confirmed.</em></h1>
+    <p>Your order is in. Here's what happens next:</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>We generate your Michigan-compliant lien documents based on your intake information.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>A human reviews everything for accuracy — property address, dates, dollar amount, county.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>Your documents arrive by email within 24 hours, with step-by-step filing instructions included.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>Questions? Reply directly to your confirmation email or contact hello@lodgemilien.com</div>
+      </div>
+    </div>
+    <p class="disclaimer">MiLien is a document preparation service, not a law firm. Documents are reviewed for accuracy but this is not legal advice.</p>
+  </div>
+</body>
+</html>
