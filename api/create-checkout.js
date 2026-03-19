@@ -1,10 +1,10 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
- 
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
- 
+
   const {
     role,
     propertyAddress,
@@ -21,17 +21,18 @@ export default async function handler(req, res) {
     claimantPhone,
     claimantEmail,
     packageType,
-    rushRequired
+    rushRequired,
+    proofUrl
   } = req.body;
- 
+
   const basePrice = packageType === 'demand' ? 9700 : 19700;
   const rushSurcharge = rushRequired ? Math.round(basePrice * 0.5) : 0;
   const totalPrice = basePrice + rushSurcharge;
- 
+
   const packageLabel = packageType === 'demand'
     ? 'MiLien Demand Letter'
     : 'MiLien Full Lien Package';
- 
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -80,13 +81,13 @@ export default async function handler(req, res) {
         claimantEmail,
         packageType,
         rushRequired: rushRequired ? 'true' : 'false',
+        proofUrl: proofUrl || '',
       },
     });
- 
+
     res.status(200).json({ url: session.url });
   } catch (err) {
     console.error('Stripe error:', err);
     res.status(500).json({ error: 'Failed to create checkout session' });
   }
 }
- 

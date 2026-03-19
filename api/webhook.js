@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { Resend } from 'resend';
+import { put } from '@vercel/blob';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -295,35 +296,61 @@ export default async function handler(req, res) {
       const rawDocuments = await generateDocuments(metadata);
       const htmlDocuments = formatDocumentsAsHtml(rawDocuments, metadata);
 
-      await resend.emails.send({
-        from: 'MiLien <hello@lodgemilien.com>',
-        to: metadata.claimantEmail,
-        subject: `Your MiLien documents are ready — ${metadata.propertyAddress}`,
-        html: htmlDocuments,
-      });
+      await put(
+        `orders/${session.id}.json`,
+        JSON.stringify({ sessionId: session.id, metadata, htmlDocuments }),
+        { access: 'public', contentType: 'application/json' }
+      );
+
+      const proofUrl = metadata.proofUrl || 'No proof uploaded';
+      const lastDate = new Date(metadata.dateLast);
+      const daysElapsed = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+      const daysRemaining = 90 - daysElapsed;
 
       await resend.emails.send({
         from: 'MiLien <hello@lodgemilien.com>',
         to: process.env.NOTIFICATION_EMAIL,
-        subject: `[MiLien] New order — ${metadata.claimantName} — $${parseInt(metadata.amountOwed).toLocaleString()}`,
+        subject: `[REVIEW REQUIRED] MiLien order — ${metadata.claimantName} — $${parseInt(metadata.amountOwed).toLocaleString()}`,
         html: `
-          <h2>New MiLien Order</h2>
-          <p><strong>Customer:</strong> ${metadata.claimantName}</p>
-          <p><strong>Email:</strong> ${metadata.claimantEmail}</p>
-          <p><strong>Phone:</strong> ${metadata.claimantPhone}</p>
-          <p><strong>Property:</strong> ${metadata.propertyAddress}, ${metadata.propertyCity}, ${metadata.propertyCounty} County</p>
-          <p><strong>Amount in dispute:</strong> $${parseInt(metadata.amountOwed).toLocaleString()}</p>
-          <p><strong>Package:</strong> ${metadata.packageType}</p>
-          <p><strong>Role:</strong> ${metadata.role}</p>
-          <p><strong>Last furnishing date:</strong> ${metadata.dateLast}</p>
-          <hr>
-          <p>Documents have been automatically sent to the customer. Review the email sent to ${metadata.claimantEmail} and follow up if any corrections are needed.</p>
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
+            <div style="background:#0d1117;padding:16px 24px;border-radius:8px;margin-bottom:24px;">
+              <span style="font-size:20px;font-weight:800;color:#fff;">Mi<span style="color:#f5a623;">Lien</span></span>
+              <p style="color:rgba(255,255,255,0.5);margin:4px 0 0;font-size:12px;">Manual Review Required</p>
+            </div>
+
+            <h2 style="margin-bottom:4px;">New Order Pending Approval</h2>
+            <p style="color:#666;margin-bottom:24px;">Review the proof of work below and approve in your admin dashboard.</p>
+
+            <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
+              <tr><td style="padding:8px 0;color:#666;width:140px;">Customer</td><td style="padding:8px 0;font-weight:500;">${metadata.claimantName}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Email</td><td style="padding:8px 0;">${metadata.claimantEmail}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Phone</td><td style="padding:8px 0;">${metadata.claimantPhone}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Property</td><td style="padding:8px 0;">${metadata.propertyAddress}, ${metadata.propertyCity}, ${metadata.propertyCounty} County</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Owner</td><td style="padding:8px 0;">${metadata.ownerName}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Amount disputed</td><td style="padding:8px 0;font-weight:600;">$${parseInt(metadata.amountOwed).toLocaleString()}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Package</td><td style="padding:8px 0;">${metadata.packageType === 'full' ? 'Full Lien Package' : 'Demand Letter'}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Role</td><td style="padding:8px 0;">${metadata.role}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Last furnished</td><td style="padding:8px 0;">${metadata.dateLast}</td></tr>
+              <tr><td style="padding:8px 0;color:#666;">Lien deadline</td><td style="padding:8px 0;${daysRemaining <= 14 ? 'color:#e84040;font-weight:600;' : ''}">${daysRemaining} days remaining</td></tr>
+            </table>
+
+            <div style="background:#f5f5f5;border-radius:8px;padding:16px;margin-bottom:24px;">
+              <p style="font-size:13px;font-weight:600;margin-bottom:8px;">Proof of Work Upload:</p>
+              <a href="${proofUrl}" style="color:#1a6ef5;font-size:13px;word-break:break-all;">${proofUrl}</a>
+            </div>
+
+            <a href="https://lodgemilien.com/admin" style="display:inline-block;background:#f5a623;color:#0d1117;font-weight:700;font-size:16px;padding:14px 28px;border-radius:8px;text-decoration:none;">
+              Review &amp; Approve in Dashboard
+            </a>
+
+            <p style="font-size:12px;color:#999;margin-top:24px;">Session ID: ${session.id}</p>
+          </div>
         `,
       });
 
     } catch (err) {
-      console.error('Document generation or email error:', err);
-      return res.status(500).json({ error: 'Failed to generate documents' });
+      console.error('Webhook processing error:', err);
+      return res.status(500).json({ error: 'Failed to process order' });
     }
   }
 
