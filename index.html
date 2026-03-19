@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiLien — File Your Michigan Mechanics Lien Fast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d1117;
+    --ink-soft: #1c2333;
+    --steel: #2a3347;
+    --steel-light: #3d4f6b;
+    --amber: #f5a623;
+    --amber-dark: #d4891a;
+    --amber-glow: rgba(245,166,35,0.12);
+    --white: #ffffff;
+    --off-white: #f4f1ec;
+    --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --danger: #e84040;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.5px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--amber); }
+
+  .nav-cta {
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .nav-cta:hover { background: var(--amber-dark); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 20px 56px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+    padding: 5px 12px;
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 4px;
+    background: var(--amber-glow);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(42px, 10vw, 72px);
+    line-height: 1.0;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--amber);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 4vw, 20px);
+    color: rgba(255,255,255,0.65);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.5;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    width: 100%;
+    max-width: 360px;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .btn-primary:hover { background: var(--amber-dark); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-secondary {
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover { color: var(--white); }
+
+  .hero-trust {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .trust-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+  }
+
+  /* ── DEADLINE BANNER ── */
+  .deadline-banner {
+    background: rgba(232,64,64,0.1);
+    border-top: 1px solid rgba(232,64,64,0.3);
+    border-bottom: 1px solid rgba(232,64,64,0.3);
+    padding: 14px 20px;
+    text-align: center;
+  }
+
+  .deadline-banner p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .deadline-banner strong {
+    color: #e84040;
+    font-weight: 600;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 64px 20px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 7vw, 52px);
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .section-intro {
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    max-width: 480px;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--ink); }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(245,166,35,0.2);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 52px;
+    padding-top: 4px;
+  }
+
+  .step-body h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+    color: var(--white);
+  }
+
+  .step-body p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  .step-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+
+  .tag-auto { background: rgba(245,166,35,0.12); color: var(--amber); }
+  .tag-you { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
+
+  /* ── PRICING ── */
+  .pricing { background: var(--ink-soft); }
+
+  .pricing-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .price-card {
+    background: var(--steel);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 24px;
+    position: relative;
+  }
+
+  .price-card.featured {
+    border-color: var(--amber);
+    background: rgba(245,166,35,0.06);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -1px;
+    right: 20px;
+    background: var(--amber);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .card-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .card-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .price-dollar {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .price-note {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .card-features li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  .check {
+    color: var(--amber);
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .btn-card {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+    border-radius: 7px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .btn-card-primary {
+    background: var(--amber);
+    color: var(--ink);
+  }
+
+  .btn-card-primary:hover { background: var(--amber-dark); }
+
+  .btn-card-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .btn-card-outline:hover { border-color: rgba(255,255,255,0.45); }
+
+  .rush-note {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .rush-note strong { color: rgba(255,255,255,0.7); }
+
+  /* ── MICHIGAN LAW ── */
+  .law-section { background: var(--ink); }
+
+  .deadline-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .deadline-card {
+    background: var(--steel);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 20px;
+  }
+
+  .deadline-card h4 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+
+  .deadline-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  .deadline-card .days {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  /* ── WHAT YOU GET ── */
+  .guarantee { background: var(--ink-soft); }
+
+  .guarantee-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .g-card {
+    background: var(--steel);
+    border-radius: 8px;
+    padding: 20px 16px;
+    border: 1px solid var(--border);
+  }
+
+  .g-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .g-card h4 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .g-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── FAQ ── */
+  .faq-section { background: var(--ink); }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+
+  .faq-q {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    margin-bottom: 8px;
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    background: var(--ink-soft);
+    border-top: 1px solid var(--border);
+    padding: 64px 20px;
+    text-align: center;
+  }
+
+  .bottom-cta h2 { margin-bottom: 12px; }
+
+  .bottom-cta p {
+    color: rgba(255,255,255,0.55);
+    font-size: 16px;
+    margin-bottom: 32px;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  footer a { color: var(--muted); text-decoration: underline; }
+
+  /* ── DESKTOP ── */
+  @media (min-width: 640px) {
+    .hero { padding: 80px 40px 72px; }
+    .hero-cta-group { flex-direction: row; justify-content: center; }
+    .btn-primary { width: auto; }
+    section { padding: 80px 40px; }
+    .pricing-cards { flex-direction: row; }
+    .price-card { flex: 1; }
+    .guarantee-grid { grid-template-columns: repeat(4, 1fr); }
+    .deadline-cards { flex-direction: row; }
+    .deadline-card { flex: 1; }
+  }
+
+  @media (min-width: 900px) {
+    section { padding: 96px 10%; }
+    nav { padding: 14px 10%; }
+  }
+
+  /* ── INTAKE MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  @media (min-width: 640px) {
+    .modal-overlay { align-items: center; }
+  }
+
+  .modal {
+    background: var(--ink-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+
+  @media (min-width: 640px) {
+    .modal { border-radius: 16px; }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--steel);
+    border-radius: 2px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--amber);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .step-indicator {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .wizard-step { display: none; }
+  .wizard-step.active { display: block; }
+
+  .wizard-step h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .wizard-step .hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: var(--steel);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8499' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--amber);
+  }
+
+  .field input::placeholder { color: rgba(255,255,255,0.25); }
+
+  .role-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .role-option {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .role-option input[type="radio"] { display: none; }
+
+  .role-option label {
+    display: block;
+    background: var(--steel);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    transition: all 0.15s;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .role-option input[type="radio"]:checked + label {
+    border-color: var(--amber);
+    background: var(--amber-glow);
+    color: var(--amber);
+  }
+
+  .wizard-nav {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-next, .btn-back {
+    padding: 15px 24px;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-next {
+    flex: 1;
+    background: var(--amber);
+    color: var(--ink);
+  }
+
+  .btn-next:hover { background: var(--amber-dark); }
+  .btn-next:active { transform: scale(0.98); }
+
+  .btn-back {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 15px 18px;
+  }
+
+  .btn-back:hover { color: var(--white); }
+
+  .deadline-alert {
+    background: rgba(232,64,64,0.1);
+    border: 1px solid rgba(232,64,64,0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .deadline-alert p {
+    font-size: 13px;
+    color: rgba(255,200,200,0.85);
+    line-height: 1.5;
+  }
+
+  .deadline-alert strong { color: #e84040; }
+
+  .summary-block {
+    background: var(--steel);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .label { color: var(--muted); }
+  .summary-row .value { color: var(--white); font-weight: 500; }
+  .summary-row.total .value { color: var(--amber); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+
+  .stripe-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: var(--amber);
+    color: var(--ink);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .stripe-button:hover { background: var(--amber-dark); }
+  .stripe-button:active { transform: scale(0.98); }
+
+  .payment-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Mi<span>Lien</span></a>
+  <a href="#" class="nav-cta" onclick="openModal(); return false;">File Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Michigan Mechanics Lien Service</div>
+  <h1>You Did<br>The Work.<em>Now Get Paid.</em></h1>
+  <p class="hero-sub">Fast, accurate lien documents for Michigan contractors and tradespeople. We handle the paperwork. You handle the job site.</p>
+  <div class="hero-cta-group">
+    <a href="#" class="btn-primary" onclick="openModal(); return false;">
+      File My Lien — Starting at $97
+    </a>
+  </div>
+  <div class="hero-trust">
+    <div class="trust-item"><div class="trust-dot"></div>Michigan-specific documents</div>
+    <div class="trust-item"><div class="trust-dot"></div>Ready in under 24 hours</div>
+    <div class="trust-item"><div class="trust-dot"></div>No attorney required</div>
+  </div>
+</section>
+
+<!-- DEADLINE BANNER -->
+<div class="deadline-banner">
+  <p>Michigan law gives you <strong>90 days from last furnishing</strong> to file a Claim of Lien. Miss it and your rights are gone. Don't wait.</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-label">How It Works</div>
+  <h2>Four Steps<br>To Protected</h2>
+  <p class="section-intro">We built this for the guy in the truck, not the guy in the office. Takes less than 10 minutes.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Tell Us About the Job</h3>
+        <p>Who hired you, what address, how much you're owed, and when you last worked. Eight short questions on your phone.</p>
+        <span class="step-tag tag-you">You — 5 min</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>We Build Your Documents</h3>
+        <p>We generate the correct Michigan-statutory documents for your situation: Notice of Furnishing, Demand Letter, or Claim of Lien — whatever the deadline requires.</p>
+        <span class="step-tag tag-auto">Automated</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>We Review Everything</h3>
+        <p>A human checks your documents for accuracy before they go to you. Legal description, dates, county, dollar amounts — all verified.</p>
+        <span class="step-tag tag-auto">Under 24 hours</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>You File, You Get Paid</h3>
+        <p>We send step-by-step instructions for notarization and filing at your county Register of Deeds. Or add filing coordination and we handle that too.</p>
+        <span class="step-tag tag-you">You — final step</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MICHIGAN DEADLINES -->
+<section class="law-section">
+  <div class="section-label">Michigan Law</div>
+  <h2>Know Your<br>Deadlines</h2>
+  <p class="section-intro">The clock starts the day you set foot on that job site. These dates are not flexible.</p>
+  <div class="deadline-cards">
+    <div class="deadline-card">
+      <div class="days">20</div>
+      <h4>Notice of Furnishing</h4>
+      <p>Subcontractors and suppliers must serve this within 20 days of first furnishing labor or materials. Miss it and your lien protection is weakened.</p>
+    </div>
+    <div class="deadline-card">
+      <div class="days">90</div>
+      <h4>Claim of Lien</h4>
+      <p>All lien claimants have 90 days from last furnishing to record a Claim of Lien with the county Register of Deeds. This is a hard deadline.</p>
+    </div>
+    <div class="deadline-card">
+      <div class="days">0</div>
+      <h4>Demand Letter</h4>
+      <p>Not legally required, but we always recommend sending one first. Resolves 40-60% of disputes without ever touching a lien form. No deadline, but send it today.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="section-label">Pricing</div>
+  <h2>Transparent.<br>Flat Rate.</h2>
+  <p class="section-intro">No hourly fees. No hidden charges. You know exactly what you're paying before you start.</p>
+  <div class="pricing-cards">
+    <div class="price-card">
+      <div class="card-name">Demand Letter</div>
+      <div class="card-desc">Start here. A professional demand letter stops most disputes before they escalate.</div>
+      <div class="card-price">
+        <div class="price-dollar">$97</div>
+        <div class="price-note">flat</div>
+      </div>
+      <ul class="card-features">
+        <li><span class="check">✓</span>Michigan-compliant demand letter</li>
+        <li><span class="check">✓</span>Professional letterhead</li>
+        <li><span class="check">✓</span>Ready in under 24 hours</li>
+        <li><span class="check">✓</span>Human review included</li>
+      </ul>
+      <a href="#" class="btn-card btn-card-outline" onclick="openModal(); return false;">Get Started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="featured-badge">Most Common</div>
+      <div class="card-name">Full Lien Package</div>
+      <div class="card-desc">Complete document set: Notice of Furnishing, Demand Letter, and Claim of Lien.</div>
+      <div class="card-price">
+        <div class="price-dollar">$197</div>
+        <div class="price-note">flat</div>
+      </div>
+      <ul class="card-features">
+        <li><span class="check">✓</span>All documents for your situation</li>
+        <li><span class="check">✓</span>Deadline calculation included</li>
+        <li><span class="check">✓</span>County-specific instructions</li>
+        <li><span class="check">✓</span>Human review included</li>
+        <li><span class="check">✓</span>Filing instructions step by step</li>
+      </ul>
+      <a href="#" class="btn-card btn-card-primary" onclick="openModal(); return false;">File My Lien</a>
+    </div>
+    <div class="price-card">
+      <div class="card-name">Filing Coordination</div>
+      <div class="card-desc">Add this to either package and we coordinate notarization and county filing on your behalf.</div>
+      <div class="card-price">
+        <div class="price-dollar">+$75</div>
+        <div class="price-note">add-on</div>
+      </div>
+      <ul class="card-features">
+        <li><span class="check">✓</span>We coordinate notarization</li>
+        <li><span class="check">✓</span>Electronic filing where available</li>
+        <li><span class="check">✓</span>Physical filing coordination</li>
+        <li><span class="check">✓</span>Confirmation and receipt</li>
+      </ul>
+      <a href="#" class="btn-card btn-card-outline" onclick="openModal(); return false;">Add to Package</a>
+    </div>
+  </div>
+  <div class="rush-note"><strong>Under 5 business days to your deadline?</strong> Rush processing available — 50% surcharge applies. Don't wait to find out if you qualify.</div>
+</section>
+
+<!-- GUARANTEES -->
+<section class="guarantee">
+  <div class="section-label">What You Get</div>
+  <h2>Built Right<br>Or It's Free</h2>
+  <p class="section-intro">If we get a document wrong, we fix it at no charge. No argument.</p>
+  <div class="guarantee-grid">
+    <div class="g-card">
+      <div class="g-icon">⚡</div>
+      <h4>Fast</h4>
+      <p>Documents ready within 24 hours of intake. Rush available for tight deadlines.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">📋</div>
+      <h4>Accurate</h4>
+      <p>Michigan-statutory language. Every document reviewed by a human before delivery.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">🔒</div>
+      <h4>Secure</h4>
+      <p>Stripe-encrypted payments. Your job data is never sold or shared.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">📱</div>
+      <h4>Mobile</h4>
+      <p>Start from your phone on the job site. No desktop required, no account needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-label">Questions</div>
+  <h2>Straight<br>Answers</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Is this the same as hiring a lawyer?</div>
+      <div class="faq-a">No. MiLien is a document preparation service, not a law firm. We prepare the documents required under Michigan's Construction Lien Act. If you have a complex dispute or need to enforce a lien in court, we'll point you to an attorney. Most situations never get there.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if I already missed the 20-day Notice window?</div>
+      <div class="faq-a">You may still have partial lien rights. The Claim of Lien deadline is separate. Tell us your dates during intake and we'll calculate exactly where you stand.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Does this work for commercial jobs too?</div>
+      <div class="faq-a">Yes. Michigan's Construction Lien Act covers both residential and commercial projects. The documents and process are similar, though commercial projects may have additional considerations we'll flag during review.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">I'm a supplier, not a contractor. Does this apply to me?</div>
+      <div class="faq-a">Yes. Material suppliers who furnish to a job site have lien rights under Michigan law, subject to the same 20-day Notice of Furnishing and 90-day Claim of Lien deadlines.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What counties in Michigan do you cover?</div>
+      <div class="faq-a">All 83 Michigan counties. The Claim of Lien must be filed in the county where the property sits, and we include county-specific filing instructions with every package.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Stop Waiting<br>To Get Paid</h2>
+  <p>You earned it. The paperwork shouldn't stand between you and your money.</p>
+  <a href="#" class="btn-primary" onclick="openModal(); return false;">
+    File My Lien — Starting at $97
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">MiLien</strong> · Michigan Mechanics Lien Document Preparation<br>
+    MiLien is a document preparation service and is not a law firm. Information provided is not legal advice.<br>
+    <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="/cdn-cgi/l/email-protection#4b232e2727240b262227222e2565282426"><span class="__cf_email__" data-cfemail="a2cac7cececde2cfcbcecbc7cc8cc1cdcf">[email&#160;protected]</span></a>
+  </p>
+</footer>
+
+<!-- INTAKE MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">File My Lien</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress" style="width: 14%"></div>
+    </div>
+    <div class="step-indicator" id="step-label">Step 1 of 7</div>
+
+    <!-- STEP 1: Role -->
+    <div class="wizard-step active" id="step-1">
+      <h3>Your Role on This Job</h3>
+      <p class="hint">This determines which documents you need and which deadlines apply.</p>
+      <div class="role-options field-group">
+        <div class="role-option">
+          <input type="radio" name="role" id="r-prime" value="prime">
+          <label for="r-prime">General Contractor / Prime</label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="role" id="r-sub" value="sub">
+          <label for="r-sub">Subcontractor</label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="role" id="r-supplier" value="supplier">
+          <label for="r-supplier">Material Supplier</label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="role" id="r-laborer" value="laborer">
+          <label for="r-laborer">Laborer / Sole Proprietor</label>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Job Address -->
+    <div class="wizard-step" id="step-2">
+      <h3>Where Was The Job?</h3>
+      <p class="hint">The lien must be filed with the county where the property is located, not where you're based.</p>
+      <div class="field-group">
+        <div class="field">
+          <label>Property Street Address</label>
+          <input type="text" placeholder="123 Main St" id="prop-address">
+        </div>
+        <div class="field">
+          <label>City</label>
+          <input type="text" placeholder="Detroit" id="prop-city">
+        </div>
+        <div class="field">
+          <label>County</label>
+          <select id="prop-county">
+            <option value="">Select county...</option>
+            <option>Wayne</option><option>Oakland</option><option>Macomb</option>
+            <option>Kent</option><option>Washtenaw</option><option>Ingham</option>
+            <option>Kalamazoo</option><option>Genesee</option><option>Ottawa</option>
+            <option>Saginaw</option><option>Muskegon</option><option>St. Clair</option>
+            <option>Jackson</option><option>Monroe</option><option>Berrien</option>
+            <option>Calhoun</option><option>Eaton</option><option>Bay</option>
+            <option>Livingston</option><option>Allegan</option>
+            <option>Other Michigan County</option>
+          </select>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Property Owner -->
+    <div class="wizard-step" id="step-3">
+      <h3>Who Owns The Property?</h3>
+      <p class="hint">This is the person or company that owns the property where work was performed, not necessarily who hired you.</p>
+      <div class="field-group">
+        <div class="field">
+          <label>Owner Name or Company</label>
+          <input type="text" placeholder="Smith Properties LLC" id="owner-name">
+        </div>
+        <div class="field">
+          <label>Owner Mailing Address (if known)</label>
+          <input type="text" placeholder="Same as property, or different address" id="owner-address">
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Dates -->
+    <div class="wizard-step" id="step-4">
+      <h3>When Did You Work?</h3>
+      <p class="hint">These dates determine your filing deadlines. Be as accurate as possible.</p>
+      <div class="field-group">
+        <div class="field">
+          <label>First Date You Worked or Delivered Material</label>
+          <input type="date" id="date-first">
+        </div>
+        <div class="field">
+          <label>Last Date You Worked or Delivered Material</label>
+          <input type="date" id="date-last">
+        </div>
+      </div>
+      <div id="deadline-alert-box"></div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-next" onclick="checkDates()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Amount -->
+    <div class="wizard-step" id="step-5">
+      <h3>How Much Are You Owed?</h3>
+      <p class="hint">Enter the total unpaid amount including materials and labor. This goes directly on your lien documents.</p>
+      <div class="field-group">
+        <div class="field">
+          <label>Amount Owed ($)</label>
+          <input type="number" placeholder="15000" id="amount-owed" min="1">
+        </div>
+        <div class="field">
+          <label>Brief Description of Work</label>
+          <input type="text" placeholder="Roofing installation, 3,200 sq ft" id="work-desc">
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Your Info -->
+    <div class="wizard-step" id="step-6">
+      <h3>Your Information</h3>
+      <p class="hint">This appears on your documents. Use your legal business name if you operate as an LLC or Corp.</p>
+      <div class="field-group">
+        <div class="field">
+          <label>Your Name or Business Name</label>
+          <input type="text" placeholder="Russo Roofing LLC" id="claimant-name">
+        </div>
+        <div class="field">
+          <label>Your Address</label>
+          <input type="text" placeholder="Your business or mailing address" id="claimant-address">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" placeholder="(313) 555-0100" id="claimant-phone">
+        </div>
+        <div class="field">
+          <label>Email (for document delivery)</label>
+          <input type="email" placeholder="you@example.com" id="claimant-email">
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Package + Pay -->
+    <div class="wizard-step" id="step-7">
+      <h3>Review & Pay</h3>
+      <p class="hint">Documents delivered to your email within 24 hours after review.</p>
+      <div class="summary-block">
+        <div class="summary-row">
+          <span class="label">Package</span>
+          <span class="value">Full Lien Package</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">County</span>
+          <span class="value" id="summary-county">Wayne</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Amount in Dispute</span>
+          <span class="value" id="summary-amount">—</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label">Total Due</span>
+          <span class="value">$197</span>
+        </div>
+      </div>
+      <button class="stripe-button" onclick="fakeCheckout()">
+        Pay Securely — $197
+      </button>
+      <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
+      <div class="wizard-nav" style="margin-top: 16px;">
+        <button class="btn-back" onclick="prevStep()">Back</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  let currentStep = 1;
+  const totalSteps = 7;
+
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function showStep(n) {
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + n).classList.add('active');
+    const pct = Math.round((n / totalSteps) * 100);
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('step-label').textContent = 'Step ' + n + ' of ' + totalSteps;
+    currentStep = n;
+    if (n === 7) updateSummary();
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) showStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function checkDates() {
+    const last = document.getElementById('date-last').value;
+    const alertBox = document.getElementById('deadline-alert-box');
+    if (last) {
+      const lastDate = new Date(last);
+      const today = new Date();
+      const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+      const daysLeft = 90 - daysAgo;
+      if (daysLeft <= 14 && daysLeft > 0) {
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Rush processing may be required.</strong> You have approximately ' + daysLeft + ' days before your 90-day Claim of Lien deadline. We will flag this during review.</p></div>';
+      } else if (daysLeft <= 0) {
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Your 90-day Claim of Lien window may have passed.</strong> You may still have options. Continue and we will review your situation and advise next steps.</p></div>';
+      } else {
+        alertBox.innerHTML = '';
+      }
+    }
+    nextStep();
+  }
+
+  function updateSummary() {
+    const county = document.getElementById('prop-county').value;
+    const amount = document.getElementById('amount-owed').value;
+    if (county) document.getElementById('summary-county').textContent = county + ' County';
+    if (amount) document.getElementById('summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
+  }
+
+  function collectFormData() {
+    const last = document.getElementById('date-last').value;
+    const lastDate = new Date(last);
+    const today = new Date();
+    const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+    const rushRequired = daysAgo >= 76;
+
+    return {
+      role: document.querySelector('input[name="role"]:checked')?.value || '',
+      propertyAddress: document.getElementById('prop-address').value,
+      propertyCity: document.getElementById('prop-city').value,
+      propertyCounty: document.getElementById('prop-county').value,
+      ownerName: document.getElementById('owner-name').value,
+      ownerAddress: document.getElementById('owner-address').value,
+      dateFirst: document.getElementById('date-first').value,
+      dateLast: last,
+      amountOwed: document.getElementById('amount-owed').value,
+      workDescription: document.getElementById('work-desc').value,
+      claimantName: document.getElementById('claimant-name').value,
+      claimantAddress: document.getElementById('claimant-address').value,
+      claimantPhone: document.getElementById('claimant-phone').value,
+      claimantEmail: document.getElementById('claimant-email').value,
+      packageType: 'full',
+      rushRequired,
+    };
+  }
+
+  async function fakeCheckout() {
+    const btn = document.querySelector('.stripe-button');
+    btn.textContent = 'Preparing secure checkout...';
+    btn.disabled = true;
+
+    try {
+      const data = collectFormData();
+      const response = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.url) {
+        window.location.href = result.url;
+      } else {
+        throw new Error(result.error || 'Unknown error');
+      }
+    } catch (err) {
+      btn.textContent = 'Something went wrong — please try again';
+      btn.disabled = false;
+      console.error(err);
+    }
+  }
+
+
+</script>
+
+</body>
+</html>
