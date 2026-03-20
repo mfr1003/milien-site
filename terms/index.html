@@ -1,0 +1,2332 @@
+
+Taking from our last Chat, let's come up with a list of demanded businesses that aren't sexy but have a desperate customer base.
+
+Mar 17
+
+Reconciled prior conversations and synthesized recession-resistant business concepts
+Reconciled prior conversations and synthesized recession-resistant business concepts
+The most recent conversations are deep in the PolicyTorque / door systems work, and I'm not finding a specific prior chat on this business topic. It may not have been captured yet, so let me work from the framing itself, which is a solid one: high demand, low glamour, sticky customers who have limited alternatives.
+
+Here's a working list built around that filter:
+
+Pest Control Rats, roaches, bedbugs. Nobody wants to need it. Once you do, you call immediately and pay whatever it costs. Repeat customers are almost guaranteed. Residential and commercial both.
+
+Junk Removal Estate cleanouts, hoarder situations, contractor debris. Emotionally charged, time-sensitive, labor-intensive enough that people will pay to avoid it. The customer is often in a vulnerable moment, which drives urgency and low price resistance.
+
+Septic and Drain Services No one shops around when the tank is backing up. Emergency pricing is the norm, not the exception. Route-based, recurring maintenance cycle, and the customer has zero leverage.
+
+Mobile Notary / Process Server Legal documents move on deadlines. Someone always needs a signature witnessed or papers served. No storefront, no overhead. The desperation is structural, baked into the legal calendar.
+
+Appliance Repair People need the fridge fixed today. The economics have gotten better as replacement costs rose. Right to repair momentum is creating regulatory tailwind for the first time in a decade.
+
+Self-Storage Not repair or service, but the customer base is people in transition: divorce, death, downsizing, eviction. Emotionally sticky, long average hold times, price increases absorbed because switching is a hassle.
+
+Biohazard and Trauma Cleanup Crime scenes, suicides, unattended deaths. Highly specialized, heavily regulated, but also almost completely non-discretionary. Three to four operators typically cover an entire metro market.
+
+Tax Resolution Services People with IRS problems are frightened, often in denial, and will pay premium rates to someone who projects calm competence. Not tax prep, specifically resolution of liens, levies, and back filings.
+
+Repossession Lenders need assets recovered regardless of the economic cycle. Volume goes up in downturns. The work is unpleasant and that scarcity of willing operators supports pricing.
+
+Mobile Pet Grooming You've got firsthand context here with Longview. The convenience premium is real, the customer base is emotionally attached to the outcome, and the van-based model keeps overhead contained.
+
+Want me to filter this list through a specific lens, like capital requirements, solo operator viability, Troy/metro Detroit market fit, or something you'd personally want to own?
+
+Something I can automate to you or another LLM would be great
+
+Mar 17
+
+Identified document-heavy service businesses ripe for LLM automation
+Identified document-heavy service businesses ripe for LLM automation
+Good filter. That changes the list significantly. You want the value delivery to be primarily language, documentation, research, or coordination, where the physical execution layer is thin or outsourceable. Here's what survives that cut:
+
+Medical Bill Negotiation / Dispute Service Patients receive EOBs they don't understand, get billed incorrectly at rates they didn't agree to, and have no idea how to push back. The work is almost entirely document analysis, error identification, and dispute letter drafting. An LLM handles 90% of it. The customer is desperate, the upside is large, and you take a percentage of savings.
+
+Demand Letter Service Small dollar disputes that don't justify hiring an attorney: landlord keeping a security deposit, contractor who walked off the job, retailer ignoring a warranty claim. A well-drafted demand letter on professional letterhead resolves most of them. LLM writes it, you review and send. $75-150 per letter, high volume potential.
+
+Mechanics Lien Filing Contractors and subcontractors who aren't paid need liens filed fast against specific deadlines. The work is jurisdiction-specific document generation, deadline tracking, and notarized filing. Almost entirely automatable. The customer is a tradesperson who doesn't have time to figure out the paperwork and is sitting on $5,000-$50,000 in unpaid work.
+
+Landlord Notice Generation Eviction notices, lease violation letters, cure-or-quit notices, rent increase notices. All jurisdiction-specific, all template-heavy, all something a landlord needs quickly and correctly. LLM generates the right document for the right state, you verify and deliver. Volume is steady because the rental market never stops producing disputes.
+
+IRS Notice Response Service Not full tax resolution, just the intake layer: someone gets a CP2000 or a collection notice, panics, and needs someone to explain what it means and draft the response letter. Most of these are routine. LLM analyzes the notice, drafts the response, flags anything that needs a CPA. You handle the edge cases and charge $150-300 per notice.
+
+Insurance Claim Documentation Homeowners filing property claims undervalue their losses because they don't know what's claimable. An LLM-assisted intake walks them through room by room, generates an itemized loss inventory, and drafts the supplemental claim. You take 10-15% of the difference between their initial offer and the final settlement.
+
+FOIA Request Filing Journalists, researchers, small businesses, and private citizens need records from federal and state agencies but don't know how to request them properly or which agency has what. LLM identifies the right agency, drafts the request, tracks deadlines, drafts appeals on denial. Subscription or per-request model.
+
+The best of these for you specifically are probably medical bill negotiation and mechanics lien filing. Both have a desperate, non-price-sensitive customer, the core work is document generation and deadline awareness, and the Michigan market for each is large. The lien service also puts you adjacent to the contractor and trades network you likely already touch through the kennel and property world.
+
+Want to pressure-test one of these and sketch out what the LLM workflow actually looks like end to end?
+
+Yeah, let's try the Mechanic's lien.  I have some Mechanic friends.
+
+Mar 17
+
+Architected mechanics lien filing workflow with Michigan deadlines
+Architected mechanics lien filing workflow with Michigan deadlines
+Good. The personal network is the distribution wedge you need. Let's build this out properly.
+
+What the Customer Actually Looks Like
+
+Your mechanic friend did $18,000 of work on a commercial fleet. The owner is stalling. It's been 60 days. He's angry, doesn't want to pay an attorney $300/hour to explain the paperwork, and doesn't know the clock is already running against him. That's your customer. Contractors, subcontractors, material suppliers, tradespeople. The pain is universal in that world.
+
+Michigan-Specific Rules You're Working With
+
+This matters because the service has to be jurisdiction-accurate or it's worthless:
+
+Subcontractors and suppliers must serve a Notice of Furnishing within 20 days of first furnishing labor or materials. Miss that window and lien rights are weakened or lost.
+The Claim of Lien must be recorded with the county Register of Deeds within 90 days of last furnishing.
+A Notice of Intent to Lien (demand letter) is not legally required in Michigan but almost always worth sending first. It resolves 40-60% of disputes without filing.
+The lien must be filed in the county where the property sits, not where the contractor is located.
+Deadline math is the core value. Most tradespeople don't track it. You do.
+
+The LLM Workflow End to End
+
+Step 1: Intake (fully automated) A short web form or SMS-based intake collects: customer name and license info, property owner name and address, job description, first date of furnishing, last date of furnishing, amount owed, county. This is the only data entry the customer does.
+
+Step 2: Deadline Calculation and Triage (LLM + rules engine) The system calculates whether the Notice of Furnishing window is still open, when the Claim of Lien deadline falls, and whether they're in emergency territory (under 2 weeks). It flags which documents are needed and in what order.
+
+Step 3: Document Generation (LLM) Three possible outputs depending on situation: Notice of Furnishing, Notice of Intent to Lien (demand letter), or Claim of Lien. All Michigan-statutory-language compliant. Customer name, property description, legal description pulled from county records if accessible, notarization instructions included.
+
+Step 4: Your Review Layer (15-20 minutes per file) You review for obvious errors, confirm the legal description is accurate, flag anything that looks like it needs an actual attorney. This is your liability firewall. You are a document preparation service, not a law firm.
+
+Step 5: Delivery and Filing Coordination Customer receives the documents. For the Claim of Lien, they need to get it notarized and file with the Register of Deeds, or you offer a filing coordination add-on where you handle submission for an additional fee. Some counties in Michigan accept e-recording now, which tightens this further.
+
+Step 6: Follow-up Sequence (automated) Reminder emails at key intervals. If the lien is filed and still unpaid at 30 days, automated prompt to consider lien enforcement. You're not doing enforcement, but you can refer to attorneys who do and take a referral fee.
+
+Pricing Model
+
+Notice of Intent to Lien (demand letter only): $97
+Full Claim of Lien package (documents + instructions): $197
+Filing coordination add-on: $75
+Rush (under 5 business days to deadline): 50% surcharge
+A contractor with $15,000 unpaid will pay $197 without hesitation. That's 1.3% of what they're trying to recover.
+
+What You Actually Need to Build
+
+A simple intake form (Typeform or a basic React page)
+A Claude-powered backend that takes the intake data, calculates deadlines, and generates the correct documents
+A PDF output layer for the documents
+A Stripe checkout
+Your review step before documents are released
+The whole thing is buildable in a weekend if you want to start with Michigan only and expand states later.
+
+The Network Play
+
+Your mechanic friends are not just your first customers, they're your salespeople. Every trade has a tight word-of-mouth loop. One guy gets paid because your service worked, he tells four people at the shop. You could also approach a roofing supply house, a lumber yard, or an electrical supply distributor and offer a co-branded version they give to their contractor customers as a value-add. The supplier wants their contractors to get paid because paid contractors keep buying materials.
+
+Want to sketch out the actual Claude prompt architecture that would drive the document generation, or work through the intake form first?
+
+I'm trying to figure out how to set up the site.  It should be definitely mobile friendly, and intake via credit card or phone linked account
+
+Mar 17
+
+Architected mobile-first payment integration strategy
+Architected mobile-first payment integration strategy
+Good framing to start with. Let me break this into the decisions you actually need to make before touching any code.
+
+The Core Stack Decision
+
+You have two realistic paths:
+
+Path A: No-code / low-code front, custom backend Framer or Webflow for the marketing site and intake form, Stripe for payments, a simple API backend (Vercel + Node or Python) that calls Claude. Best if you want to move fast and aren't building the code yourself.
+
+Path B: Full custom React app Single codebase, full control, easier to iterate the intake flow as you learn what customers actually need. Slightly more setup upfront but cleaner long-term. This is probably the right call given you already have Claude API experience from the real estate comps app.
+
+Recommendation: Path B, React front end, hosted on Vercel, Stripe for payments, Claude API for document generation.
+
+Mobile-First Intake Flow
+
+The intake should feel like a form on your phone, not a desktop data entry screen. That means:
+
+One question per screen (wizard-style), not a long scrolling form
+Large tap targets, no tiny checkboxes
+Auto-formatting for phone numbers and dollar amounts
+County selection via searchable dropdown, not a 83-item scroll list
+Progress indicator so they know they're 4 of 7 steps, not lost
+The wizard pattern also lets you do conditional logic cleanly: if they're a subcontractor, show the Notice of Furnishing date question; if they're a prime contractor, skip it.
+
+Payment and Phone-Linked Accounts
+
+Stripe handles all of this in one integration:
+
+Credit and debit cards
+Apple Pay (auto-appears on Safari/iOS if enabled)
+Google Pay (auto-appears on Chrome/Android if enabled)
+Link (Stripe's saved payment method network, lets returning customers pay in one tap)
+You don't need separate integrations for Apple Pay and Google Pay. Stripe's Payment Element detects the device and surfaces the right option automatically. On an iPhone it shows Apple Pay first. On Android it shows Google Pay first. Cards are always the fallback.
+
+The only configuration decision is whether to charge upfront before document generation or after review. Charge upfront. It filters out people who aren't serious and simplifies your workflow considerably.
+
+The Page Structure
+
+Three pages to start:
+
+Landing page: What you do, who it's for, price, one CTA button ("File My Lien")
+Intake wizard: 6-8 steps, ends at Stripe checkout
+Confirmation / dashboard: Shows their documents once generated and reviewed
+No account creation required at intake. Stripe Link handles returning customers. You can add a login layer later if you want document history or a status tracker.
+
+Domain and Brand
+
+You'll want a name before you build. Something in the direction of:
+
+MichiganLienPro.com
+FileMiLien.com
+LienReady.com
+TradeLienMI.com
+Short, direct, implies speed and competence. Michigan-specific is fine to start, you can rebrand or add states under a parent brand later.
+
+What to Build First
+
+Don't build the full thing before validating. The order should be:
+
+Land the domain and put up a one-page site with a waitlist or "Get Started" form
+Take the first 3-5 customers manually, do the intake over text or phone, generate the documents by hand in Claude, charge via Stripe payment link
+Once you know the intake questions are right, build the wizard
+Automate document generation only after the manual version is working
+This keeps you from building the wrong intake flow. Tradespeople will tell you exactly what's confusing if you talk to them directly first.
+
+Want me to sketch the intake wizard question sequence, or jump straight to a working prototype of the site?
+
+It should be something like TradeMILien, or something alliterative or easy to remember.
+
+Mar 17
+
+Brainstormed Michigan lien service names emphasizing alliteration and memorability
+Brainstormed Michigan lien service names emphasizing alliteration and memorability
+Here's a shortlist worth considering, with the reasoning on each:
+
+MiLien The strongest one on this list. "Mi" works as Michigan's abbreviation and as "my" simultaneously. My lien. Michigan lien. One word, five letters, zero ambiguity about what it does. Easy to say out loud to a friend. MiLien.com is the play.
+
+LienLock Alliterative, implies you're securing something before the deadline closes. Has a slightly protective, urgent feel that fits the product well.
+
+FileFast Not lien-specific but very action-oriented. Works well on mobile where the CTA and the brand name say the same thing. Expandable beyond Michigan and beyond liens if you ever want to broaden.
+
+LienLogic More professional-sounding, slightly more B2B. Good if you end up going after roofing supply houses or lumber yards as distribution partners rather than individual tradespeople.
+
+TradeLodge "Lodge" is the actual legal term for filing a document with a court or county office. Tradespeople probably don't know that but it's a small credibility signal to anyone who does. Alliterative, memorable.
+
+MiLien is the recommendation. It's the only one with a genuine double meaning that earns its cleverness without being clever for its own sake. It also passes the phone test: if your mechanic friend tells another contractor "go to MiLien dot com," they'll spell it right on the first try.
+
+Want to check availability and build the landing page?
+
+LodgeMILien?
+
+Mar 17
+
+Prepared candid evaluation of name suggestion
+Prepared candid evaluation of name suggestion
+That one works well actually. Breaking it down:
+
+Lodge is the right verb. It's what you literally do when you file a lien with the Register of Deeds. Most tradespeople won't know that and it doesn't matter, but anyone in the legal or title world who encounters it will recognize it as precise and credible.
+
+MI does double duty again, Michigan and "my."
+
+Lien leaves zero ambiguity about what the service does.
+
+Together it reads as an action: lodge my lien. That's essentially the CTA built into the brand name itself.
+
+The one thing to consider is length. Five syllables is on the longer end for a domain you want someone to say out loud to a friend. "Go to Lodge MI Lien dot com" is a mouthful compared to "MiLien dot com." Whether that matters depends on how much of your early growth is word-of-mouth versus paid or search traffic.
+
+If you're leading with the trades network and personal referrals, shorter wins. If you're leading with Google search or a supply house partnership where you control the placement, LodgeMiLien.com works great because it's descriptive and credible.
+
+Quick availability check?
+
+Want me to pull that up, and if it's clear we move straight to building the landing page?
+
+milien.lodge
+
+Mar 17
+
+Questioned domain validity and weighed honest uncertainty
+Questioned domain validity and weighed honest uncertainty
+Clever idea, but .lodge is almost certainly not an available TLD. The domain extension market has exploded but it hasn't gone that far. The real options in that territory would be something like:
+
+milien.law (exists, credible, implies legal competence)
+milien.legal (exists, clean)
+milien.co (classic alternative to .com)
+milien.app (works if you lean into the mobile-first angle)
+milien.com (still the gold standard for trust with a trades audience)
+Honestly for your customer, a contractor in his truck on his phone, .com still wins. Tradespeople don't think in creative TLDs. If it's not .com they'll type .com anyway and end up somewhere else.
+
+MiLien.com is worth checking first. If it's taken, LodgeMiLien.com is the backup and it's almost certainly available.
+
+Want me to build the landing page and intake wizard now, and we can lock the domain once you've checked availability? You can swap the domain in five minutes, the build is what takes time.
+
+Yes, that's fine.  I'll try to own all three domains so they all filter to our site.
+
+Mar 17
+
+Charted mobile-first landing page strategy for mechanics lien service
+Charted mobile-first landing page strategy for mechanics lien service
+Smart move. Own MiLien.com, LodgeMiLien.com, and MiLien.legal (or .co), point them all to the primary. Costs you maybe $40/year total and closes off any confusion.
+
+Let me read the design skill and build you something worth showing to your mechanic friends.
+
+
+Architected mobile-first landing page with industrial aesthetic and strategic urgency elements
+Architected mobile-first landing page with industrial aesthetic and strategic urgency elements
+Now let me build this.
+
+
+Created a file, read a file
+Created a file, read a file
+Full landing page with the intake wizard built in. Here's what's in it:
+
+The page: Hero, deadline urgency banner, How It Works (4 steps with auto vs. you tags), Michigan-specific deadline cards (20 days / 90 days), pricing cards with the full package featured, guarantees, FAQ covering the questions your mechanic friends will actually ask, and a bottom CTA.
+
+The intake wizard: 7 steps, mobile-first with one thing per screen. Role selection, job address with all 83 Michigan counties, property owner info, dates with automatic deadline calculation (flags rush if under 14 days, warns if 90-day window may have expired), amount and work description, your info, and a review/pay summary screen with a Stripe placeholder.
+
+What's wired vs. what needs connecting:
+
+The deadline math logic is live and working
+The Stripe button just needs your publishable key and a payment intent on the backend
+The Claude document generation call goes between the Stripe success and the email delivery step
+Apple Pay and Google Pay appear automatically once Stripe is connected
+Next step is either connecting Stripe and the Claude backend, or locking the domain and dropping this on Vercel first. Which do you want to tackle?
+
+Milien landing
+Code · HTML 
+Locking the domain makes sense
+
+Mar 19
+
+Strategized domain registration and availability verification process
+Strategized domain registration and availability verification process
+Good sequencing. Here's how to move fast on this.
+
+Check availability first
+
+Go to Namecheap or Cloudflare Registrar (Cloudflare has no markup, sells at cost) and search these three:
+
+MiLien.com
+LodgeMiLien.com
+MiLien.co (or MiLien.legal as the professional backup)
+Do all three in one session so you're not coming back later to find one got sniped.
+
+Where to register
+
+Cloudflare Registrar is the recommendation. Reasons:
+
+At-cost pricing, no renewal markup surprises
+Free WHOIS privacy on every domain
+DNS management is the same dashboard you'll use when you deploy to Vercel anyway
+No upsell noise at checkout
+Namecheap is the backup if Cloudflare doesn't carry the .legal or .co TLD you want.
+
+What to do once you own them
+
+Set MiLien.com as your primary. Point LodgeMiLien.com and the backup TLD to it via a 301 redirect. In Cloudflare this takes about 90 seconds per domain once you have the DNS pointed correctly.
+
+Hosting
+
+After domain lock, create a free Vercel account and connect it to a GitHub repo. Drop the HTML file in, push, done. Vercel auto-issues an SSL cert and the site is live in under two minutes. You can attach your custom domain in the Vercel dashboard and it walks you through the DNS records.
+
+The order today
+
+Cloudflare Registrar, grab all three domains
+Create Vercel account, connect GitHub
+Push the HTML file, get the site live on the Vercel subdomain first
+Attach MiLien.com in Vercel, set 301 redirects for the other two in Cloudflare
+Total time if everything is available: under an hour.
+
+Go check the domains and report back what's taken. If MiLien.com is gone we pivot fast.
+
+1773926167361_image.png
+Mar 19
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is the summary: Pivoted domain strategy after encountering premium pricing obstacle
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is the summary: Pivoted domain strategy after encountering premium pricing obstacle
+That's a hard pass at €5,664. Not worth it for a service you're still validating.
+
+Pivot to LodgeMiLien.com
+
+Go check that one right now. It's almost certainly available at standard registration price ($10-12/year) because it's specific enough that no domain squatter bothered.
+
+If that's clear, that's your primary. The brand actually works well as a full phrase anyway since "lodge" is the operative verb and it reads as an action: Lodge MI Lien.
+
+Backup options if you want a .com fallback
+
+LodgeMiLien.com (check first)
+FileMiLien.com
+MiLienPro.com
+MiLienNow.com
+All of these are likely sitting at standard price. Check LodgeMiLien first and report back.
+
+8.48 a year
+
+Mar 19
+
+Seized the opportunity decisively
+Seized the opportunity decisively
+Grab it. That's your primary domain.
+
+Then check these two as redirects while you're in the same checkout session:
+
+LodgeMiLien.co — professional backup, maybe $10-12
+FileMiLien.com — action-oriented fallback, likely standard price
+All three for under $30/year total. Register them, point everything to LodgeMiLien.com, and you're set.
+
+Once you've checked out, come back and we'll update the landing page with the real domain and get it on Vercel. Five minutes of work once the domains are locked.
+
+milien.to is 25.48
+
+Mar 19
+
+Weighed domain value against pricing and dismissed it
+Weighed domain value against pricing and dismissed it
+Skip it. Three reasons:
+
+First, .to is Tonga's country code. Your customer is a contractor in Michigan, not a tech startup. Country code TLDs create a small but real trust gap with a trades audience.
+
+Second, "milien.to" doesn't read cleanly as a phrase the way milien.com would have. It just looks like an incomplete URL.
+
+Third, you already have LodgeMiLien.com at $8.48. That's your primary, it's a real .com, and it's a better brand name anyway. Spending $25 on a cute TLD that might confuse a guy on his phone isn't the move at this stage.
+
+Lock LodgeMiLien.com, skip everything else for now, and let's get the site live. You can always grab creative domains later if the business takes off and you want to run ad campaigns with a shorter URL.
+
+milien.pro 2.11
+
+Mar 19
+
+Evaluated domain acquisition opportunity and strategic value
+Evaluated domain acquisition opportunity and strategic value
+Grab it. At $2.11 it's a no-brainer as a redirect. .pro is a legitimate TLD and "MiLien Pro" reads well if you ever want to run a short link in a text message or on a business card.
+
+So your total outlay:
+
+LodgeMiLien.com — $8.48, primary domain
+MiLien.pro — $2.11, redirect
+$10.59/year for the whole setup. Check out on both and come back. We'll update the landing page with LodgeMiLien.com branding and get it on Vercel.
+
+what about .ai?
+
+Mar 19
+
+Evaluated domain extension suitability for target audience
+Evaluated domain extension suitability for target audience
+Skip it for this business. A few reasons:
+
+.ai is having a moment right now so it's priced accordingly, probably $50-80/year. More importantly, your customer is a roofer or plumber who got stiffed on a job. "AI" in the domain introduces a question you don't want him asking before he hands over his credit card. The whole positioning is that a human reviews his documents before they go out. Leading with AI undermines that trust signal even if the underlying product uses it.
+
+.ai makes sense if you're selling to developers or tech buyers. For a trades service in Michigan, .com credibility wins every time.
+
+Stick with LodgeMiLien.com and MiLien.pro. Check out and let's build.
+
+buying more than one year brings up the cost considerably.  convenience factor?
+
+Mar 19
+
+Weighed multi-year domain purchase costs against convenience benefits
+Weighed multi-year domain purchase costs against convenience benefits
+Buy one year on both. Here's why:
+
+You're pre-revenue. The business might pivot, the brand might change, or you might find LodgeMiLien.com gets replaced by something better once real customers start talking about it. Locking in three years on a name you haven't battle-tested yet is the wrong kind of commitment.
+
+The "convenience" of multi-year is really just autopay anxiety. Solve that by turning on auto-renew at checkout and you get the same peace of mind for $10.59 instead of $30+.
+
+One year, auto-renew on, move on.
+
+what is PremiumDNS?
+
+Mar 19
+
+Identified product origin and retrieved relevant knowledge
+Identified product origin and retrieved relevant knowledge
+Skip it. It's a Namecheap upsell.
+
+PremiumDNS is their paid DNS service that promises faster DNS resolution and higher uptime guarantees. For a brand new lien filing service with zero traffic, it's irrelevant. Standard DNS resolution is already fast enough that no contractor will ever notice the difference.
+
+Once you move to Cloudflare (which you'll do when you deploy to Vercel), you get DNS that's faster than Namecheap's PremiumDNS for free anyway. Cloudflare runs the world's fastest DNS network. It's not close.
+
+Decline it, finish checkout, come back.
+
+Do I want their Stellar Web Hosting?
+
+Mar 19
+No. You're hosting on Vercel for free.
+
+Vercel gives you faster performance, automatic SSL, GitHub integration, and instant deploys. It's built for exactly what you're doing. Namecheap's Stellar hosting is a shared hosting product from 2010 that exists to capture people at checkout who don't know there's a better option.
+
+Decline everything at checkout except the two domains with auto-renew on. That's the whole order.
+
+Done
+
+Mar 19
+
+Orchestrated deployment infrastructure progression
+Orchestrated deployment infrastructure progression
+Good. $10.59/year, two domains, done.
+
+Now let's get the site live. Here's the sequence:
+
+Step 1: GitHub Go to github.com and create a free account if you don't have one. Then create a new repository, name it something like milien-site, set it to public.
+
+Step 2: Upload the file In the new repo, click "Add file" then "Upload files" and drag in the HTML file I built. Commit it. Name the file index.html if it isn't already.
+
+Step 3: Vercel Go to vercel.com, click "Sign up with GitHub," authorize it. Click "Add New Project," import your milien-site repo. Vercel will detect it's a static site and deploy automatically. Takes about 30 seconds.
+
+Step 4: Connect your domain In Vercel, go to your project settings, click Domains, add lodgemilien.com. Vercel will give you two DNS records to add. Go back to Namecheap, find the DNS settings for lodgemilien.com, and enter them. Propagation takes anywhere from 2 minutes to a few hours.
+
+Step 5: Redirect milien.pro In Namecheap, set up a URL redirect for milien.pro pointing to lodgemilien.com. Takes 60 seconds.
+
+Do you have a GitHub account already or are we starting from scratch?
+
+1773927790053_image.png
+Mar 19
+
+Diagnosed domain configuration issue and charted resolution path
+Diagnosed domain configuration issue and charted resolution path
+You're almost there. The issue is lodgemilien.com is set to "Redirect to Another Domain" when it should be connected directly to your production site. Fix it in two clicks:
+
+Select "Connect to an environment" instead of "Redirect to Another Domain"
+Leave the dropdown set to "Production"
+Hit Save
+Once you save, Vercel will show you the DNS records you need to add in Namecheap. It'll be two records, an A record and a CNAME. Screenshot those and we'll walk through adding them in Namecheap's DNS settings.
+
+1773927883520_image.png
+Mar 19
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Identified DNS configuration requirement for IP routing
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Identified DNS configuration requirement for IP routing
+Good. You need to add one DNS record in Namecheap. Here's exactly what to do:
+
+Go to Namecheap, log in, click "Domain List"
+Click "Manage" next to lodgemilien.com
+Click the "Advanced DNS" tab
+Click "Add New Record"
+Set it up like this:
+Type: A Record
+Host: @
+Value: 216.198.79.1
+TTL: Automatic
+Save it
+Then come back to Vercel and hit "Refresh." It may take a few minutes to propagate, sometimes up to an hour, but usually faster. Once Vercel shows a green checkmark instead of "Invalid Configuration" you're live at lodgemilien.com.
+
+While you're in Namecheap's Advanced DNS, also check that there's no conflicting A record already sitting there pointing somewhere else. If there is, delete it first before adding the new one.
+
+do I need the same record for milien.pro?
+
+Mar 19
+
+Evaluated DNS redirect options for domain configuration
+Evaluated DNS redirect options for domain configuration
+No. milien.pro is just a redirect, not a full hosting connection. Handle it differently:
+
+Go to Namecheap, Manage milien.pro
+Click "Advanced DNS"
+Add a new record:
+Type: URL Redirect Record
+Host: @
+Value: https://lodgemilien.com
+Redirect type: Permanent (301)
+That's it. Anyone who types milien.pro gets silently forwarded to lodgemilien.com. No Vercel setup needed for it at all.
+
+1773931015731_image.png
+Mar 19
+
+The user prompt is empty, so I cannot provide a summary in the user's language. However, based on the thinking block alone, here is a summary: Verified domain configurations and confirmed site deployment status
+The user prompt is empty, so I cannot provide a summary in the user's language. However, based on the thinking block alone, here is a summary: Verified domain configurations and confirmed site deployment status
+You're live. Both show blue checkmarks and Valid Configuration.
+
+lodgemilien.com is now a real website serving real traffic. Go open it in your phone's browser right now and see how it looks on mobile.
+
+Next session we have three things to build:
+
+Stripe integration — payment processing so the intake wizard actually collects money
+Claude backend — the document generation call that fires after successful payment
+Email delivery — sends the completed documents to the customer automatically
+That's the full automation loop. Once those three are connected, you hand your mechanic friend the URL and the business is open.
+
+Let's do it.
+
+Mar 19
+
+Architected serverless backend integrating Stripe, Claude, and email delivery
+Architected serverless backend integrating Stripe, Claude, and email delivery
+Before writing a line of code, a few quick decisions so we build the right thing.
+
+Q: Do you have a Stripe account already?
+A: No, starting fresh
+
+Q: For sending documents by email, which do you prefer?
+A: I don't have one yet, you pick
+
+Q: Where do you want the backend to live?
+A: You pick the simplest option
+
+Mar 19
+
+Architected streamlined payment and email workflow using Stripe, Resend, and Vercel
+Architected streamlined payment and email workflow using Stripe, Resend, and Vercel
+Here's exactly what we're building and why:
+
+The stack:
+
+Stripe for payments, using their hosted Checkout page. No PCI compliance headaches, Apple Pay and Google Pay work automatically, and it takes 20 minutes to set up.
+Resend for email. Cleanest API in the space, free up to 100 emails/day, perfect for validation stage.
+Vercel serverless functions in the same repo. No new servers, no new accounts, deploys automatically every time you push to GitHub.
+How the full loop works:
+
+Customer fills out your intake wizard and clicks Pay
+Your site calls a Vercel function that creates a Stripe Checkout session
+Customer pays on Stripe's hosted page (you never touch card data)
+Stripe sends a webhook to your Vercel function confirming payment
+That function calls Claude API with the intake data and generates the documents
+Resend emails the documents to the customer automatically
+You get a notification email with the same documents for your review
+Before we write any code, go set up three accounts:
+
+First, Stripe: go to stripe.com, create an account, verify your email. Stay in test mode for now. Then go to Developers, API Keys, and copy your publishable key and secret key somewhere safe.
+
+Second, Resend: go to resend.com, create a free account, verify your email. Go to API Keys and create one. Copy it.
+
+Third, you'll need to add a sending domain to Resend so emails come from hello@lodgemilien.com instead of a generic address. That requires adding a couple DNS records to Namecheap, same process as the Vercel setup.
+
+Come back once you have both accounts created and the API keys in hand. That's the only thing blocking the build.
+
+Okay I have the keys.  How do I set up this:
+"Third, you'll need to add a sending domain to Resend so emails come from hello@lodgemilien.com instead of a generic address. That requires adding a couple DNS records to Namecheap, same process as the Vercel setup."
+
+Mar 19
+
+Identified custom domain setup requirements for email configuration
+Identified custom domain setup requirements for email configuration
+Go to Resend first:
+
+In your Resend dashboard, click Domains in the left sidebar
+Click Add Domain
+Type lodgemilien.com and click Add
+Resend will show you a list of DNS records to add, typically 3 records: two TXT records and one MX record
+Then go to Namecheap:
+
+Log in, click Domain List, Manage next to lodgemilien.com
+Click Advanced DNS
+Add each record Resend gives you. For each one:
+TXT records: Type = TXT, Host = whatever Resend shows (usually resend._domainkey or similar), Value = the long string Resend provides, TTL = Automatic
+MX record: Type = MX, Host = @, Value = what Resend shows, Priority = what Resend shows, TTL = Automatic
+Save each one
+Then go back to Resend and click Verify DNS. It can take a few minutes to propagate. Keep hitting verify until it goes green.
+
+Once it's verified, screenshot the DNS records Resend is showing you and share them here if anything looks confusing. The record names are the part that trips people up most, but it's the same muscle memory as the Vercel setup you just did.
+
+What records is Resend showing you?
+
+There is no option in namecheap for a MX record.  A, A+ Dynamic DNS, AAAA, ALIAS, CAA, CNAME, NS, SRV, TXT, and URL Redirect are the drop down options.
+
+Mar 19
+
+Reconsidered MX record location across Namecheap interface tabs
+Reconsidered MX record location across Namecheap interface tabs
+MX records in Namecheap are handled on a separate tab. Here's where to find it:
+
+Go back to the main domain management page for lodgemilien.com
+Look for the Mail Settings tab (it's next to Advanced DNS, not inside it)
+Change the dropdown from "Namecheap Email Forwarding" or whatever it currently shows to Custom MX
+That will reveal fields to enter your MX record from Resend
+Add the MX record there, then go back to Advanced DNS for the TXT records as normal.
+
+What does Resend's MX record value look like? Share it here and I'll tell you exactly what to put in each field.
+
+got the MX record in
+
+Mar 19
+
+Thought for 1s
+Thought for 1s
+Good. Now back to Advanced DNS for the TXT records. Add each one Resend is showing you:
+
+Type: TXT
+Host: whatever Resend shows (likely resend._domainkey or similar)
+Value: the long string starting with p= or v=
+TTL: Automatic
+Add all the TXT records, save each one, then go back to Resend and hit Verify DNS.
+
+What does Resend show for status after you verify? Green, pending, or errors on specific records?
+
+1773932455749_image.png
+These three?
+
+Mar 19
+
+Thought for 1s
+Thought for 1s
+Yes, those three. You already got the MX in, so now add these three TXT records in Namecheap Advanced DNS:
+
+Record 1 (DKIM):
+
+Type: TXT
+Host: resend._domainkey
+Value: the full p=MIGfMA[...]QIDAQAB string (click to expand and copy the full value from Resend)
+TTL: Automatic
+Record 2 (SPF):
+
+Type: TXT
+Host: send
+Value: the full v=spf1 i[...]om ~all string
+TTL: Automatic
+Record 3 (DMARC):
+
+Type: TXT
+Host: _dmarc
+Value: v=DMARC1; p=none;
+TTL: Automatic
+The DKIM one is the most important and the Value field is long. Make sure you click to reveal the full string in Resend before copying, that [...] in the screenshot means it's truncated.
+
+Add all three, save, then hit Verify in Resend. Come back and tell me what it shows.
+
+1773932637195_image.png
+I have something else to do but it is submitted.
+
+Mar 19
+
+Recognized domain propagation status and endorsed patience
+Recognized domain propagation status and endorsed patience
+Perfect timing. "Checking DNS" and "Pending" is exactly right, that's not an error, it's just propagation. DNS changes can take anywhere from 5 minutes to a few hours. Resend will automatically advance to "Verifying domain" and then go green once it finds the records.
+
+Go handle your other thing. When you come back, check the Resend dashboard first. If it's green, we start writing code. If it's still pending, it'll resolve on its own, just needs more time.
+
+Everything is set up correctly. The build session is ready to go whenever you are.
+
+What can we do while we wait for that?
+
+Mar 19
+
+Inventoried actionable tasks independent of email verification
+Inventoried actionable tasks independent of email verification
+Plenty. Resend verification doesn't block any of the actual coding. Here's what we can build right now:
+
+Vercel environment variables — store your Stripe and Resend and Anthropic API keys securely in Vercel so the functions can access them. Five minutes, no code required.
+The Stripe checkout function — the serverless function that fires when someone clicks Pay, creates a Stripe session, and redirects them to the payment page. Fully testable in Stripe test mode right now.
+The webhook function — the function Stripe calls after successful payment, which triggers document generation. We can build and test this with Stripe's test webhook tool without needing Resend live.
+The Claude document generation prompt — the actual prompt architecture that takes the intake form data and outputs a properly formatted Michigan lien document. This is the core IP of the business and worth getting right.
+Update the landing page — wire the intake wizard's Pay button to actually call your Stripe function instead of the fake alert it shows now.
+The most valuable use of this time is probably the Claude prompt architecture. That's where the product actually lives. A well-engineered prompt produces a document a contractor can file. A sloppy one produces something you have to rewrite from scratch every time.
+
+What do you want to tackle first?
+
+Vercel variables
+
+Mar 19
+
+Devised instructional pathway for Vercel environment variable configuration
+Devised instructional pathway for Vercel environment variable configuration
+Simple. Do this in Vercel:
+
+Go to vercel.com, open your milien-site project
+Click Settings in the top nav
+Click Environment Variables in the left sidebar
+Add each of these one at a time:
+Variable 1:
+
+Name: STRIPE_SECRET_KEY
+Value: your Stripe secret key (starts with sk_test_ for now)
+Environment: check all three (Production, Preview, Development)
+Variable 2:
+
+Name: STRIPE_PUBLISHABLE_KEY
+Value: your Stripe publishable key (starts with pk_test_)
+Environment: check all three
+Variable 3:
+
+Name: STRIPE_WEBHOOK_SECRET
+Value: leave blank for now, we'll fill this in when we set up the webhook
+Skip this one for now
+Variable 4:
+
+Name: ANTHROPIC_API_KEY
+Value: your Anthropic API key (starts with sk-ant-)
+Environment: check all three
+Variable 5:
+
+Name: RESEND_API_KEY
+Value: your Resend API key (starts with re_)
+Environment: check all three
+Variable 6:
+
+Name: NOTIFICATION_EMAIL
+Value: whatever email you want to receive review notifications at
+Environment: check all three
+Hit Save after each one. None of these values will ever be visible again after you save, so if you make a typo you'll need to delete and re-add.
+
+Tell me when all five are in and we'll move to the Stripe checkout function.
+
+Done
+
+Mar 19
+
+Architected serverless infrastructure for payment and webhook integration
+Architected serverless infrastructure for payment and webhook integration
+Good. Now let's build the first serverless function. Your repo currently just has index.html. We need to add an api folder alongside it. Vercel automatically treats any file in /api as a serverless endpoint.
+
+Here's what to do in GitHub:
+
+Go to your milien-site repo
+Click Add file, then Create new file
+In the filename box type api/create-checkout.js — GitHub will automatically create the folder
+Then paste this as the file content:
+
+
+Created 3 files, read a file
+Created 3 files, read a file
+Three files to add to your GitHub repo. Here's what each one does:
+
+create-checkout.js — fires when the customer clicks Pay. Takes all the intake form data, creates a Stripe Checkout session with the right price, and redirects them to Stripe's hosted payment page. All the intake data rides along as metadata so nothing is lost.
+
+webhook.js — fires after Stripe confirms payment. Calls Claude to generate the documents, formats them into a clean HTML email, sends it to the customer, and sends you a notification with the order details for your review.
+
+package.json — tells Vercel which packages to install (Stripe, Resend, Anthropic SDK).
+
+How to add them to GitHub:
+
+In your repo, click Add file, Create new file
+Type api/create-checkout.js in the name box, paste the file content, commit
+Repeat for api/webhook.js
+Create package.json in the root (not inside api), paste and commit
+Once those three are committed, Vercel will auto-deploy. Then we have one more step: registering the webhook URL with Stripe so it knows where to send payment confirmations.
+
+Add the files and tell me when the deploy goes green in Vercel.
+
+Package
+Code · JSON 
+I think it's done
+
+Mar 19
+
+Charted next steps for webhook integration
+Charted next steps for webhook integration
+Good. Let's verify it deployed cleanly and then connect Stripe's webhook.
+
+Check the deploy first: Go to your Vercel project, click the Deployments tab, and look at the most recent one. Should show a green checkmark. If it shows an error, screenshot it and paste it here.
+
+If it's green, set up the Stripe webhook:
+
+Go to stripe.com, log in
+Click Developers in the top right
+Click Webhooks in the left sidebar
+Click Add endpoint
+In the endpoint URL box type: https://lodgemilien.com/api/webhook
+Click Select events, search for checkout.session.completed, check it
+Click Add endpoint
+Stripe will then show you a Signing secret that starts with whsec_. Copy that value.
+
+Then go back to Vercel, Settings, Environment Variables, and add:
+
+Name: STRIPE_WEBHOOK_SECRET
+Value: the whsec_ key you just copied
+After adding that variable, go to Vercel Deployments and click Redeploy on the latest deployment so it picks up the new variable.
+
+Once that's done the full loop is wired. Tell me what you see on the Vercel deploy status first.
+
+1773935025179_image.png
+error on package.json
+
+Mar 19
+
+Identified Node version upgrade as solution
+Identified Node version upgrade as solution
+Easy fix. Vercel dropped support for Node 18. Go to your GitHub repo, open package.json, click the pencil icon to edit, and change this line:
+
+"node": "18.x"
+to:
+
+"node": "24.x"
+Commit the change. Vercel will automatically redeploy. Should go green this time.
+
+I fixed it, is there a chance it takes time to deploy?
+
+Mar 19
+Yes, typically 1-2 minutes. You'll see it go from a spinning indicator to either a green checkmark or a red error in the Deployments tab.
+
+Just watch that tab and refresh if it's been more than 3 minutes. What's it showing right now?
+
+It's green now
+
+Mar 19
+
+Pivoted toward webhook integration after deployment success
+Pivoted toward webhook integration after deployment success
+Let's wire up the Stripe webhook now.
+
+Go to stripe.com, click Developers in the top right
+Click Webhooks in the left sidebar
+Click Add endpoint
+In the endpoint URL box enter: https://lodgemilien.com/api/webhook
+Click Select events, search for checkout.session.completed, check it
+Click Add endpoint
+Stripe will then show you the webhook details page. Look for Signing secret and click Reveal. Copy that value, it starts with whsec_.
+
+Then go to Vercel, Settings, Environment Variables, add:
+
+Name: STRIPE_WEBHOOK_SECRET
+Value: the whsec_ string you just copied
+Environments: all three checked
+After saving that variable, go to Vercel Deployments, click Redeploy on the latest green deployment so it picks up the new variable.
+
+Tell me once the webhook secret is in and redeployed.
+
+1773935455236_image.png
+Mar 19
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Identified UI navigation discrepancy for user guidance
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Identified UI navigation discrepancy for user guidance
+You're in the new Stripe Workbench UI. The button is called Add destination instead of Add endpoint. Click that, then:
+
+Select Webhook endpoint
+Enter URL: https://lodgemilien.com/api/webhook
+Click Continue
+Search for and select checkout.session.completed
+Click Add destination
+After it's created, click into it and look for the Signing secret, click Reveal, and copy the whsec_ value.
+
+Then go add it to Vercel as STRIPE_WEBHOOK_SECRET and redeploy.
+
+Do I select all events?
+
+Mar 19
+No. Only select checkout.session.completed.
+
+That's the only event that matters for this workflow. It fires exactly once when a customer successfully pays, which is the trigger for document generation and email delivery. All other events (failed payments, refunds, disputes) you don't need to handle yet.
+
+Search for it in the event filter box, check just that one, and continue.
+
+I did all that and added the key to webhook but it still thinks it's working in .18, even though I can see the json has been updated to .24
+
+Mar 19
+
+Diagnosed caching issue requiring fresh deployment trigger
+Diagnosed caching issue requiring fresh deployment trigger
+The environment variable update doesn't trigger an automatic redeploy. You need to manually kick one off:
+
+Go to Vercel, click the Deployments tab
+Find the most recent deployment
+Click the three dots (...) menu on the right
+Click Redeploy
+When it asks, make sure Use existing build cache is unchecked so it builds fresh
+That forces Vercel to pull the updated package.json and the new environment variable. Should go green in about a minute.
+
+Can I do a redeploy of some kind on github?
+
+Mar 19
+Yes. The easiest way is to make a trivial commit to trigger a fresh deploy:
+
+Go to your GitHub repo
+Open package.json
+Click the pencil icon to edit
+Add a space anywhere, or add a comment line like "author": "MiLien"
+Click Commit changes
+That pushes a new commit, Vercel detects it, and automatically kicks off a fresh deployment with the current package.json and all your environment variables.
+
+Same result as redeploying from Vercel, just triggered from GitHub instead.
+
+Log issues:
+
+12:01:17.745 Running build in Washington, D.C., USA (East) – iad1
+12:01:17.745 Build machine configuration: 2 cores, 8 GB
+12:01:17.756 Cloning github.com/mfr1003/milien-site (Branch: main, Commit: cf991ef)
+12:01:17.757 Skipping build cache, deployment was triggered without cache.
+12:01:17.980 Cloning completed: 224.000ms
+12:01:18.350 Running "vercel build"
+12:01:18.963 Vercel CLI 50.32.4
+12:01:20.106 Installing dependencies...
+12:01:30.862 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+12:01:30.992 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+12:01:33.086 
+12:01:33.086 added 119 packages in 13s
+12:01:33.086 
+12:01:33.086 37 packages are looking for funding
+12:01:33.087   run npm fund for details
+12:01:33.942 Warning: Node.js functions are compiled from ESM to CommonJS. If this is not intended, add "type": "module" to your package.json file.
+12:01:33.943 Compiling "create-checkout.js" from ESM to CommonJS...
+12:01:34.232 Build Completed in /vercel/output [14s]
+12:01:34.382 Deploying outputs...
+
+Show more
+Mar 19
+
+Assessed successful build deployment despite minor warnings
+Assessed successful build deployment despite minor warnings
+That's actually a clean build. Those are warnings, not errors. The important lines:
+
+Dependencies installed successfully
+Files compiled successfully
+Build completed in 14s
+It should show green in the Deployments tab. The warnings about node-domexception and glob are coming from Stripe's own dependencies, nothing you need to fix. The ESM to CommonJS warning is harmless, Vercel handled it automatically.
+
+Check the Deployments tab, it should be green. If it is, we're ready to wire the intake form's Pay button to actually call your Stripe checkout function, and then do a full end-to-end test.
+
+Yes ready
+
+Mar 19
+
+Architected integration between form submission and payment processing
+Architected integration between form submission and payment processing
+Let's update the landing page so the Pay button actually calls Stripe. I'll update the index.html with the real payment flow wired in.
+
+
+Viewed 2 files, edited a file
+Viewed 2 files, edited a file
+Now we also need a success page. Let me create that:
+
+
+Created a file, read a file
+Created a file, read a file
+Two files to upload to your GitHub repo. Here's what changed and what to do:
+
+What's updated: The Pay button now calls /api/create-checkout for real, collects all the form data, detects rush automatically if under 14 days to deadline, redirects to Stripe's hosted checkout page, and shows an error message if anything goes wrong instead of just breaking silently.
+
+What to do in GitHub:
+
+Open index.html in your repo, click the pencil, replace the entire file with the updated milien-landing.html content, commit
+Click Add file, Upload files, drag in success.html, commit
+Once Vercel deploys, do a full test run:
+
+Go to lodgemilien.com, click File My Lien, fill out the wizard
+On the pay screen, use Stripe's test card: 4242 4242 4242 4242, any future expiry, any CVC
+You should land on the success page
+Check your notification email for the order details
+Check the customer email for the generated documents
+That's the full end-to-end test. Tell me what happens.
+
+Milien landing
+Code · HTML 
+Success
+Code · HTML 
+success.html goes in the main folder?
+
+Mar 19
+Yes, right in the root alongside index.html. Your repo structure should look like this:
+
+milien-site/
+├── index.html
+├── success.html
+├── package.json
+└── api/
+    ├── create-checkout.js
+    └── webhook.js
+Vercel will automatically serve success.html at lodgemilien.com/success which is exactly where Stripe redirects after a successful payment.
+
+Milien landing · HTML Copy up in the corner of the screen
+
+Mar 19
+
+Identified UI element causing user confusion
+Identified UI element causing user confusion
+That's just the file viewer label from our conversation, it's not part of your website. It shows the name of the file I generated so you can download or copy it.
+
+When you upload the file to GitHub, that label doesn't go with it. Your visitors will never see it. Ignore it and just use the download or copy button to get the file content into GitHub.
+
+1773936441151_image.png
+you sure?
+
+Mar 19
+
+Reconsidered HTML artifact origin and debugging strategy
+Reconsidered HTML artifact origin and debugging strategy
+You're right, I apologize. That text is actually rendering on your live site. It got embedded in the HTML when you copied it. Easy fix:
+
+Go to your GitHub repo, open index.html
+Click the pencil to edit
+Look at the very top of the file for any text that says "Milien landing" or "HTML Copy" sitting outside the HTML tags
+Delete that line
+Commit the change
+It'll be right at the top, above the <!DOCTYPE html> line. Just delete whatever stray text is sitting there and save. Vercel will redeploy in about a minute and it'll be gone.
+
+Perfect
+
+Mar 19
+
+Validated project completion and charted forward trajectory
+Validated project completion and charted forward trajectory
+Looking sharp. lodgemilien.com is live and clean.
+
+Now do the end-to-end test while everything is fresh:
+
+Click File Now on your site
+Fill out the wizard with fake but realistic data, a Wayne County job, $15,000 owed, your own email as the customer email
+On the pay screen use Stripe test card: 4242 4242 4242 4242, any future date, any CVC
+You should land on the success page
+Check your email for both the customer document email and your notification email
+That test will confirm the entire loop is working: intake, payment, Claude document generation, and email delivery.
+
+If anything breaks during the test, screenshot the error and we'll fix it. If it works cleanly, you're ready to send the URL to your first mechanic friend.
+
+Clicking does nothing.  the link text is https://lodgemilien.com/#  Like it just brings you back to this home page
+
+Mar 19
+
+Investigated modal function malfunction and script integrity issues
+Investigated modal function malfunction and script integrity issues
+The script section probably got cut off when you copied the file into GitHub. Let me check the end of the current file:
+
+
+Identified incomplete HTML structure requiring closure
+Identified incomplete HTML structure requiring closure
+The file got cut off. The script is missing its closing tags. Let me fix that:
+
+
+Edited a file, read a file
+Edited a file, read a file
+The script was missing its closing tags so nothing worked. Download this updated file, replace index.html in your GitHub repo with its contents, and commit. Once Vercel redeploys the modal and all the buttons will work.
+
+Milien landing
+Code · HTML 
+1773936906547_image.png
+When redirected to the success page:
+
+Mar 19
+
+Diagnosed routing configuration issue and weighed solution approaches
+Diagnosed routing configuration issue and weighed solution approaches
+Vercel isn't routing /success to success.html automatically. Easiest fix is to put it in a folder so Vercel serves it correctly.
+
+In your GitHub repo:
+
+Click Add file, Create new file
+In the filename box type success/index.html
+Paste the contents of the success.html file I generated
+Commit
+That creates a success folder with an index.html inside it. Vercel will automatically serve it at lodgemilien.com/success which is exactly where Stripe redirects after payment.
+
+Delete the success.html file from the root of your repo afterward if you already uploaded it there, otherwise you'll have a duplicate.
+
+1773937073254_image.png
+Done.
+
+Mar 19
+That's the full loop working. Payment confirmed page looks great.
+
+Now check two things:
+
+Your notification email — you should have received an order summary with all the customer's intake details
+The customer email — the address you used in the test should have received the generated lien documents
+If both emails landed, the business is open. If one or both are missing, check your Resend dashboard under Logs to see if the sends succeeded or failed, and screenshot any errors.
+
+What do the emails show?
+
+Oh neither went through, but that's probably because resend is still checking DNS
+
+Mar 19
+
+Validated the user's technical assessment
+Validated the user's technical assessment
+Exactly right. Resend won't send from hello@lodgemilien.com until the domain is verified. Everything else in the loop worked perfectly: intake, payment, Stripe redirect, success page. That's the hard part.
+
+Once Resend goes green, which could be anywhere from a few minutes to a couple hours, do one more test run with the same test card and the emails will come through.
+
+Check the Resend dashboard periodically. When the domain status flips from Pending to Verified, come back and we'll do the final test. You're one DNS propagation away from a fully operational business.
+
+Okay so what else while we wait?
+
+Mar 19
+
+Inventoried remaining development tasks for MiLien
+Inventoried remaining development tasks for MiLien
+A few good options depending on your energy level right now:
+
+Q: What do you want to tackle next?
+A: 1 2 and 4
+
+Mar 19
+
+Prioritized tasks by impact and sequenced execution strategy
+Prioritized tasks by impact and sequenced execution strategy
+Let's go in order of impact. Starting with the prompt since that's the core product.
+
+The problem with the current prompt
+
+It's functional but generic. A Michigan lien document needs to hit specific statutory language, specific formatting that registers of deeds recognize, and specific notice requirements. Right now the prompt asks Claude to "be precise" without giving it the exact structure to follow.
+
+Let me build a much tighter version:
+
+
+Viewed a file, edited a file
+Viewed a file, edited a file
+Good. Now the admin page:
+
+
+Created 2 files, read a file
+Created 2 files, read a file
+Three files. Here's what to do in GitHub:
+
+1. Replace api/webhook.js with the updated version. The prompt is now tightly structured with exact statutory language, proper letterhead format, numbered paragraphs for the Claim of Lien, and plain-language filing instructions tailored to the specific county.
+
+2. Create api/admin-orders.js — a protected API endpoint that pulls your paid orders from Stripe.
+
+3. Create admin/index.html — your order dashboard at lodgemilien.com/admin. Password protected. Shows total orders, revenue, rush count, average order value, and a full order table with customer name, email, phone, property, county, dispute amount, package type, and payment date.
+
+One more Vercel environment variable needed:
+
+Go to Vercel Settings, Environment Variables, add:
+
+Name: ADMIN_PASSWORD
+Value: pick something strong, you'll type it once at login
+All three environments checked
+Then redeploy.
+
+After that, Google Analytics is the last item on your list. Want to knock that out while Vercel deploys?
+
+Index
+Code · HTML 
+1773938024033_image.png
+This works, Let's do it.
+
+Mar 19
+
+Validated dashboard functionality and pivoted toward analytics integration
+Validated dashboard functionality and pivoted toward analytics integration
+That's a clean dashboard. One order, $197, all the right data.
+
+Google Analytics is quick. Here's the setup:
+
+Go to analytics.google.com
+Sign in with your Google account
+Click Start measuring
+Account name: MiLien
+Property name: LodgeMiLien.com
+Timezone: Eastern, Currency: USD
+Click through the business questions, select Small Business and Lead Generation
+Choose Web as your platform
+Enter lodgemilien.com as the URL, stream name MiLien
+Click Create stream
+Google will give you a Measurement ID that looks like G-XXXXXXXXXX. Copy that and come back here. I'll drop it into your index.html in about 30 seconds.
+
+<!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8X21R1S5Q"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'G-T8X21R1S5Q'); </script>
+
+Mar 19
+
+Identified tracking code placement requirement
+Identified tracking code placement requirement
+Got it. I'll drop it into the <head> of your landing page right now.
+
+
+Edited a file, read a file
+Edited a file, read a file
+Replace index.html in GitHub with this updated file and commit. That's the last piece.
+
+Once Vercel deploys, go back to Google Analytics and click Test connection — it should show an active user (you) within about 30 seconds of visiting the site.
+
+After that deploy goes green, your full stack is:
+
+Site live at lodgemilien.com
+Intake wizard collecting orders
+Stripe processing payments
+Claude generating documents
+Resend delivering emails (pending DNS)
+Admin dashboard at lodgemilien.com/admin
+Google Analytics tracking visitors
+The only remaining item is the Resend DNS verification. Once that goes green you do one more test order and the business is fully operational. Time to text your mechanic friends.
+
+Milien landing
+Code · HTML 
+What about the produced documentation?
+
+Mar 19
+Good catch. We've tested the payment loop but haven't confirmed the actual documents Claude generates look right. Once Resend verifies we'll get our first real email, but we can preview what the output looks like right now without waiting.
+
+Two ways to check it:
+
+Option A: Test via Stripe webhook simulation In your Stripe dashboard, go to Developers, Webhooks, click your endpoint, and there's a Send test event button. It sends a fake checkout.session.completed event with dummy data to your webhook. The problem is the metadata won't have your intake data, so the documents will be generic.
+
+Option B: Build a quick document preview tool I can build a small internal page at lodgemilien.com/preview that takes intake data, calls Claude directly, and shows you the rendered documents without going through Stripe. You'd use it to:
+
+Test with realistic Michigan contractor data
+Review document quality before your first real customer
+Spot any formatting or language issues in the output
+Use it as your manual review tool going forward
+Option B is the right call. It becomes a permanent part of your workflow since you're supposed to review every order before it goes out anyway. You'd get the notification email, go to the preview tool, enter the order details, and see exactly what the customer received.
+
+Want me to build that?
+
+Yes
+
+Mar 19
+
+Architected browser-based document preview tool leveraging API integration
+Architected browser-based document preview tool leveraging API integration
+Two files to add to GitHub:
+
+1. api/preview-documents.js — drop it in your api folder alongside the others.
+
+2. preview/index.html — create a preview folder in the root, add index.html inside it. Same pattern as the success and admin folders. It'll live at lodgemilien.com/preview.
+
+What you get:
+
+A two-panel tool. Left side is a full intake form pre-populated with Oakland County defaults so you can test immediately. Right side renders the generated documents in tabbed panels showing Demand Letter, Claim of Lien, and Filing Instructions separately. Each document renders on a white background exactly as the customer sees it. There's a Copy Text button on each tab so you can paste into Word or email if you ever need to make a manual correction before sending.
+
+It uses the same admin password as the orders dashboard so nothing is publicly accessible.
+
+Once Vercel deploys, go to lodgemilien.com/preview, log in, fill in your mechanic friend's actual job details as a test, and generate. That's the quality check before you send him the URL.
+
+Index
+Code · HTML 
+I feel like we should add in an area where the contractor attaches proof.  either a photo or a scanned document of the statement of work their customer signed.  Otherwise I could be liable because anyone can file anything on my site.
+
+Mar 19
+
+Architected document upload system leveraging Vercel Blob storage
+Architected document upload system leveraging Vercel Blob storage
+Smart instinct and the right call legally. Right now anyone could submit a fake claim. Adding proof of work upload gives you three things: a liability shield, a quality filter (bad faith filers won't bother uploading), and documentation if a dispute ever comes back on you.
+
+Here's how to build it cleanly:
+
+The right storage: Vercel Blob
+
+It's built into the same ecosystem you're already on, has a free tier, and integrates in about 10 lines of code. Files get a permanent URL you can store in the Stripe metadata and include in your notification email so you can pull up the document before releasing anything to the customer.
+
+The flow:
+
+New step in the intake wizard: "Upload your proof" — signed contract, invoice, text thread screenshot, anything showing the agreement
+File uploads directly to Vercel Blob when they select it, returns a secure URL
+That URL rides along as metadata through the Stripe checkout
+Your notification email includes a clickable link to the uploaded file
+You review the document, confirm it looks legitimate, then the automated email already went to the customer — or we add a manual release step if you want tighter control
+The manual release question
+
+This is worth deciding now. Two options:
+
+Auto-release (current setup): Documents generate and email automatically after payment. Fast, fully automated, but you're reviewing after the fact.
+Manual release: Documents generate after payment but sit in a queue. You review the proof of work, approve, then the email sends. Slower but tighter liability protection.
+Given you're just starting and volume will be low, manual release is probably the right call for the first few months. You can flip to auto-release once you've seen enough orders to trust the pattern.
+
+Which do you want, and should the upload be required or optional?
+
+Manual Release for now.  Upload is required.
+
+Mar 19
+Good decisions both. Here's the full revised flow before we build:
+
+Customer fills intake wizard, uploads proof of work (required, blocks progression if skipped)
+Customer pays via Stripe
+Webhook fires, Claude generates documents, documents are stored but NOT emailed
+You get a notification email with order details and a link to the proof of work upload
+You review the upload, decide it's legitimate
+You go to your admin dashboard, click Approve on the order
+Documents email to the customer automatically
+That's the loop. Two things to set up before we write code:
+
+Vercel Blob setup:
+
+Go to your Vercel project dashboard
+Click the Storage tab
+Click Create Database, select Blob
+Name it milien-uploads, click Create
+Vercel will automatically add a BLOB_READ_WRITE_TOKEN environment variable to your project
+That's all the setup needed. Vercel Blob handles the rest.
+
+One package to add to package.json:
+
+Open package.json in GitHub and add "@vercel/blob": "^0.27.0" to your dependencies so it looks like this:
+
+json
+"dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@vercel/blob": "^0.27.0",
+    "resend": "^3.2.0",
+    "stripe": "^14.21.0"
+}
+Commit that change, then come back and tell me when the Blob storage is created. We'll build the upload endpoint, update the intake wizard, update the webhook for manual release, and add the Approve button to the admin dashboard.
+
+Done
+
+Mar 19
+
+Architected multi-file system for manual approval workflow
+Architected multi-file system for manual approval workflow
+Good. Let's build all four pieces at once. This is the biggest update yet so I'll do it in one shot.
+
+
+Created 3 files
+Created 3 files
+Now update the webhook to store documents instead of emailing:
+
+
+Viewed 2 files, edited 2 files
+Viewed 2 files, edited 2 files
+Now update the admin dashboard to show pending orders with approve buttons:
+
+
+Identified need to reconstruct admin interface with approval functionality
+Identified need to reconstruct admin interface with approval functionality
+That's the preview page. Let me build the updated admin page fresh with the pending queue built in:
+
+
+Updated admin dashboard with pending approval queue and approve buttons
+Updated admin dashboard with pending approval queue and approve buttons
+Now update the landing page intake wizard to add the upload step:
+
+
+Viewed 2 files, edited a file
+Viewed 2 files, edited a file
+Now update the script to handle 8 steps, the upload function, and pass proofUrl to Stripe:
+
+
+Update script for 8 steps, upload function, and proof URL in checkout
+Update script for 8 steps, upload function, and proof URL in checkout
+Also need to pass proofUrl through the Stripe checkout metadata:
+
+
+Edited 2 files, read a file
+Edited 2 files, read a file
+Seven files. Here's exactly what goes where in GitHub:
+
+Replace existing files:
+
+index.html (root) — updated landing page with 8-step wizard and upload step
+api/webhook.js — now stores documents in Blob, sends you a review notification instead of auto-emailing customer
+api/create-checkout.js — now passes proofUrl through to Stripe metadata
+admin/index.html — fully rebuilt with pending queue and Approve & Send buttons
+Add new files:
+
+api/upload-proof.js — handles file uploads to Vercel Blob
+api/approve-order.js — retrieves stored documents and sends customer email on approval
+api/pending-orders.js — lists orders sitting in the approval queue
+One more environment variable needed in Vercel:
+
+Name: VERCEL_BLOB_BASE_URL
+Value: go to Vercel Storage tab, click your Blob store, the base URL is shown on the overview page, it looks like https://xxxxxxxxxxxx.public.blob.vercel-storage.com
+Add that, commit all seven files, redeploy. Once it's live the new flow is fully operational: upload required, manual review, approve button sends the email.
+
+Milien landing
+Code · HTML 
+Index
+Code · HTML 
+Should we have a selector in the wizard to determine the type of lien?  Contractor, Mechanic, etc?
+
+Mar 19
+
+Evaluated Michigan lien distinctions and concluded role selector suffices
+Evaluated Michigan lien distinctions and concluded role selector suffices
+Honest answer: probably not, and here's why.
+
+In Michigan everything falls under the Construction Lien Act. What most people call a "mechanic's lien" and a "contractor's lien" are the same statutory instrument. The meaningful distinction isn't lien type, it's claimant role, which you already capture in step one. That role selection is what actually drives which documents get generated and which deadlines apply.
+
+If you added a lien type selector, a roofer would stare at it and have no idea whether he's filing a "mechanic's lien" or a "contractor's lien." He'd either call you or abandon the form.
+
+Where a selector does make sense eventually is project type:
+
+Residential (1-4 units, owner-occupied)
+Commercial / Industrial
+Public project (government contract)
+That distinction matters in Michigan because public projects have different rules. You can't file a lien against a government-owned property, you file a bond claim instead under a different statute entirely. If someone comes in with a public school or city hall job, the current flow would generate the wrong documents entirely.
+
+For now your customer base is tradespeople with residential and commercial private work, so it's not urgent. But it's worth adding a project type question before you start advertising broadly, with a hard stop and explanation if someone selects public project.
+
+Want to add that guardrail now while we're already updating the wizard, or hold it for a later pass?
+
+Yes, and if they submit it for a public project, we explain why this app won't work.
+
+Mar 19
+
+Architected early project-type gating mechanism for user validation
+Architected early project-type gating mechanism for user validation
+Clean and easy. I'll add it as step 2, right after the role selection, so we catch public projects before they fill out anything else.
+
+
+Viewed 2 files
+Viewed 2 files
+It's already in there from a previous build iteration. The public project block, the explanation, the bond claim reference, the State Bar number, and the checkProjectType() function are all present. Let me verify the function is in the script:
+
+
+Identified file issues and orchestrated necessary corrections
+Identified file issues and orchestrated necessary corrections
+There are two problems. The checkProjectType function is missing, and there's a stale duplicate script block at the bottom. Let me clean both up in one shot:
+
+
+Edited a file, read a file
+Edited a file, read a file
+Replace index.html in GitHub with this file. Here's what's now in the wizard:
+
+Step 2 is project type with three options: Residential, Commercial, and Public Project. If they select Public Project and click Continue, the nav buttons hide and a red alert block appears explaining:
+
+Michigan law prohibits liens against government-owned property
+Public projects fall under the Public Works Bond Act (MCL 129.201)
+They need to file a bond claim, not a property lien
+A different process, different deadlines, different documents
+State Bar of Michigan referral number: (800) 968-0738
+There's also a "Choose a Different Project Type" button that clears their selection and lets them go back if they picked wrong. Residential and Commercial proceed normally through the rest of the wizard.
+
+One thing to note: the step count in the progress bar header still says "Step 1 of 9" from a previous edit. Want me to fix that to the correct total while you're pushing this update?
+
+Milien landing
+Code · HTML 
+https://vercel.com/mfr1003s-projects/milien-site/stores/blob/store_y8tKUOCKLXynTGsU/browser  This?
+
+Mar 19
+
+Verified blob store URL location for configuration
+Verified blob store URL location for configuration
+Yes, that's it. Now get the base URL:
+
+On that page, look for a section called Environment Variables or Connection Details
+You'll see a variable called BLOB_READ_WRITE_TOKEN — Vercel already added that to your project automatically
+Also look for a URL that looks like https://xxxxxxxxxxxx.public.blob.vercel-storage.com — that's your base URL
+The good news is Vercel likely already injected BLOB_READ_WRITE_TOKEN into your environment automatically when you created the store. You can verify by going to Vercel, Settings, Environment Variables and checking if it's already there.
+
+If it is, you actually don't need to add VERCEL_BLOB_BASE_URL manually either. Let me correct what I said earlier — the approve-order.js function constructs the blob URL directly. A cleaner approach is to use the Vercel Blob list() function instead of building URLs by hand, which is already what pending-orders.js does.
+
+Skip adding VERCEL_BLOB_BASE_URL as an environment variable. Just confirm BLOB_READ_WRITE_TOKEN is in your Vercel environment variables and we're good. Is it there?
+
+1773942646647_image.png
+Where?
+
+Mar 19
+
+Pinpointed token location within project environment settings
+Pinpointed token location within project environment settings
+The token isn't shown on this page. Go check if Vercel already added it automatically:
+
+Click Projects in the left sidebar
+Open your milien-site project
+Click Settings, then Environment Variables
+Look for BLOB_READ_WRITE_TOKEN
+If it's there, you're all set, no action needed. If it's missing, come back to this Blob page, click Settings in the left sidebar, and it will show you the token to copy.
+
+I got it.  now what?
+
+Mar 19
+Now push all the files we built to GitHub. Here's the complete list of what needs to go up:
+
+Replace existing files:
+
+index.html (root) — updated landing page
+api/webhook.js — stores docs in Blob, sends review notification
+api/create-checkout.js — now includes proofUrl
+admin/index.html — rebuilt with pending queue and approve buttons
+Add new files:
+
+api/upload-proof.js
+api/approve-order.js
+api/pending-orders.js
+Do them one at a time in GitHub, commit each one. Once all seven are pushed and Vercel shows a green deploy, we do a full end-to-end test:
+
+Go to lodgemilien.com, click File Now
+Fill the wizard, select Residential on step 2
+Upload any test file as proof of work (a photo from your phone works)
+Use test card 4242 4242 4242 4242 at checkout
+Check your notification email — should show the order details and a link to the uploaded proof
+Go to lodgemilien.com/admin, log in, find the order in Pending Approval
+Click Approve & Send
+Check the customer email for the documents
+That's the full loop with manual release. Tell me when the deploy is green.
+
+1773943166868_image.png
+No submit on step 2
+
+Mar 19
+
+Diagnosed missing submit button visibility issue
+Diagnosed missing submit button visibility issue
+The nav buttons are getting cut off at the bottom of the modal on mobile. Two possible causes: the modal isn't tall enough, or the project-type-nav div got hidden. Quick fix — scroll down inside the modal first to see if the button is just below the fold.
+
+If it's not there at all, the issue is the project-type-nav is hidden by default. Let me fix it:
+
+
+Ensure project-type-nav is visible by default and modal scrolls properly
+Ensure project-type-nav is visible by default and modal scrolls properly
+Also make the modal taller on mobile so buttons don't get cut off:
+
+
+Edited a file, read a file
+Edited a file, read a file
+Replace index.html in GitHub with this. Two changes: the Continue button on step 2 is now explicitly visible by default, and the modal height is increased to 95vh so nothing gets cut off on smaller screens.
+
+Milien landing
+Code · HTML 
+It only happens if you pick Public Project, and then select "Choose a different type." I'm still stuck at that screen\
+
+Mar 19
+Got it. The "Choose a different project type" button clears the selection and hides the alert but doesn't restore the nav buttons. Fix:
+
+
+Edited a file, read a file
+Edited a file, read a file
+Replace index.html in GitHub. The fix clears all radio buttons, hides the public project alert, and explicitly restores the nav buttons to display:flex so Continue and Back reappear correctly.
+
+Milien landing
+Code · HTML 
+1773943502431_image.png
+Oops
+
+Mar 19
+
+Deliberated between store configuration and code modifications
+Deliberated between store configuration and code modifications
+The Blob store was created as Private, but the upload code tries to store files as public. Easiest fix is to change the store setting in Vercel:
+
+Go back to your Vercel Blob store page
+Click Settings in the left sidebar
+Look for an access or visibility setting and change it to Public
+Save
+That's the one-click fix. The reason we want public is so the proof document URL in your notification email is directly clickable without needing authentication.
+
+If Vercel doesn't offer that setting, the code fix is to change access: 'public' to access: 'private' in upload-proof.js, but then we'd need to generate signed URLs for the admin email which is more work.
+
+Try the settings change first and tell me what options you see.
+
+1773943590417_image.png
+Mar 19
+"The access mode cannot be changed after creation." So we need a new store.
+
+Go back to Vercel Storage
+Create a new Blob store, name it milien-public
+This time when it asks for access mode, select Public
+Once created, Vercel will add a new BLOB_READ_WRITE_TOKEN — check that it updates in your Environment Variables
+Also copy that Base URL — it'll look like https://xxxx.public.blob.vercel-storage.com. You'll need it.
+
+The old private store can be deleted once the new one is working. Come back once the new store is created and tell me what the new base URL looks like.
+
+Created but can not link to project.  It's not there under the MiLien-site list of databases.
+
+Mar 19
+That's a Vercel Hobby plan limitation. You can only link one Blob store per project on the free tier.
+
+Two options:
+
+Option A: Delete the old private store and link the new public one Go to the old milien-uploads store, Settings, and delete it. Then link the new public store to your project. This is the cleanest solution.
+
+Option B: Fix the code to work with a private store Change the upload to store privately and generate a signed URL for the admin notification email. More code but no Vercel changes needed.
+
+Option A is faster. The old private store has nothing in it worth keeping since uploads weren't working anyway. Delete it, link the new one, done.
+
+Try deleting the old store and report back.
+
+What is the new value for the read write token?
+
+Mar 19
+Go to your new public Blob store in Vercel:
+
+Click on the store name to open it
+Click Settings in the left sidebar
+Look for Tokens or Connection Details
+You'll see the BLOB_READ_WRITE_TOKEN value there
+Copy it, then go to Vercel, Settings, Environment Variables, find the existing BLOB_READ_WRITE_TOKEN and replace the value with the new one from the public store.
+
+Then redeploy so the function picks up the updated token. After that the upload should work.
+
+Is it the "Unique Store ID?"
+
+Mar 19
+No, that's not it. Look for a tab or section called Tokens or .env.local on that settings page. It should show a long string starting with vercel_blob_rw_.
+
+Alternatively, the easiest path: go back to your Vercel project, Settings, Environment Variables, and check if Vercel automatically added a second BLOB_READ_WRITE_TOKEN when you created the new store. If it did, it may have already updated it or added a duplicate you need to resolve.
+
+What does your Environment Variables list show for BLOB_READ_WRITE_TOKEN right now?
+
+1773944084675_image.png
+Mar 19
+I can see it's a public store, good. The token isn't shown on this page directly. Click the .env.local tab at the top of the Quickstart section (right next to the @vercel/blob tab). That will show you the actual BLOB_READ_WRITE_TOKEN value you can copy.
+
+1773944462322_image.png
+Did it
+
+Mar 19
+That's the full wizard working. Look at that summary:
+
+Oakland County
+$12,000 disputed
+Document uploaded (green)
+$197 total
+Pay Securely button live
+Hit Pay Securely and run the test card through. Let's see if the full loop closes.
+
+Payment confirmed
+
+Mar 19
+Now check two things immediately:
+
+Your notification email — should show the order details, proof of work link, and a button to the admin dashboard
+lodgemilien.com/admin — log in and check the Pending Approval section for the order
+Tell me what you see in both places.
+
+Nothing, DNS still resolved at Resend
+
+Mar 19
+Right, Resend still can't send until DNS verifies. Check the Resend dashboard right now, it's been a while since you set it up and it may have gone green while we were building.
+
+Go to resend.com, click Domains, and tell me what status shows for lodgemilien.com.
+
+not ready yet
+
+Mar 19
+Still propagating. Can take up to 24 hours in the worst case though usually much faster. Nothing to do but wait.
+
+In the meantime the order is sitting in Vercel Blob right now, fully generated and waiting for approval. You can verify by going to your Vercel Blob store browser and you should see an orders/ folder with a JSON file in it. That confirms the webhook fired correctly and the documents are stored.
+
+Go check the Blob browser and tell me if the file is there. That confirms everything except email delivery is working.
+
+1773946909591_image.png
+1773946926853_image.png
+What is wrong here?
+
+Mar 19
+Good news — milien-public is showing up now. The warning just means the old private store's token is already in your environment variables.
+
+Just click Connect anyway. Vercel will update BLOB_READ_WRITE_TOKEN to point to the new public store, overwriting the old private one. That's exactly what you want.
+
+Click Connect and then redeploy.
+
+I need to type something into that area you see blob
+
+Mar 19
+
+Thinking about clarifying an unclear reference to a visual element
+Thinking about clarifying an unclear reference to a visual element
+Leave it as BLOB. That's the default and it matches what your code already uses (BLOB_READ_WRITE_TOKEN). Don't change it.
+
+Just click Connect.
+
+I can't look at the other screenshot
+
+Mar 19
+
+Reconciling screenshot visibility with database connection setup
+Reconciling screenshot visibility with database connection setup
+Don't worry about the second screenshot. You're on the right screen right now. Just click Connect in the bottom right corner of the dialog you're looking at. That's all you need to do.
+
+1773947045440_image.png
+AGain
+
+Mar 19
+Click Connect. The warning is just a warning, not a blocker. It's telling you it will overwrite the old token, which is exactly what you want. Hit Connect.
+
+I do that, and that red warning flashes again
+
+Mar 19
+
+Diagnosed persistent token conflict issue
+Diagnosed persistent token conflict issue
+It's blocking the connection because of the conflict. Fix it manually:
+
+Go to Vercel, Settings, Environment Variables
+Find BLOB_READ_WRITE_TOKEN and delete it
+Come back to Storage, try connecting milien-public again
+Once the old variable is gone Vercel can create a fresh one for the new store without conflict.
+
+got it, nice
+
+Mar 19
+
+Verified connection and strategized deployment requirements
+Verified connection and strategized deployment requirements
+Now redeploy so the new token gets picked up:
+
+Go to Vercel, Deployments tab
+Click the three dots on the latest deployment
+Click Redeploy, uncheck "use existing build cache"
+Wait for green
+Then do one more test order with a file upload and the full loop should close. The Blob upload will work this time.
+
+It does, but the items in the Database are collected as HTML files.  Is that right?
+
+Mar 19
+Yes, that's correct and intentional. The webhook generates the lien documents as formatted HTML, then stores the entire order package as a JSON file in Blob containing that HTML. When you approve an order, the HTML gets pulled out of that JSON and sent directly as the email body.
+
+What you're seeing in the Blob browser is two types of files:
+
+orders/ folder — JSON files, one per paid order, each containing the customer metadata and the pre-generated HTML documents waiting for your approval
+proof/ folder — the actual uploaded files from customers (JPGs, PDFs, etc.)
+Both are correct. The JSON files disappear from the Blob browser after you approve an order since the approve function deletes them once the email sends. The proof files stay permanently as your records.
+
+Is Resend verified yet? If it is we can do the full end-to-end test and watch the approve button actually send the email.
+
+Failed, missing records
+
+Mar 19
+Go back to Resend, click on lodgemilien.com, and it will show you which specific records failed. Screenshot that and share it here. It'll highlight exactly which DNS records it can't find so we know what to fix in Namecheap.
+
+1773947305346_image.png
+Everything but dmarc
+
+Mar 19
+Three records failed. Go to Namecheap, Advanced DNS for lodgemilien.com, and check if these records are actually there. They may have been entered incorrectly. Here's exactly what each one needs to look like:
+
+Record 1 (DKIM):
+
+Type: TXT
+Host: resend._domainkey
+Value: the full p=MIGfMA0GCSqG... string (click to expand in Resend and copy the complete value)
+Record 2 (MX for SPF):
+
+Type: MX
+Host: send
+Value: the full feedback-smtp.[...]amazonses.com string
+Priority: 10
+Record 3 (SPF TXT):
+
+Type: TXT
+Host: send
+Value: the full v=spf1 include[...]nses.com ~all string
+The most common issue is the Host field. Make sure you're entering exactly resend._domainkey and send — not resend._domainkey.lodgemilien.com or anything with the domain appended. Namecheap adds the domain automatically.
+
+Go check each record in Namecheap Advanced DNS and tell me what you see.
+
+1773947358022_image.png
+From Namecheap
+
+Mar 19
+I can see two problems:
+
+Problem 1: MX record host is @ instead of send Your MX record in Mail Settings has Host @ but it needs to be send. Click edit on that MX record and change the Host from @ to send.
+
+Problem 2: SPF TXT value is truncated Your send TXT record shows v=spf1 include:amazonses.com ~all but it should include the full Resend domain. Go back to Resend, click to expand the full SPF value and make sure you copied the complete string including include:amazonses.com with the correct subdomain prefix.
+
+Fix the MX host first — that's definitely wrong. Change it from @ to send, save, then go back to Resend and hit Verify again.
+
+None of those were different, and besides I can't put send in the host value.  it fails to save.
+
+Mar 19
+That's the core issue. Namecheap's Mail Settings section only allows @ as the host for MX records. It doesn't support subdomain MX records like send.
+
+The fix is to switch away from Namecheap's nameservers entirely and use Vercel's DNS instead, which handles this correctly. You're already using Vercel for everything else anyway.
+
+Here's the switch:
+
+Go to Vercel, your project, Settings, Domains
+Click on lodgemilien.com
+Vercel will show you nameserver addresses like ns1.vercel-dns.com and ns2.vercel-dns.com
+Go to Namecheap, Domain List, Manage lodgemilien.com
+Find Nameservers, switch from "Namecheap BasicDNS" to "Custom DNS"
+Enter Vercel's nameservers
+Save
+Once Vercel controls DNS you can add any record type including subdomain MX records. All your existing records (the A record pointing to Vercel, the existing TXT records) get recreated in Vercel's DNS dashboard.
+
+This is actually the cleaner long-term setup. Vercel DNS is faster and you manage everything in one place.
+
+Want to walk through it?
+
+1773947740239_image.png
+Mar 19
+That's the project-level settings menu, not what you need. You need the Domains section which is one level up.
+
+Click the back arrow at the top left next to "Settings" to go back to your project overview, then look for a Domains tab in the main project navigation. It should be alongside Deployments, Analytics, etc.
+
+1773947786083_image.png
+Mar 19
+Good, you're in the right place. Vercel doesn't show nameservers here because you're using Namecheap's DNS.
+
+The nameservers you need are standard Vercel ones. Go to Namecheap now:
+
+Domain List, click Manage on lodgemilien.com
+Under Nameservers, change from "Namecheap BasicDNS" to Custom DNS
+Enter these two nameservers:
+ns1.vercel-dns.com
+ns2.vercel-dns.com
+Save
+Once you do that, Vercel takes over DNS for the domain. Then come back to Vercel Domains and it will let you add all the DNS records including the subdomain MX record that Namecheap couldn't handle.
+
+Warning: propagation after switching nameservers can take a few hours. Your site may be briefly unreachable during the switch but it'll come back once Vercel's DNS kicks in.
+
+1773947964533_image.png
+Mar 19
+Expected. lodgemilien.com shows Invalid Configuration because Namecheap's DNS is now pointing to Vercel's nameservers but Vercel hasn't fully taken over yet. This is the propagation window, could be 10 minutes to a few hours.
+
+Click Learn more next to Invalid Configuration and Vercel will show you what DNS records it needs. Add those records directly in Vercel's DNS panel.
+
+In the meantime your site is still reachable via milien-site.vercel.app which is still green. lodgemilien.com will come back once nameserver propagation completes.
+
+Click Refresh periodically. When it goes green Vercel has full DNS control and we can add the Resend records properly.
+
+1773948012232_image.png
+Mar 19
+Click the Vercel DNS tab next to "DNS Records." That's where you add records when Vercel controls your nameservers. Once you're there you can add all the Resend records directly in Vercel without touching Namecheap at all.
+
+1773948040643_image.png
+Mar 19
+Good, those are the nameservers you already set in Namecheap. Vercel is just waiting for propagation to confirm it. Nothing to do here except wait.
+
+Once propagation completes, this tab will transform into a full DNS management panel where you can add records. Check back in 30 minutes and hit Refresh on the domain. When lodgemilien.com goes green we add the Resend records here and you're done.
+
+Good stopping point for now. You've built a lot today.
+
+Okay so is there any reason if I refresh the Resend should not work now?
+
+9:33 AM
+Yes, one reason: the MX record for Resend has host send but Namecheap only let you save it with host @. That wrong record is what Namecheap is currently serving to the world, and it's what Resend is seeing when it checks.
+
+Once Vercel takes over DNS control, you'll delete that wrong MX record and add the correct ones with proper hostnames. Until nameserver propagation completes, Resend will keep failing on those three records regardless of how many times you hit verify.
+
+Give it 30-60 minutes, check Vercel Domains for the green checkmark, then we add the four Resend records in Vercel DNS and it should verify immediately.
+
+1774013728660_image.png
+Do I need to do something in here?
+
+9:35 AM
+Yes, this is exactly where you need to be. Vercel DNS is now in control. Add the four Resend records using the form at the top. Do them one at a time:
+
+Record 1 (DKIM):
+
+Name: resend._domainkey
+Type: TXT
+Value: the full p=MIGfMA0GCSqG... string from Resend (click to expand the full value)
+TTL: 60
+Click Add
+Record 2 (MX):
+
+Name: send
+Type: MX
+Value: the full feedback-smtp.[...]amazonses.com string
+TTL: 60
+Priority: 10
+Click Add
+Record 3 (SPF):
+
+Name: send
+Type: TXT
+Value: the full v=spf1 include[...]nses.com ~all string
+TTL: 60
+Click Add
+Record 4 (DMARC):
+
+Name: _dmarc
+Type: TXT
+Value: v=DMARC1; p=none;
+TTL: 60
+Click Add
+Go to Resend and copy the full untruncated values for each record before you start. Then add all four here and hit Verify in Resend.
+
+Do i need to enable receiving on resend?
+
+9:43 AM
+No. Leave it off. You're only sending emails, not receiving them. The "Enable Receiving" toggle in Resend is for inbound email processing, which you don't need. Your customers email you directly at your personal address, not through Resend.
+
+At what point do I switch to a live account on stripe?
+
+9:44 AM
+When you're confident the full loop works end to end with a real email. Specifically:
+
+Resend verifies and emails actually deliver
+You do one clean test order: intake, upload, payment, notification email lands, you approve, customer email lands with correct documents
+You review the generated documents and they look professional enough to send to a real customer
+That's the gate. Once those three things check out you go to Stripe, click the toggle in the top left that says Test Mode, switch it to Live, and grab your live publishable and secret keys. Replace the test keys in your Vercel environment variables with the live ones and redeploy.
+
+One thing to do before going live: make sure your Stripe account has your banking information filled in so payouts actually land. Go to Stripe, Settings, Bank Accounts and add your account. Stripe holds your first payout for 7 days as standard practice for new accounts.
+
+Are the Resend records in Vercel DNS yet?
+
+No, not yet, just planning out what I'm doing
+
+9:45 AM
+Smart. Here's the full checklist before you go live:
+
+Technical
+
+Add 4 Resend DNS records in Vercel DNS
+Verify Resend domain goes green
+Do one clean end-to-end test with real email delivery
+Review document quality from that test
+Swap Stripe test keys for live keys in Vercel environment variables
+Add bank account in Stripe for payouts
+Redeploy with live keys
+Business
+
+Add your Stripe business information (legal name, address, EIN or SSN)
+Decide on a refund policy and add it to the footer
+Add a simple Terms of Service page covering that you're a document prep service not a law firm
+Set up a dedicated email inbox for hello@lodgemilien.com so customer replies land somewhere you check
+First customers
+
+Text your mechanic friends with the URL
+Offer the first one or two at a discount in exchange for honest feedback on the documents
+Ask them to forward to anyone else in their trade network who's had payment problems
+You're genuinely close. The Resend DNS records are the last technical blocker. Everything else is just configuration and outreach. How are you feeling about the document quality from what you've seen so far?
+
+I need an EIN, so I need to incorporate and file
+
+9:46 AM
+
+Weighed legal advice boundaries while preparing incorporation guidance
+Weighed legal advice boundaries while preparing incorporation guidance
+Not necessarily. You can get an EIN as a sole proprietor without incorporating. Two paths:
+
+Path A: Sole Proprietor with EIN (fastest)
+
+Apply for an EIN at irs.gov/ein right now, takes 10 minutes, free, instant
+Operate as Michael Russo DBA LodgeMiLien
+File business income on Schedule C with your personal taxes
+No state filing required, no registered agent, no annual fees
+Path B: LLC (more protection)
+
+File Articles of Organization with Michigan LARA, $50 fee
+Get your EIN after LLC is approved, takes a few days
+Operate as LodgeMiLien LLC
+Provides liability separation between the business and your personal assets
+Given that you're in the document prep space with legal-adjacent services, this is worth considering
+The honest answer for your situation:
+
+Given you're building a service that touches legal documents and lien filings, the LLC structure makes sense from a liability standpoint. The whole reason you added manual review and proof of work upload was liability protection. An LLC extends that protection to your personal assets.
+
+Michigan LLC is cheap and straightforward. The $50 filing fee and maybe an hour of paperwork buys you meaningful protection.
+
+That said, you can start taking real orders as a sole proprietor today with just an EIN, and file the LLC in parallel. Stripe doesn't require an LLC, just an EIN or SSN.
+
+Which direction are you leaning?
+
+an LLC.  We incorporated the kennel, no reason not to do it now.  There's filing requirements, but assuming this takes off the paperwork is worth doing.
+
+9:47 AM
+Good call and consistent with how you already operate. Here's the Michigan LLC setup for LodgeMiLien:
+
+Step 1: Name check Go to Michigan LARA's business entity search at cofs.lara.state.mi.us and search "LodgeMiLien" to confirm the name is available. It almost certainly is.
+
+Step 2: File Articles of Organization Same LARA portal, file online. You'll need:
+
+LLC name: LodgeMiLien LLC
+Registered agent: can be yourself at your Troy address
+Purpose: Document preparation services
+$50 filing fee, paid by card
+Approved same day or next business day typically
+Step 3: Get your EIN After LARA approves, go to irs.gov/ein, apply as an LLC, takes 10 minutes, EIN issued instantly.
+
+Step 4: Open a business bank account Same bank you use for Longview Boarding probably. Bring your Articles of Organization and EIN letter. Keeps revenue separate from personal finances.
+
+Step 5: Update Stripe Add LodgeMiLien LLC as the business entity, EIN, business bank account for payouts.
+
+Michigan LLC ongoing requirements:
+
+Annual statement filed with LARA each year, $25 fee
+That's essentially it for a single-member LLC with no employees
+The whole thing from filing to EIN to bank account can be done in a week. File LARA today while Resend propagates and you'll have everything in place before you go live.
+
+Want me to draft the operating agreement while you're at it? Single-member Michigan LLC operating agreement is a one-page document but good to have on file.
+
+There's one business called miLien Servies, but the agent is a Jemima Milien.  So I don't think there's a conflict.  That's just her name.
+
+9:52 AM
+Correct, no conflict. Michigan's naming rules require that LLC names be distinguishable from other registered entities. "MiLien LLC" versus "Milien Services" with a personal name as the agent is not a conflict, especially since Milien appears to be her surname, not a branded service name.
+
+File it. LodgeMiLien LLC is clear.
+
+One thing to decide before you file: member structure. Since this is yours alone it's a single-member LLC. Just make sure you select that on the Articles of Organization form, not a multi-member structure.
+
+Go file at LARA while Resend propagates. Both will be done around the same time.
+
+Done with the articles, pending review.
+
+11:44 AM
+Fast work. While it's pending, knock out the EIN application so you're ready to go the moment LARA approves.
+
+Actually, wait on the EIN until LARA confirms. The IRS application asks for your LLC's exact legal name as registered, and you want that to match precisely. Shouldn't be more than a day.
+
+In the meantime, three things you can do right now:
+
+Add the Resend DNS records in Vercel — that's still the last technical blocker and it takes 10 minutes
+Draft your Terms of Service page — one page, plain language, covering that MiLien is a document prep service not a law firm, no guarantee of legal outcomes, refund policy. Want me to write that?
+Write your first outreach text to your mechanic friends — short, personal, no pitch deck energy. Just "hey I built something you might need, try it and tell me what you think"
+Which of those do you want to tackle first?
+
+1 and then 2
+
+11:45 AM
+Go add the Resend records in Vercel DNS first. You have the panel open already. Here's exactly what to enter for each one — go back to Resend and copy the full untruncated values, then add them one at a time:
+
+Record 1 (DKIM):
+
+Name: resend._domainkey
+Type: TXT
+Value: full string from Resend
+Record 2 (MX):
+
+Name: send
+Type: MX
+Value: full string from Resend
+Priority: 10
+Record 3 (SPF):
+
+Name: send
+Type: TXT
+Value: full string from Resend
+Record 4 (DMARC):
+
+Name: _dmarc
+Type: TXT
+Value: v=DMARC1; p=none;
+Add all four, then go to Resend and hit Verify. Tell me what status comes back and we'll move straight to the Terms of Service page.
+
+1774021622386_image.png
+DIdn't we do that already?
+
+11:47 AM
+Yes, all four records are already there. I can see them:
+
+_dmarc TXT
+send TXT (SPF)
+send MX with priority 10
+resend._domainkey TXT
+All added 2 hours ago. Go to Resend right now and hit Verify. With Vercel DNS in control those records should resolve correctly this time.
+
+Yeah I'm still in pending for that.  ToS next.
+
+11:47 AM
+While Resend finishes propagating, let's build the Terms of Service page.
+
+
+Created a file, read a file
+Created a file, read a file
+Create a terms folder in GitHub with index.html inside it. It will live at lodgemilien.com/terms.
+
+The ToS covers everything that matters for your situation:
+
+Clear statement that you're a document prep service, not a law firm
+No attorney-client relationship language
+Explicit user responsibility for accuracy of intake data
+Proof of work fraud warning with teeth
+Manual review and 24-hour delivery commitment
+Tiered refund policy that's fair but protects you
+Liability cap at the order amount
+Oakland County jurisdiction
+State Bar referral number for people who need an actual attorney
+Two things to do after you create the file: update the footer on index.html to link to /terms, and also update the disclaimer line at the bottom of the success page. Want me to make those updates now?
+
+Index
+Code · HTML 
+Yes.  This file goes in a new subfolder of the main repo called "terms?"
+
+4:09 PM
+Yes exactly. Same pattern as success, admin, and preview:
+
+milien-site/
+├── index.html
+├── package.json
+├── success/
+│   └── index.html
+├── admin/
+│   └── index.html
+├── preview/
+│   └── index.html
+├── terms/
+│   └── index.html        ← new
+└── api/
+    └── ...
+Create the terms folder by typing terms/index.html in the GitHub "Create new file" name box. GitHub creates the folder automatically.
+
+While you do that I'll update the footer links on the landing page and success page.
+
+Okay go for it
+
+4:10 PM
+
+Working
+Working
+
+Update footer to link to terms page
+
+Update footer to link to terms page
+
+milien-landing.html
+
+Find footer in landing page
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+Index · HTML
+Copy
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — LodgeMiLien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117; --ink-soft: #1c2333; --steel: #2a3347;
+    --amber: #f5a623; --white: #ffffff; --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body { font-family: var(--font-body); background: var(--ink); color: var(--white); -webkit-font-smoothing: antialiased; }
+  nav { background: var(--ink-soft); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--amber); }
+  .nav-back { font-size: 13px; color: var(--muted); text-decoration: none; }
+  .nav-back:hover { color: var(--white); }
+ 
+  .container { max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+ 
+  .page-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+ 
+  h1 { font-family: var(--font-display); font-size: 48px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 8px; }
+ 
+  .effective-date { font-size: 13px; color: var(--muted); margin-bottom: 48px; }
+ 
+  .toc { background: var(--steel); border-radius: 10px; padding: 24px; margin-bottom: 48px; }
+  .toc-title { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .toc a { display: block; font-size: 14px; color: rgba(255,255,255,0.6); text-decoration: none; padding: 4px 0; transition: color 0.15s; }
+  .toc a:hover { color: var(--amber); }
+ 
+  .section { margin-bottom: 40px; }
+  .section h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .section p { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 12px; }
+  .section ul { list-style: none; margin-bottom: 12px; }
+  .section ul li { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.8; padding-left: 16px; position: relative; }
+  .section ul li::before { content: "—"; position: absolute; left: 0; color: var(--amber); }
+ 
+  .highlight-box { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+  .highlight-box p { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.7; margin: 0; }
+ 
+  .danger-box { background: rgba(232,64,64,0.08); border: 1px solid rgba(232,64,64,0.2); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+  .danger-box p { color: rgba(255,200,200,0.8); font-size: 14px; line-height: 1.7; margin: 0; }
+ 
+  footer { background: var(--ink-soft); border-top: 1px solid var(--border); padding: 24px; text-align: center; }
+  footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+  footer a { color: var(--muted); text-decoration: underline; }
+</style>
+</head>
+<body>
+ 
+<nav>
+  <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+ 
+<div class="container">
+  <div class="page-label">Legal</div>
+  <h1>Terms of<br>Service</h1>
+  <div class="effective-date">Effective date: March 20, 2026 &nbsp;|&nbsp; LodgeMiLien LLC, Troy, Michigan</div>
+ 
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#service">1. What We Do</a>
+    <a href="#not-law">2. We Are Not a Law Firm</a>
+    <a href="#eligibility">3. Eligibility</a>
+    <a href="#accuracy">4. Your Responsibility for Accuracy</a>
+    <a href="#proof">5. Proof of Work Requirement</a>
+    <a href="#review">6. Document Review and Delivery</a>
+    <a href="#refunds">7. Refunds</a>
+    <a href="#liability">8. Limitation of Liability</a>
+    <a href="#jurisdiction">9. Governing Law</a>
+    <a href="#changes">10. Changes to These Terms</a>
+    <a href="#contact">11. Contact</a>
+  </div>
+ 
+  <div class="section" id="service">
+    <h2>1. What We Do</h2>
+    <p>LodgeMiLien LLC ("LodgeMiLien," "we," "us," or "our") is a document preparation service that assists Michigan contractors, subcontractors, material suppliers, and laborers in preparing mechanics lien documents pursuant to the Michigan Construction Lien Act (MCL 570.1101 et seq.).</p>
+    <p>Our services include preparation of the following documents based on information you provide:</p>
+    <ul>
+      <li>Notice of Intent to File Mechanics Lien (demand letter)</li>
+      <li>Claim of Lien pursuant to MCL 570.1107</li>
+      <li>Filing instructions for your specific Michigan county</li>
+    </ul>
+    <p>We do not file documents on your behalf unless you have purchased the optional filing coordination add-on. We do not represent you in any legal proceeding. We do not provide legal advice.</p>
+  </div>
+ 
+  <div class="section" id="not-law">
+    <h2>2. We Are Not a Law Firm</h2>
+    <div class="danger-box">
+      <p><strong>LodgeMiLien is not a law firm and does not practice law.</strong> The documents we prepare and the information we provide do not constitute legal advice. No attorney-client relationship is formed by your use of this service. The information provided through this service is for general informational purposes only.</p>
+    </div>
+    <p>Michigan mechanics lien law involves deadlines, requirements, and procedures that vary based on the specific facts of your situation. While our documents are prepared using Michigan-statutory language, we cannot guarantee that any document we prepare will be legally sufficient for your specific circumstances.</p>
+    <p>If you have questions about whether a mechanics lien is appropriate for your situation, whether you have met all legal requirements, or how to enforce a filed lien, we strongly recommend consulting a licensed Michigan attorney. The State Bar of Michigan's lawyer referral service can be reached at (800) 968-0738.</p>
+  </div>
+ 
+  <div class="section" id="eligibility">
+    <h2>3. Eligibility</h2>
+    <p>By using this service you represent that:</p>
+    <ul>
+      <li>You are at least 18 years of age</li>
+      <li>You are a contractor, subcontractor, material supplier, laborer, or authorized representative of such a party who has actually furnished labor or materials to a Michigan construction project</li>
+      <li>The information you provide is accurate and truthful to the best of your knowledge</li>
+      <li>The project for which you are filing is a private construction project, not a public or government-owned project</li>
+    </ul>
+    <p>LodgeMiLien reserves the right to refuse service to any person for any reason.</p>
+  </div>
+ 
+  <div class="section" id="accuracy">
+    <h2>4. Your Responsibility for Accuracy</h2>
+    <p>The quality and legal sufficiency of your documents depends entirely on the accuracy of the information you provide. You are solely responsible for:</p>
+    <ul>
+      <li>The accuracy of all dates, names, addresses, and dollar amounts you submit</li>
+      <li>Confirming the legal description of the property prior to filing</li>
+      <li>Ensuring you are within the applicable statutory deadlines before placing your order</li>
+      <li>Verifying that the property owner information is correct</li>
+    </ul>
+    <div class="highlight-box">
+      <p>LodgeMiLien reviews documents for formatting and internal consistency but cannot independently verify the accuracy of the information you provide. We are not responsible for documents that are incorrect due to inaccurate information submitted during intake.</p>
+    </div>
+  </div>
+ 
+  <div class="section" id="proof">
+    <h2>5. Proof of Work Requirement</h2>
+    <p>All orders require upload of proof of work documentation before processing. Acceptable documentation includes signed contracts, work orders, invoices, purchase orders, or other documents evidencing the agreement between you and the property owner or general contractor.</p>
+    <p>By uploading proof of work documentation you represent that:</p>
+    <ul>
+      <li>The documentation is genuine and unaltered</li>
+      <li>The work or materials described were actually furnished to the property listed</li>
+      <li>You have the right to submit the documentation</li>
+    </ul>
+    <p>Submission of false or fabricated documentation in connection with a mechanics lien filing may constitute fraud and is subject to civil and criminal penalties under Michigan law. LodgeMiLien reserves the right to decline any order where submitted documentation appears fraudulent or inconsistent with the information provided.</p>
+  </div>
+ 
+  <div class="section" id="review">
+    <h2>6. Document Review and Delivery</h2>
+    <p>All orders are subject to manual review before documents are released. This review is conducted to verify formatting accuracy and internal consistency. Review is typically completed within 24 hours of payment.</p>
+    <p>Documents are delivered by email to the address provided during intake. LodgeMiLien is not responsible for documents that are undeliverable due to an incorrect email address.</p>
+    <p>LodgeMiLien reserves the right to decline any order and issue a full refund if, in our sole judgment, the order cannot be processed consistent with these terms.</p>
+  </div>
+ 
+  <div class="section" id="refunds">
+    <h2>7. Refunds</h2>
+    <p>Due to the nature of document preparation services, all sales are generally final once documents have been delivered.</p>
+    <ul>
+      <li><strong>Before document delivery:</strong> Full refund available upon request</li>
+      <li><strong>After document delivery, formatting error:</strong> We will correct the error at no charge. If correction is not possible, a full refund will be issued</li>
+      <li><strong>After document delivery, information you provided was incorrect:</strong> No refund. You are responsible for the accuracy of your intake information</li>
+      <li><strong>Order declined by LodgeMiLien:</strong> Full refund issued automatically</li>
+      <li><strong>Missed deadline:</strong> No refund if the statutory deadline passed prior to your order and you were made aware of this during intake</li>
+    </ul>
+    <p>To request a refund, contact us at hello@lodgemilien.com within 7 days of document delivery.</p>
+  </div>
+ 
+  <div class="section" id="liability">
+    <h2>8. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by Michigan law, LodgeMiLien LLC's total liability to you for any claim arising out of or related to your use of this service shall not exceed the amount you paid for the order giving rise to the claim.</p>
+    <p>LodgeMiLien is not liable for:</p>
+    <ul>
+      <li>Any lien that is invalidated, rejected, or found legally insufficient</li>
+      <li>Any loss arising from a missed statutory deadline</li>
+      <li>Any damages resulting from inaccurate information you provided</li>
+      <li>Any consequential, incidental, or punitive damages of any kind</li>
+    </ul>
+    <p>You acknowledge that mechanics lien law involves strict deadlines and requirements, and that document preparation alone does not guarantee a valid or enforceable lien.</p>
+  </div>
+ 
+  <div class="section" id="jurisdiction">
+    <h2>9. Governing Law</h2>
+    <p>These terms are governed by the laws of the State of Michigan without regard to conflict of law principles. Any dispute arising out of or related to these terms or your use of the service shall be brought exclusively in the state or federal courts located in Oakland County, Michigan.</p>
+  </div>
+ 
+  <div class="section" id="changes">
+    <h2>10. Changes to These Terms</h2>
+    <p>LodgeMiLien reserves the right to update these terms at any time. Updated terms will be posted at lodgemilien.com/terms with a new effective date. Your continued use of the service after any update constitutes acceptance of the revised terms.</p>
+  </div>
+ 
+  <div class="section" id="contact">
+    <h2>11. Contact</h2>
+    <p>Questions about these terms or our service:</p>
+    <ul>
+      <li>Email: hello@lodgemilien.com</li>
+      <li>Business: LodgeMiLien LLC, Troy, Michigan</li>
+    </ul>
+  </div>
+ 
+</div>
+ 
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan<br>
+    LodgeMiLien is a document preparation service and is not a law firm. Information provided is not legal advice.<br>
+    <a href="/">Home</a> · <a href="/terms">Terms of Service</a> · <a href="mailto:hello@lodgemilien.com">hello@lodgemilien.com</a>
+  </p>
+</footer>
+ 
+</body>
+</html>
+ 
