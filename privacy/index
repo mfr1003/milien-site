@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — LodgeMiLien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117; --ink-soft: #1c2333; --steel: #2a3347;
+    --amber: #f5a623; --white: #ffffff; --muted: #7a8499;
+    --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body { font-family: var(--font-body); background: var(--ink); color: var(--white); -webkit-font-smoothing: antialiased; }
+  nav { background: var(--ink-soft); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--amber); }
+  .nav-back { font-size: 13px; color: var(--muted); text-decoration: none; }
+  .nav-back:hover { color: var(--white); }
+  .container { max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+  .page-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+  h1 { font-family: var(--font-display); font-size: 48px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 8px; }
+  .effective-date { font-size: 13px; color: var(--muted); margin-bottom: 48px; }
+  .toc { background: var(--steel); border-radius: 10px; padding: 24px; margin-bottom: 48px; }
+  .toc-title { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .toc a { display: block; font-size: 14px; color: rgba(255,255,255,0.6); text-decoration: none; padding: 4px 0; transition: color 0.15s; }
+  .toc a:hover { color: var(--amber); }
+  .section { margin-bottom: 40px; }
+  .section h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .section p { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 12px; }
+  .section ul { list-style: none; margin-bottom: 12px; }
+  .section ul li { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.8; padding-left: 16px; position: relative; }
+  .section ul li::before { content: "—"; position: absolute; left: 0; color: var(--amber); }
+  .highlight-box { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+  .highlight-box p { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.7; margin: 0; }
+  footer { background: var(--ink-soft); border-top: 1px solid var(--border); padding: 24px; text-align: center; }
+  footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+  footer a { color: var(--muted); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="container">
+  <div class="page-label">Legal</div>
+  <h1>Privacy<br>Policy</h1>
+  <div class="effective-date">Effective date: March 20, 2026 &nbsp;|&nbsp; LodgeMiLien LLC, Troy, Michigan</div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#collect">1. Information We Collect</a>
+    <a href="#use">2. How We Use Your Information</a>
+    <a href="#sharing">3. How We Share Your Information</a>
+    <a href="#storage">4. Data Storage and Security</a>
+    <a href="#retention">5. Data Retention</a>
+    <a href="#rights">6. Your Rights</a>
+    <a href="#cookies">7. Cookies and Analytics</a>
+    <a href="#children">8. Children</a>
+    <a href="#changes">9. Changes to This Policy</a>
+    <a href="#contact">10. Contact</a>
+  </div>
+
+  <div class="section" id="collect">
+    <h2>1. Information We Collect</h2>
+    <p>When you use LodgeMiLien, we collect information you provide directly during the intake process:</p>
+    <ul>
+      <li>Your name, address, phone number, and email address</li>
+      <li>Property address, owner name, and county where work was performed</li>
+      <li>Dates of work, description of work performed, and amount owed</li>
+      <li>Proof of work documentation you upload (contracts, invoices, work orders)</li>
+      <li>Payment information processed by Stripe (we never see or store your card number)</li>
+    </ul>
+    <p>We also collect limited technical information automatically:</p>
+    <ul>
+      <li>Pages visited and time spent on the site via Google Analytics</li>
+      <li>Browser type and general location (city/region level)</li>
+      <li>Referring website if you arrived via a link</li>
+    </ul>
+  </div>
+
+  <div class="section" id="use">
+    <h2>2. How We Use Your Information</h2>
+    <p>We use the information you provide solely to:</p>
+    <ul>
+      <li>Prepare your Michigan mechanics lien documents</li>
+      <li>Deliver your completed documents by email</li>
+      <li>Communicate with you about your order</li>
+      <li>Verify that your submitted proof of work is consistent with your order</li>
+      <li>Comply with legal obligations if required</li>
+    </ul>
+    <div class="highlight-box">
+      <p>We do not sell your information. We do not use your information for advertising. We do not share your information with third parties except as described in Section 3.</p>
+    </div>
+  </div>
+
+  <div class="section" id="sharing">
+    <h2>3. How We Share Your Information</h2>
+    <p>We share your information only with the following service providers who help us operate the service:</p>
+    <ul>
+      <li><strong>Stripe</strong> — payment processing. Stripe handles all card data and is PCI-DSS compliant. We receive only a payment confirmation and the intake data you provided.</li>
+      <li><strong>Resend</strong> — email delivery of your completed documents.</li>
+      <li><strong>Vercel</strong> — website hosting and file storage for uploaded proof of work documents.</li>
+      <li><strong>Anthropic</strong> — AI-assisted document generation. Your intake data is submitted to Anthropic's API to generate document text. Anthropic's privacy policy governs their handling of this data.</li>
+      <li><strong>Google Analytics</strong> — anonymous website usage statistics. No personally identifiable information is shared.</li>
+    </ul>
+    <p>We do not share your information with any other third parties. We will disclose your information if required by law, court order, or valid legal process.</p>
+  </div>
+
+  <div class="section" id="storage">
+    <h2>4. Data Storage and Security</h2>
+    <p>Your intake data and generated documents are stored temporarily in encrypted cloud storage (Vercel) while your order is pending review. Once your documents are delivered and your order is complete, order data is deleted from our temporary storage.</p>
+    <p>Proof of work documents you upload are stored in Vercel Blob storage and retained as described in Section 5.</p>
+    <p>Payment transactions are processed and stored by Stripe. We retain Stripe transaction records for accounting and tax purposes.</p>
+    <p>We use industry-standard security practices including HTTPS encryption for all data transmission. No security system is impenetrable, and we cannot guarantee the absolute security of your information.</p>
+  </div>
+
+  <div class="section" id="retention">
+    <h2>5. Data Retention</h2>
+    <ul>
+      <li><strong>Pending order data:</strong> Deleted from temporary storage upon document delivery or order cancellation</li>
+      <li><strong>Proof of work uploads:</strong> Retained for 12 months from the date of upload, then deleted</li>
+      <li><strong>Payment records:</strong> Retained for 7 years as required by tax law</li>
+      <li><strong>Email delivery records:</strong> Retained by Resend per their data retention policy</li>
+    </ul>
+    <p>To request early deletion of your data, contact us at hello@lodgemilien.com.</p>
+  </div>
+
+  <div class="section" id="rights">
+    <h2>6. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Request a copy of the personal information we hold about you</li>
+      <li>Request correction of inaccurate information</li>
+      <li>Request deletion of your information, subject to our legal retention obligations</li>
+      <li>Opt out of Google Analytics tracking by using the Google Analytics opt-out browser add-on</li>
+    </ul>
+    <p>To exercise any of these rights, contact us at hello@lodgemilien.com. We will respond within 30 days.</p>
+  </div>
+
+  <div class="section" id="cookies">
+    <h2>7. Cookies and Analytics</h2>
+    <p>We use Google Analytics to understand how visitors use our site. Google Analytics uses cookies to collect anonymous usage data including pages visited, time on site, and general geographic location. This data is aggregated and does not identify individual users.</p>
+    <p>We do not use advertising cookies, tracking pixels, or any cookies for marketing purposes.</p>
+    <p>You can opt out of Google Analytics at <a href="https://tools.google.com/dlpage/gaoptout" style="color:var(--amber);">tools.google.com/dlpage/gaoptout</a>.</p>
+  </div>
+
+  <div class="section" id="children">
+    <h2>8. Children</h2>
+    <p>This service is intended for use by adults operating in a professional or trade capacity. We do not knowingly collect information from anyone under 18 years of age. If you believe a minor has submitted information through our service, contact us at hello@lodgemilien.com and we will delete it.</p>
+  </div>
+
+  <div class="section" id="changes">
+    <h2>9. Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. Updated versions will be posted at lodgemilien.com/privacy with a new effective date. Continued use of the service after any update constitutes acceptance of the revised policy.</p>
+  </div>
+
+  <div class="section" id="contact">
+    <h2>10. Contact</h2>
+    <p>Questions about this privacy policy or how we handle your data:</p>
+    <ul>
+      <li>Email: hello@lodgemilien.com</li>
+      <li>Business: LodgeMiLien LLC, Troy, Michigan</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan<br>
+    <a href="/">Home</a> · <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="mailto:hello@lodgemilien.com">hello@lodgemilien.com</a>
+  </p>
+</footer>
+
+</body>
+</html>
