@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   :root {
     --ink: #0d1117;
     --ink-soft: #1c2333;
@@ -33,9 +33,9 @@
     --font-display: 'Barlow Condensed', sans-serif;
     --font-body: 'Barlow', sans-serif;
   }
- 
+
   html { scroll-behavior: smooth; }
- 
+
   body {
     font-family: var(--font-body);
     background: var(--ink);
@@ -44,7 +44,7 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
- 
+
   /* ── NAV ── */
   nav {
     position: sticky;
@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: space-between;
   }
- 
+
   .logo {
     font-family: var(--font-display);
     font-weight: 800;
@@ -67,9 +67,9 @@
     color: var(--white);
     text-decoration: none;
   }
- 
+
   .logo span { color: var(--amber); }
- 
+
   .nav-cta {
     background: var(--amber);
     color: var(--ink);
@@ -82,9 +82,9 @@
     text-decoration: none;
     transition: background 0.15s;
   }
- 
+
   .nav-cta:hover { background: var(--amber-dark); }
- 
+
   /* ── HERO ── */
   .hero {
     background: var(--ink-soft);
@@ -92,7 +92,7 @@
     padding: 60px 20px 56px;
     text-align: center;
   }
- 
+
   .hero-eyebrow {
     display: inline-block;
     font-family: var(--font-body);
@@ -107,7 +107,7 @@
     border-radius: 4px;
     background: var(--amber-glow);
   }
- 
+
   h1 {
     font-family: var(--font-display);
     font-weight: 800;
@@ -117,13 +117,13 @@
     text-transform: uppercase;
     margin-bottom: 20px;
   }
- 
+
   h1 em {
     font-style: normal;
     color: var(--amber);
     display: block;
   }
- 
+
   .hero-sub {
     font-size: clamp(16px, 4vw, 20px);
     color: rgba(255,255,255,0.65);
@@ -131,7 +131,7 @@
     margin: 0 auto 36px;
     line-height: 1.5;
   }
- 
+
   .hero-cta-group {
     display: flex;
     flex-direction: column;
@@ -139,7 +139,7 @@
     align-items: center;
     margin-bottom: 40px;
   }
- 
+
   .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -158,25 +158,25 @@
     max-width: 360px;
     transition: background 0.15s, transform 0.1s;
   }
- 
+
   .btn-primary:hover { background: var(--amber-dark); }
   .btn-primary:active { transform: scale(0.98); }
- 
+
   .btn-secondary {
     font-size: 14px;
     color: var(--muted);
     text-decoration: none;
   }
- 
+
   .btn-secondary:hover { color: var(--white); }
- 
+
   .hero-trust {
     display: flex;
     justify-content: center;
     gap: 24px;
     flex-wrap: wrap;
   }
- 
+
   .trust-item {
     display: flex;
     align-items: center;
@@ -184,7 +184,7 @@
     font-size: 13px;
     color: rgba(255,255,255,0.5);
   }
- 
+
   .trust-dot {
     width: 6px;
     height: 6px;
@@ -192,7 +192,7 @@
     background: var(--amber);
     flex-shrink: 0;
   }
- 
+
   /* ── DEADLINE BANNER ── */
   .deadline-banner {
     background: rgba(232,64,64,0.1);
@@ -201,18 +201,18 @@
     padding: 14px 20px;
     text-align: center;
   }
- 
+
   .deadline-banner p {
     font-size: 14px;
     color: rgba(255,255,255,0.8);
     line-height: 1.5;
   }
- 
+
   .deadline-banner strong {
     color: #e84040;
     font-weight: 600;
   }
- 
+
   /* ── SECTION BASE ── */
   section { padding: 64px 20px; }
   .section-label {
@@ -223,7 +223,7 @@
     color: var(--amber);
     margin-bottom: 12px;
   }
- 
+
   h2 {
     font-family: var(--font-display);
     font-weight: 800;
@@ -233,7 +233,7 @@
     line-height: 1.05;
     margin-bottom: 16px;
   }
- 
+
   .section-intro {
     color: rgba(255,255,255,0.6);
     font-size: 16px;
@@ -241,16 +241,16 @@
     margin-bottom: 48px;
     line-height: 1.6;
   }
- 
+
   /* ── HOW IT WORKS ── */
   .how { background: var(--ink); }
- 
+
   .steps {
     display: flex;
     flex-direction: column;
     gap: 0;
   }
- 
+
   .step {
     display: flex;
     gap: 20px;
@@ -258,9 +258,9 @@
     border-bottom: 1px solid var(--border);
     position: relative;
   }
- 
+
   .step:last-child { border-bottom: none; }
- 
+
   .step-num {
     font-family: var(--font-display);
     font-size: 48px;
@@ -271,7 +271,7 @@
     width: 52px;
     padding-top: 4px;
   }
- 
+
   .step-body h3 {
     font-family: var(--font-display);
     font-size: 22px;
@@ -281,13 +281,13 @@
     margin-bottom: 6px;
     color: var(--white);
   }
- 
+
   .step-body p {
     font-size: 15px;
     color: rgba(255,255,255,0.55);
     line-height: 1.5;
   }
- 
+
   .step-tag {
     display: inline-block;
     font-size: 11px;
@@ -298,20 +298,20 @@
     border-radius: 4px;
     margin-top: 8px;
   }
- 
+
   .tag-auto { background: rgba(245,166,35,0.12); color: var(--amber); }
   .tag-you { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
- 
+
   /* ── PRICING ── */
   .pricing { background: var(--ink-soft); }
- 
+
   .pricing-cards {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-bottom: 32px;
   }
- 
+
   .price-card {
     background: var(--steel);
     border: 1px solid rgba(255,255,255,0.08);
@@ -319,12 +319,12 @@
     padding: 24px;
     position: relative;
   }
- 
+
   .price-card.featured {
     border-color: var(--amber);
     background: rgba(245,166,35,0.06);
   }
- 
+
   .featured-badge {
     position: absolute;
     top: -1px;
@@ -338,7 +338,7 @@
     padding: 4px 10px;
     border-radius: 0 0 6px 6px;
   }
- 
+
   .card-name {
     font-family: var(--font-display);
     font-size: 20px;
@@ -347,21 +347,21 @@
     letter-spacing: 0.3px;
     margin-bottom: 4px;
   }
- 
+
   .card-desc {
     font-size: 13px;
     color: var(--muted);
     margin-bottom: 16px;
     line-height: 1.4;
   }
- 
+
   .card-price {
     display: flex;
     align-items: baseline;
     gap: 4px;
     margin-bottom: 16px;
   }
- 
+
   .price-dollar {
     font-family: var(--font-display);
     font-size: 42px;
@@ -369,12 +369,12 @@
     color: var(--white);
     line-height: 1;
   }
- 
+
   .price-note {
     font-size: 13px;
     color: var(--muted);
   }
- 
+
   .card-features {
     list-style: none;
     display: flex;
@@ -382,7 +382,7 @@
     gap: 8px;
     margin-bottom: 20px;
   }
- 
+
   .card-features li {
     font-size: 14px;
     color: rgba(255,255,255,0.65);
@@ -391,14 +391,14 @@
     gap: 8px;
     line-height: 1.4;
   }
- 
+
   .check {
     color: var(--amber);
     font-size: 14px;
     flex-shrink: 0;
     margin-top: 1px;
   }
- 
+
   .btn-card {
     display: block;
     width: 100%;
@@ -413,22 +413,22 @@
     text-decoration: none;
     transition: all 0.15s;
   }
- 
+
   .btn-card-primary {
     background: var(--amber);
     color: var(--ink);
   }
- 
+
   .btn-card-primary:hover { background: var(--amber-dark); }
- 
+
   .btn-card-outline {
     background: transparent;
     color: var(--white);
     border: 1px solid rgba(255,255,255,0.2);
   }
- 
+
   .btn-card-outline:hover { border-color: rgba(255,255,255,0.45); }
- 
+
   .rush-note {
     text-align: center;
     font-size: 13px;
@@ -436,25 +436,25 @@
     padding: 12px 0;
     border-top: 1px solid var(--border);
   }
- 
+
   .rush-note strong { color: rgba(255,255,255,0.7); }
- 
+
   /* ── MICHIGAN LAW ── */
   .law-section { background: var(--ink); }
- 
+
   .deadline-cards {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
- 
+
   .deadline-card {
     background: var(--steel);
     border-left: 3px solid var(--amber);
     border-radius: 0 8px 8px 0;
     padding: 18px 20px;
   }
- 
+
   .deadline-card h4 {
     font-family: var(--font-display);
     font-size: 16px;
@@ -463,13 +463,13 @@
     letter-spacing: 0.3px;
     margin-bottom: 4px;
   }
- 
+
   .deadline-card p {
     font-size: 14px;
     color: rgba(255,255,255,0.55);
     line-height: 1.5;
   }
- 
+
   .deadline-card .days {
     font-family: var(--font-display);
     font-size: 32px;
@@ -478,28 +478,28 @@
     line-height: 1;
     margin-bottom: 4px;
   }
- 
+
   /* ── WHAT YOU GET ── */
   .guarantee { background: var(--ink-soft); }
- 
+
   .guarantee-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
- 
+
   .g-card {
     background: var(--steel);
     border-radius: 8px;
     padding: 20px 16px;
     border: 1px solid var(--border);
   }
- 
+
   .g-icon {
     font-size: 24px;
     margin-bottom: 10px;
   }
- 
+
   .g-card h4 {
     font-family: var(--font-display);
     font-size: 16px;
@@ -507,27 +507,27 @@
     text-transform: uppercase;
     margin-bottom: 4px;
   }
- 
+
   .g-card p {
     font-size: 13px;
     color: var(--muted);
     line-height: 1.5;
   }
- 
+
   /* ── FAQ ── */
   .faq-section { background: var(--ink); }
- 
+
   .faq-list {
     display: flex;
     flex-direction: column;
     gap: 0;
   }
- 
+
   .faq-item {
     border-bottom: 1px solid var(--border);
     padding: 20px 0;
   }
- 
+
   .faq-q {
     font-family: var(--font-display);
     font-size: 18px;
@@ -536,13 +536,13 @@
     letter-spacing: 0.2px;
     margin-bottom: 8px;
   }
- 
+
   .faq-a {
     font-size: 14px;
     color: rgba(255,255,255,0.55);
     line-height: 1.6;
   }
- 
+
   /* ── BOTTOM CTA ── */
   .bottom-cta {
     background: var(--ink-soft);
@@ -550,9 +550,9 @@
     padding: 64px 20px;
     text-align: center;
   }
- 
+
   .bottom-cta h2 { margin-bottom: 12px; }
- 
+
   .bottom-cta p {
     color: rgba(255,255,255,0.55);
     font-size: 16px;
@@ -561,7 +561,7 @@
     margin-left: auto;
     margin-right: auto;
   }
- 
+
   /* ── FOOTER ── */
   footer {
     background: var(--ink);
@@ -569,15 +569,15 @@
     padding: 24px 20px;
     text-align: center;
   }
- 
+
   footer p {
     font-size: 12px;
     color: var(--muted);
     line-height: 1.8;
   }
- 
+
   footer a { color: var(--muted); text-decoration: underline; }
- 
+
   /* ── DESKTOP ── */
   @media (min-width: 640px) {
     .hero { padding: 80px 40px 72px; }
@@ -590,12 +590,12 @@
     .deadline-cards { flex-direction: row; }
     .deadline-card { flex: 1; }
   }
- 
+
   @media (min-width: 900px) {
     section { padding: 96px 10%; }
     nav { padding: 14px 10%; }
   }
- 
+
   /* ── INTAKE MODAL ── */
   .modal-overlay {
     display: none;
@@ -606,13 +606,13 @@
     align-items: flex-end;
     justify-content: center;
   }
- 
+
   .modal-overlay.open { display: flex; }
- 
+
   @media (min-width: 640px) {
     .modal-overlay { align-items: center; }
   }
- 
+
   .modal {
     background: var(--ink-soft);
     border: 1px solid var(--border);
@@ -624,23 +624,23 @@
     overflow-y: auto;
     animation: slideUp 0.25s ease;
   }
- 
+
   @media (min-width: 640px) {
     .modal { border-radius: 16px; }
   }
- 
+
   @keyframes slideUp {
     from { transform: translateY(40px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
- 
+
   .modal-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 24px;
   }
- 
+
   .modal-close {
     background: none;
     border: none;
@@ -651,7 +651,7 @@
     padding: 4px;
     flex-shrink: 0;
   }
- 
+
   .modal-title {
     font-family: var(--font-display);
     font-size: 28px;
@@ -659,7 +659,7 @@
     text-transform: uppercase;
     line-height: 1.1;
   }
- 
+
   .progress-bar {
     height: 3px;
     background: var(--steel);
@@ -667,14 +667,14 @@
     margin-bottom: 28px;
     overflow: hidden;
   }
- 
+
   .progress-fill {
     height: 100%;
     background: var(--amber);
     border-radius: 2px;
     transition: width 0.3s ease;
   }
- 
+
   .step-indicator {
     font-size: 12px;
     color: var(--muted);
@@ -682,10 +682,10 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
- 
+
   .wizard-step { display: none; }
   .wizard-step.active { display: block; }
- 
+
   .wizard-step h3 {
     font-family: var(--font-display);
     font-size: 22px;
@@ -693,21 +693,21 @@
     text-transform: uppercase;
     margin-bottom: 8px;
   }
- 
+
   .wizard-step .hint {
     font-size: 13px;
     color: var(--muted);
     margin-bottom: 20px;
     line-height: 1.5;
   }
- 
+
   .field-group {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 24px;
   }
- 
+
   .field label {
     display: block;
     font-size: 12px;
@@ -717,7 +717,7 @@
     color: rgba(255,255,255,0.5);
     margin-bottom: 6px;
   }
- 
+
   .field input,
   .field select,
   .field textarea {
@@ -734,35 +734,35 @@
     -webkit-appearance: none;
     appearance: none;
   }
- 
+
   .field select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8499' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
     padding-right: 40px;
   }
- 
+
   .field input:focus,
   .field select:focus,
   .field textarea:focus {
     border-color: var(--amber);
   }
- 
+
   .field input::placeholder { color: rgba(255,255,255,0.25); }
- 
+
   .role-options {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
   }
- 
+
   .role-option {
     flex: 1;
     min-width: 120px;
   }
- 
+
   .role-option input[type="radio"] { display: none; }
- 
+
   .role-option label {
     display: block;
     background: var(--steel);
@@ -778,18 +778,18 @@
     text-transform: none;
     letter-spacing: 0;
   }
- 
+
   .role-option input[type="radio"]:checked + label {
     border-color: var(--amber);
     background: var(--amber-glow);
     color: var(--amber);
   }
- 
+
   .wizard-nav {
     display: flex;
     gap: 10px;
   }
- 
+
   .btn-next, .btn-back {
     padding: 15px 24px;
     border-radius: 8px;
@@ -802,25 +802,25 @@
     border: none;
     transition: all 0.15s;
   }
- 
+
   .btn-next {
     flex: 1;
     background: var(--amber);
     color: var(--ink);
   }
- 
+
   .btn-next:hover { background: var(--amber-dark); }
   .btn-next:active { transform: scale(0.98); }
- 
+
   .btn-back {
     background: transparent;
     color: var(--muted);
     border: 1px solid rgba(255,255,255,0.1);
     padding: 15px 18px;
   }
- 
+
   .btn-back:hover { color: var(--white); }
- 
+
   .deadline-alert {
     background: rgba(232,64,64,0.1);
     border: 1px solid rgba(232,64,64,0.25);
@@ -828,22 +828,22 @@
     padding: 12px 16px;
     margin-bottom: 16px;
   }
- 
+
   .deadline-alert p {
     font-size: 13px;
     color: rgba(255,200,200,0.85);
     line-height: 1.5;
   }
- 
+
   .deadline-alert strong { color: #e84040; }
- 
+
   .summary-block {
     background: var(--steel);
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
   }
- 
+
   .summary-row {
     display: flex;
     justify-content: space-between;
@@ -852,12 +852,12 @@
     font-size: 14px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
- 
+
   .summary-row:last-child { border-bottom: none; }
   .summary-row .label { color: var(--muted); }
   .summary-row .value { color: var(--white); font-weight: 500; }
   .summary-row.total .value { color: var(--amber); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
- 
+
   .stripe-button {
     display: flex;
     align-items: center;
@@ -876,10 +876,10 @@
     cursor: pointer;
     transition: background 0.15s, transform 0.1s;
   }
- 
+
   .stripe-button:hover { background: var(--amber-dark); }
   .stripe-button:active { transform: scale(0.98); }
- 
+
   .payment-note {
     text-align: center;
     font-size: 12px;
@@ -889,13 +889,13 @@
 </style>
 </head>
 <body>
- 
+
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">Mi<span>Lien</span></a>
   <a href="#" class="nav-cta" onclick="openModal(); return false;">File Now</a>
 </nav>
- 
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow">Michigan Mechanics Lien Service</div>
@@ -912,12 +912,12 @@
     <div class="trust-item"><div class="trust-dot"></div>No attorney required</div>
   </div>
 </section>
- 
+
 <!-- DEADLINE BANNER -->
 <div class="deadline-banner">
   <p>Michigan law gives you <strong>90 days from last furnishing</strong> to file a Claim of Lien. Miss it and your rights are gone. Don't wait.</p>
 </div>
- 
+
 <!-- HOW IT WORKS -->
 <section class="how">
   <div class="section-label">How It Works</div>
@@ -958,7 +958,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- MICHIGAN DEADLINES -->
 <section class="law-section">
   <div class="section-label">Michigan Law</div>
@@ -982,7 +982,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- PRICING -->
 <section class="pricing">
   <div class="section-label">Pricing</div>
@@ -1039,7 +1039,7 @@
   </div>
   <div class="rush-note"><strong>Under 5 business days to your deadline?</strong> Rush processing available — 50% surcharge applies. Don't wait to find out if you qualify.</div>
 </section>
- 
+
 <!-- GUARANTEES -->
 <section class="guarantee">
   <div class="section-label">What You Get</div>
@@ -1068,7 +1068,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- FAQ -->
 <section class="faq-section">
   <div class="section-label">Questions</div>
@@ -1096,7 +1096,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
   <h2>Stop Waiting<br>To Get Paid</h2>
@@ -1105,16 +1105,16 @@
     File My Lien — Starting at $97
   </a>
 </section>
- 
+
 <!-- FOOTER -->
 <footer>
   <p>
     <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan<br>
     LodgeMiLien is a document preparation service and is not a law firm. Information provided is not legal advice.<br>
-    <a href="/terms">Terms of Service</a> · <a href="mailto:hello@lodgemilien.com">hello@lodgemilien.com</a>
+    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="mailto:hello@lodgemilien.com">hello@lodgemilien.com</a>
   </p>
 </footer>
- 
+
 <!-- INTAKE MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
@@ -1124,12 +1124,12 @@
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
- 
+
     <div class="progress-bar">
       <div class="progress-fill" id="progress" style="width: 14%"></div>
     </div>
     <div class="step-indicator" id="step-label">Step 1 of 9</div>
- 
+
     <!-- STEP 1: Role -->
     <div class="wizard-step active" id="step-1">
       <h3>Your Role on This Job</h3>
@@ -1156,7 +1156,7 @@
         <button class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 2: Project Type -->
     <div class="wizard-step" id="step-2">
       <h3>What Type of Project?</h3>
@@ -1189,7 +1189,7 @@
         <button class="btn-next" onclick="checkProjectType()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 3: Job Address -->
     <div class="wizard-step" id="step-3">
       <h3>Where Was The Job?</h3>
@@ -1223,7 +1223,7 @@
         <button class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 4: Property Owner -->
     <div class="wizard-step" id="step-4">
       <h3>Who Owns The Property?</h3>
@@ -1243,7 +1243,7 @@
         <button class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 5: Dates -->
     <div class="wizard-step" id="step-5">
       <h3>When Did You Work?</h3>
@@ -1264,7 +1264,7 @@
         <button class="btn-next" onclick="checkDates()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 6: Amount -->
     <div class="wizard-step" id="step-6">
       <h3>How Much Are You Owed?</h3>
@@ -1284,7 +1284,7 @@
         <button class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 7: Your Info -->
     <div class="wizard-step" id="step-7">
       <h3>Your Information</h3>
@@ -1312,7 +1312,7 @@
         <button class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 8: Upload Proof of Work -->
     <div class="wizard-step" id="step-8">
       <h3>Upload Proof of Work</h3>
@@ -1329,7 +1329,7 @@
         <button class="btn-next" onclick="uploadAndContinue()">Continue →</button>
       </div>
     </div>
- 
+
     <!-- STEP 9: Package + Pay -->
     <div class="wizard-step" id="step-9">
       <h3>Review & Pay</h3>
@@ -1364,29 +1364,29 @@
         <button class="btn-back" onclick="prevStep()">Back</button>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
-<script>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   let currentStep = 1;
   const totalSteps = 9;
   let uploadedProofUrl = '';
- 
+
   function openModal() {
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
- 
+
   function closeModal() {
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
   }
- 
+
   document.getElementById('modal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
- 
+
   function showStep(n) {
     document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
     document.getElementById('step-' + n).classList.add('active');
@@ -1396,15 +1396,15 @@
     currentStep = n;
     if (n === 9) updateSummary();
   }
- 
+
   function nextStep() {
     if (currentStep < totalSteps) showStep(currentStep + 1);
   }
- 
+
   function prevStep() {
     if (currentStep > 1) showStep(currentStep - 1);
   }
- 
+
   function checkProjectType() {
     const selected = document.querySelector('input[name="project-type"]:checked');
     if (!selected) {
@@ -1418,7 +1418,7 @@
     }
     nextStep();
   }
- 
+
   function checkDates() {
     const last = document.getElementById('date-last').value;
     const alertBox = document.getElementById('deadline-alert-box');
@@ -1437,17 +1437,17 @@
     }
     nextStep();
   }
- 
+
   async function uploadAndContinue() {
     const fileInput = document.getElementById('proof-upload');
     const statusEl = document.getElementById('upload-status');
- 
+
     if (!fileInput.files || !fileInput.files[0]) {
       statusEl.style.color = '#e84040';
       statusEl.textContent = 'Please select a file before continuing. This is required.';
       return;
     }
- 
+
     const file = fileInput.files[0];
     const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
@@ -1455,19 +1455,19 @@
       statusEl.textContent = 'File is too large. Maximum size is 10MB.';
       return;
     }
- 
+
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'Uploading...';
- 
+
     try {
       const response = await fetch(`/api/upload-proof?filename=${encodeURIComponent(file.name)}`, {
         method: 'POST',
         headers: { 'Content-Type': file.type },
         body: file,
       });
- 
+
       const result = await response.json();
- 
+
       if (result.url) {
         uploadedProofUrl = result.url;
         statusEl.style.color = '#2ea043';
@@ -1481,7 +1481,7 @@
       statusEl.textContent = 'Upload failed: ' + err.message + '. Please try again.';
     }
   }
- 
+
   function updateSummary() {
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
@@ -1489,14 +1489,14 @@
     if (amount) document.getElementById('summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('summary-proof').textContent = 'Document uploaded';
   }
- 
+
   function collectFormData() {
     const last = document.getElementById('date-last').value;
     const lastDate = new Date(last);
     const today = new Date();
     const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
     const rushRequired = daysAgo >= 76;
- 
+
     return {
       role: document.querySelector('input[name="role"]:checked')?.value || '',
       propertyAddress: document.getElementById('prop-address').value,
@@ -1517,12 +1517,12 @@
       proofUrl: uploadedProofUrl,
     };
   }
- 
+
   async function fakeCheckout() {
     const btn = document.querySelector('.stripe-button');
     btn.textContent = 'Preparing secure checkout...';
     btn.disabled = true;
- 
+
     try {
       const data = collectFormData();
       const response = await fetch('/api/create-checkout', {
@@ -1530,9 +1530,9 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
- 
+
       const result = await response.json();
- 
+
       if (result.url) {
         window.location.href = result.url;
       } else {
@@ -1544,7 +1544,7 @@
       console.error(err);
     }
   }
- 
+
   function checkProjectType() {
     const selected = document.querySelector('input[name="project-type"]:checked');
     if (!selected) {
@@ -1558,6 +1558,6 @@
     nextStep();
   }
 </script>
- 
+
 </body>
 </html>
