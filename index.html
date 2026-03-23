@@ -1111,7 +1111,7 @@
   <p>
     <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan<br>
     LodgeMiLien is a document preparation service and is not a law firm. Information provided is not legal advice.<br>
-    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="mailto:hello@lodgemilien.com">hello@lodgemilien.com</a>
+    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="/cdn-cgi/l/email-protection#6f070a0303002f03000b080a020603060a01410c0002"><span class="__cf_email__" data-cfemail="e8808d848487a884878c8f8d858184818d86c68b8785">[email&#160;protected]</span></a>
   </p>
 </footer>
 
@@ -1119,263 +1119,341 @@
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-header">
-      <div>
-        <div class="modal-title">File My Lien</div>
-      </div>
+      <div><div class="modal-title">File My Lien</div></div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:10%"></div></div>
+    <div class="step-indicator" id="step-label">Step 1</div>
 
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress" style="width: 14%"></div>
-    </div>
-    <div class="step-indicator" id="step-label">Step 1 of 9</div>
-
-    <!-- STEP 1: Role -->
-    <div class="wizard-step active" id="step-1">
-      <h3>Your Role on This Job</h3>
-      <p class="hint">This determines which documents you need and which deadlines apply.</p>
+    <!-- SHARED: STEP 1 — State -->
+    <div class="wizard-step active" id="ws-1">
+      <h3>Which State Was The Job In?</h3>
+      <p class="hint">Lien laws vary by state. Select where the work was performed.</p>
       <div class="role-options field-group">
         <div class="role-option">
-          <input type="radio" name="role" id="r-prime" value="General Contractor / Prime">
-          <label for="r-prime">General Contractor / Prime</label>
+          <input type="radio" name="state-code" id="s-mi" value="MI">
+          <label for="s-mi">Michigan<br><span style="font-size:12px;font-weight:400;">MCL 570.1101 / 570.301</span></label>
         </div>
         <div class="role-option">
-          <input type="radio" name="role" id="r-sub" value="Subcontractor">
-          <label for="r-sub">Subcontractor</label>
+          <input type="radio" name="state-code" id="s-oh" value="OH">
+          <label for="s-oh">Ohio<br><span style="font-size:12px;font-weight:400;">O.R.C. §§ 1311.01 et seq.</span></label>
         </div>
         <div class="role-option">
-          <input type="radio" name="role" id="r-supplier" value="Material Supplier">
-          <label for="r-supplier">Material Supplier</label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="role" id="r-laborer" value="Laborer / Sole Proprietor">
-          <label for="r-laborer">Laborer / Sole Proprietor</label>
+          <input type="radio" name="state-code" id="s-in" value="IN">
+          <label for="s-in">Indiana<br><span style="font-size:12px;font-weight:400;">Ind. Code § 32-28-3</span></label>
         </div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-next" onclick="nextStep()">Continue →</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 2: Project Type -->
-    <div class="wizard-step" id="step-2">
-      <h3>What Type of Project?</h3>
-      <p class="hint">This determines which legal process applies to your situation.</p>
+    <!-- SHARED: STEP 2 — Work Type -->
+    <div class="wizard-step" id="ws-2">
+      <h3>What Type of Work?</h3>
+      <p class="hint">Select the type of work that went unpaid.</p>
       <div class="role-options field-group">
         <div class="role-option">
-          <input type="radio" name="project-type" id="pt-residential" value="residential">
-          <label for="pt-residential">Residential<br><span style="font-size:12px;font-weight:400;">Home, condo, 1-4 units</span></label>
+          <input type="radio" name="work-type" id="wt-construction" value="construction">
+          <label for="wt-construction">Construction / Property<br><span style="font-size:12px;font-weight:400;">Building, remodel, materials</span></label>
         </div>
-        <div class="role-option">
-          <input type="radio" name="project-type" id="pt-commercial" value="commercial">
-          <label for="pt-commercial">Commercial<br><span style="font-size:12px;font-weight:400;">Office, retail, industrial</span></label>
+        <div class="role-option" id="wt-auto-option">
+          <input type="radio" name="work-type" id="wt-automotive" value="automotive">
+          <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;">Michigan only — Garage Keeper's Lien</span></label>
         </div>
-        <div class="role-option">
-          <input type="radio" name="project-type" id="pt-public" value="public">
-          <label for="pt-public">Public Project<br><span style="font-size:12px;font-weight:400;">Government, school, municipal</span></label>
-        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="selectTrack()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════ -->
+    <!-- CONSTRUCTION TRACK: C3-C10        -->
+    <!-- ══════════════════════════════════ -->
+
+    <!-- C3: Role -->
+    <div class="wizard-step" id="wc-3">
+      <h3>Your Role on This Job</h3>
+      <p class="hint">This determines which documents you need and which deadlines apply.</p>
+      <div class="role-options field-group">
+        <div class="role-option"><input type="radio" name="role" id="r-prime" value="General Contractor / Prime"><label for="r-prime">General Contractor / Prime</label></div>
+        <div class="role-option"><input type="radio" name="role" id="r-sub" value="Subcontractor"><label for="r-sub">Subcontractor</label></div>
+        <div class="role-option"><input type="radio" name="role" id="r-supplier" value="Material Supplier"><label for="r-supplier">Material Supplier</label></div>
+        <div class="role-option"><input type="radio" name="role" id="r-laborer" value="Laborer / Sole Proprietor"><label for="r-laborer">Laborer / Sole Proprietor</label></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- C4: Project Type -->
+    <div class="wizard-step" id="wc-4">
+      <h3>What Type of Project?</h3>
+      <p class="hint">This determines which legal process applies.</p>
+      <div class="role-options field-group">
+        <div class="role-option"><input type="radio" name="project-type" id="pt-residential" value="residential"><label for="pt-residential">Residential<br><span style="font-size:12px;font-weight:400;">Home, condo, 1-4 units</span></label></div>
+        <div class="role-option"><input type="radio" name="project-type" id="pt-commercial" value="commercial"><label for="pt-commercial">Commercial<br><span style="font-size:12px;font-weight:400;">Office, retail, industrial</span></label></div>
+        <div class="role-option"><input type="radio" name="project-type" id="pt-public" value="public"><label for="pt-public">Public Project<br><span style="font-size:12px;font-weight:400;">Government, school, municipal</span></label></div>
       </div>
       <div id="public-project-block" style="display:none;">
         <div class="deadline-alert" style="margin-bottom:16px;">
-          <p><strong>MiLien cannot process public project claims.</strong></p>
-          <p style="margin-top:8px;">Michigan law does not allow mechanics liens to be filed against government-owned property. Public projects — including schools, municipal buildings, roads, and any work contracted by a government entity — are governed by the Public Works Bond Act (MCL 129.201 et seq.) instead.</p>
-          <p style="margin-top:8px;">For a public project you need to file a <strong>bond claim</strong> against the contractor's payment bond, not a lien against the property. This is a different process requiring different documents, different deadlines, and ideally an attorney familiar with public contracts.</p>
-          <p style="margin-top:8px;">We recommend contacting a Michigan construction attorney. The State Bar of Michigan's referral service can connect you with one: <strong>(800) 968-0738</strong>.</p>
+          <p><strong>LodgeMiLien cannot process public project claims.</strong></p>
+          <p style="margin-top:8px;">Public projects are governed by payment bond statutes, not mechanics lien law. You need to file a bond claim against the contractor's payment bond — a different process requiring different documents and an attorney familiar with public contracts.</p>
+          <p style="margin-top:8px;">Contact your state bar's lawyer referral service for a construction attorney in your area.</p>
         </div>
-        <button class="btn-back" onclick="document.querySelectorAll('input[name=project-type]').forEach(r => r.checked = false); document.getElementById('public-project-block').style.display='none'; document.getElementById('project-type-nav').style.display='flex';" style="width:100%;padding:14px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--muted);font-family:var(--font-body);font-size:15px;cursor:pointer;">Choose a Different Project Type</button>
+        <button onclick="document.querySelectorAll('input[name=project-type]').forEach(r=>r.checked=false);document.getElementById('public-project-block').style.display='none';document.getElementById('project-type-nav').style.display='flex';" style="width:100%;padding:14px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--muted);font-family:var(--font-body);font-size:15px;cursor:pointer;">Choose a Different Project Type</button>
       </div>
       <div class="wizard-nav" id="project-type-nav" style="display:flex;">
-        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
         <button class="btn-next" onclick="checkProjectType()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 3: Job Address -->
-    <div class="wizard-step" id="step-3">
+    <!-- C5: Job Address -->
+    <div class="wizard-step" id="wc-5">
       <h3>Where Was The Job?</h3>
-      <p class="hint">The lien must be filed with the county where the property is located, not where you're based.</p>
+      <p class="hint">The lien must be filed in the county where the property is located.</p>
       <div class="field-group">
-        <div class="field">
-          <label>Property Street Address</label>
-          <input type="text" placeholder="123 Main St" id="prop-address">
-        </div>
-        <div class="field">
-          <label>City</label>
-          <input type="text" placeholder="Detroit" id="prop-city">
-        </div>
-        <div class="field">
-          <label>County</label>
-          <select id="prop-county">
-            <option value="">Select county...</option>
-            <option>Wayne</option><option>Oakland</option><option>Macomb</option>
-            <option>Kent</option><option>Washtenaw</option><option>Ingham</option>
-            <option>Kalamazoo</option><option>Genesee</option><option>Ottawa</option>
-            <option>Saginaw</option><option>Muskegon</option><option>St. Clair</option>
-            <option>Jackson</option><option>Monroe</option><option>Berrien</option>
-            <option>Calhoun</option><option>Eaton</option><option>Bay</option>
-            <option>Livingston</option><option>Allegan</option>
-            <option>Other Michigan County</option>
-          </select>
-        </div>
+        <div class="field"><label>Property Street Address</label><input type="text" placeholder="123 Main St" id="prop-address"></div>
+        <div class="field"><label>City</label><input type="text" placeholder="Detroit" id="prop-city"></div>
+        <div class="field"><label>County</label><select id="prop-county"><option value="">Select county...</option></select></div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
-        <button class="btn-next" onclick="nextStep()">Continue →</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 4: Property Owner -->
-    <div class="wizard-step" id="step-4">
+    <!-- C6: Property Owner -->
+    <div class="wizard-step" id="wc-6">
       <h3>Who Owns The Property?</h3>
-      <p class="hint">This is the person or company that owns the property where work was performed, not necessarily who hired you.</p>
+      <p class="hint">The person or company that owns the property, not necessarily who hired you.</p>
       <div class="field-group">
-        <div class="field">
-          <label>Owner Name or Company</label>
-          <input type="text" placeholder="Smith Properties LLC" id="owner-name">
-        </div>
-        <div class="field">
-          <label>Owner Mailing Address (if known)</label>
-          <input type="text" placeholder="Same as property, or different address" id="owner-address">
-        </div>
+        <div class="field"><label>Owner Name or Company</label><input type="text" placeholder="Smith Properties LLC" id="owner-name"></div>
+        <div class="field"><label>Owner Mailing Address (if known)</label><input type="text" placeholder="Same as property, or different address" id="owner-address"></div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
-        <button class="btn-next" onclick="nextStep()">Continue →</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 5: Dates -->
-    <div class="wizard-step" id="step-5">
+    <!-- C7: Dates -->
+    <div class="wizard-step" id="wc-7">
       <h3>When Did You Work?</h3>
       <p class="hint">These dates determine your filing deadlines. Be as accurate as possible.</p>
       <div class="field-group">
-        <div class="field">
-          <label>First Date You Worked or Delivered Material</label>
-          <input type="date" id="date-first">
-        </div>
-        <div class="field">
-          <label>Last Date You Worked or Delivered Material</label>
-          <input type="date" id="date-last">
-        </div>
+        <div class="field"><label>First Date You Worked or Delivered Material</label><input type="date" id="date-first"></div>
+        <div class="field"><label>Last Date You Worked or Delivered Material</label><input type="date" id="date-last"></div>
       </div>
       <div id="deadline-alert-box"></div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
         <button class="btn-next" onclick="checkDates()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 6: Amount -->
-    <div class="wizard-step" id="step-6">
+    <!-- C8: Amount -->
+    <div class="wizard-step" id="wc-8">
       <h3>How Much Are You Owed?</h3>
-      <p class="hint">Enter the total unpaid amount including materials and labor. This goes directly on your lien documents.</p>
+      <p class="hint">Enter the total unpaid amount including materials and labor.</p>
       <div class="field-group">
-        <div class="field">
-          <label>Amount Owed ($)</label>
-          <input type="number" placeholder="15000" id="amount-owed" min="1">
-        </div>
-        <div class="field">
-          <label>Brief Description of Work</label>
-          <input type="text" placeholder="Roofing installation, 3,200 sq ft" id="work-desc">
-        </div>
+        <div class="field"><label>Amount Owed ($)</label><input type="number" placeholder="15000" id="amount-owed" min="1"></div>
+        <div class="field"><label>Brief Description of Work</label><input type="text" placeholder="Roofing installation, 3,200 sq ft" id="work-desc"></div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
-        <button class="btn-next" onclick="nextStep()">Continue →</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 7: Your Info -->
-    <div class="wizard-step" id="step-7">
+    <!-- C9: Your Info -->
+    <div class="wizard-step" id="wc-9">
       <h3>Your Information</h3>
       <p class="hint">This appears on your documents. Use your legal business name if you operate as an LLC or Corp.</p>
       <div class="field-group">
-        <div class="field">
-          <label>Your Name or Business Name</label>
-          <input type="text" placeholder="Russo Roofing LLC" id="claimant-name">
-        </div>
-        <div class="field">
-          <label>Your Address</label>
-          <input type="text" placeholder="Your business or mailing address" id="claimant-address">
-        </div>
-        <div class="field">
-          <label>Phone</label>
-          <input type="tel" placeholder="(313) 555-0100" id="claimant-phone">
-        </div>
-        <div class="field">
-          <label>Email (for document delivery)</label>
-          <input type="email" placeholder="you@example.com" id="claimant-email">
-        </div>
+        <div class="field"><label>Your Name or Business Name</label><input type="text" placeholder="Russo Roofing LLC" id="claimant-name"></div>
+        <div class="field"><label>Your Address</label><input type="text" placeholder="Your business or mailing address" id="claimant-address"></div>
+        <div class="field"><label>Phone</label><input type="tel" placeholder="(313) 555-0100" id="claimant-phone"></div>
+        <div class="field"><label>Email (for document delivery)</label><input type="email" placeholder="you@example.com" id="claimant-email"></div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
-        <button class="btn-next" onclick="nextStep()">Continue →</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 8: Upload Proof of Work -->
-    <div class="wizard-step" id="step-8">
+    <!-- C10: Upload -->
+    <div class="wizard-step" id="wc-10">
       <h3>Upload Proof of Work</h3>
-      <p class="hint">Upload a signed contract, invoice, work order, or any document showing the agreement between you and the property owner. This is required to process your lien. JPG, PNG, or PDF accepted.</p>
+      <p class="hint">Upload a signed contract, invoice, work order, or any document showing the agreement. Required. JPG, PNG, or PDF accepted.</p>
       <div class="field-group">
-        <div class="field">
-          <label>Proof of Work Document</label>
-          <input type="file" id="proof-upload" accept=".jpg,.jpeg,.png,.pdf,.webp" style="background:var(--steel);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);width:100%;">
-        </div>
+        <div class="field"><label>Proof of Work Document</label><input type="file" id="proof-upload" accept=".jpg,.jpeg,.png,.pdf,.webp" style="background:var(--steel);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);width:100%;"></div>
         <div id="upload-status" style="font-size:13px;color:var(--muted);min-height:20px;"></div>
       </div>
       <div class="wizard-nav">
-        <button class="btn-back" onclick="prevStep()">Back</button>
-        <button class="btn-next" onclick="uploadAndContinue()">Continue →</button>
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="uploadAndContinue('construction')">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 9: Package + Pay -->
-    <div class="wizard-step" id="step-9">
+    <!-- C11: Pay -->
+    <div class="wizard-step" id="wc-11">
       <h3>Review & Pay</h3>
       <p class="hint">Documents delivered to your email within 24 hours after review.</p>
       <div class="summary-block">
-        <div class="summary-row">
-          <span class="label">Package</span>
-          <span class="value">Full Lien Package</span>
-        </div>
-        <div class="summary-row">
-          <span class="label">County</span>
-          <span class="value" id="summary-county">Wayne</span>
-        </div>
-        <div class="summary-row">
-          <span class="label">Amount in Dispute</span>
-          <span class="value" id="summary-amount">—</span>
-        </div>
-        <div class="summary-row">
-          <span class="label">Proof Uploaded</span>
-          <span class="value" id="summary-proof" style="color:#2ea043;font-size:13px;">—</span>
-        </div>
-        <div class="summary-row total">
-          <span class="label">Total Due</span>
-          <span class="value">$197</span>
-        </div>
+        <div class="summary-row"><span class="label">Package</span><span class="value">Full Lien Package</span></div>
+        <div class="summary-row"><span class="label">State</span><span class="value" id="summary-state">Michigan</span></div>
+        <div class="summary-row"><span class="label">County</span><span class="value" id="summary-county">—</span></div>
+        <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="summary-amount">—</span></div>
+        <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
+        <div class="summary-row total"><span class="label">Total Due</span><span class="value">$197</span></div>
       </div>
-      <button class="stripe-button" onclick="fakeCheckout()">
-        Pay Securely — $197
-      </button>
+      <button class="stripe-button" onclick="doCheckout()">Pay Securely — $197</button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
-      <div class="wizard-nav" style="margin-top: 16px;">
-        <button class="btn-back" onclick="prevStep()">Back</button>
+      <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
+    </div>
+
+    <!-- ══════════════════════════════════ -->
+    <!-- AUTOMOTIVE TRACK: A3-A7          -->
+    <!-- ══════════════════════════════════ -->
+
+    <!-- A3: Vehicle Info -->
+    <div class="wizard-step" id="wa-3">
+      <h3>Vehicle Information</h3>
+      <p class="hint">The garage keeper's lien attaches to the vehicle itself. Enter the vehicle details and owner information.</p>
+      <div class="field-group">
+        <div class="field"><label>Vehicle Year, Make, Model</label><input type="text" placeholder="2019 Ford F-150" id="auto-vehicle"></div>
+        <div class="field"><label>VIN (Vehicle Identification Number)</label><input type="text" placeholder="1FTFW1E50KFA00000" id="auto-vin" style="font-family:monospace;letter-spacing:1px;"></div>
+        <div class="field"><label>Vehicle Owner Name (as shown on title)</label><input type="text" placeholder="John Smith" id="auto-owner-name"></div>
+        <div class="field"><label>Vehicle Owner Address</label><input type="text" placeholder="123 Main St, Detroit, MI 48201" id="auto-owner-address"></div>
       </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- A4: Dates & Amount -->
+    <div class="wizard-step" id="wa-4">
+      <h3>Work Details</h3>
+      <p class="hint">The 105-day deadline to file a Garage Keeper's Lien runs from the last day work was performed.</p>
+      <div class="field-group">
+        <div class="field"><label>Last Date Work Was Performed</label><input type="date" id="auto-date-last"></div>
+        <div class="field"><label>Amount Owed ($)</label><input type="number" placeholder="2500" id="auto-amount" min="1"></div>
+        <div class="field"><label>Description of Work Performed</label><input type="text" placeholder="Engine replacement, labor and parts" id="auto-work-desc"></div>
+        <div id="auto-deadline-alert"></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="checkAutoDates()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- A5: Your Info -->
+    <div class="wizard-step" id="wa-5">
+      <h3>Your Shop Information</h3>
+      <p class="hint">Your Michigan repair facility information. You must be licensed under the Motor Vehicle Service and Repair Act (MCL 257.1301) to file a Garage Keeper's Lien.</p>
+      <div class="field-group">
+        <div class="field"><label>Shop Name</label><input type="text" placeholder="Russo Auto Repair LLC" id="auto-shop-name"></div>
+        <div class="field"><label>Shop Address</label><input type="text" placeholder="456 Garage St, Troy, MI 48084" id="auto-shop-address"></div>
+        <div class="field"><label>Phone</label><input type="tel" placeholder="(248) 555-0100" id="auto-shop-phone"></div>
+        <div class="field"><label>Email (for document delivery)</label><input type="email" placeholder="you@example.com" id="auto-shop-email"></div>
+        <div class="field"><label>Repair Facility License Number</label><input type="text" placeholder="Michigan MVSR License #" id="auto-license"></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="goNext()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- A6: Upload -->
+    <div class="wizard-step" id="wa-6">
+      <h3>Upload Proof of Work</h3>
+      <p class="hint">Upload your repair order, invoice, or signed work authorization. Required. JPG, PNG, or PDF accepted.</p>
+      <div class="field-group">
+        <div class="field"><label>Repair Order or Invoice</label><input type="file" id="proof-upload-auto" accept=".jpg,.jpeg,.png,.pdf,.webp" style="background:var(--steel);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);width:100%;"></div>
+        <div id="upload-status-auto" style="font-size:13px;color:var(--muted);min-height:20px;"></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-back" onclick="goBack()">Back</button>
+        <button class="btn-next" onclick="uploadAndContinue('automotive')">Continue →</button>
+      </div>
+    </div>
+
+    <!-- A7: Pay -->
+    <div class="wizard-step" id="wa-7">
+      <h3>Review & Pay</h3>
+      <p class="hint">Documents delivered to your email within 24 hours after review.</p>
+      <div class="summary-block">
+        <div class="summary-row"><span class="label">Package</span><span class="value">Garage Keeper's Lien Package</span></div>
+        <div class="summary-row"><span class="label">State</span><span class="value">Michigan</span></div>
+        <div class="summary-row"><span class="label">Vehicle</span><span class="value" id="auto-summary-vehicle">—</span></div>
+        <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="auto-summary-amount">—</span></div>
+        <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="auto-summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
+        <div class="summary-row total"><span class="label">Total Due</span><span class="value">$197</span></div>
+      </div>
+      <button class="stripe-button" onclick="doCheckout()">Pay Securely — $197</button>
+      <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
+      <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
     </div>
 
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  let currentStep = 1;
-  const totalSteps = 9;
+<script>
+  // ── Track system ──
+  // track: 'construction' | 'automotive'
+  // Each track has a sequence of step IDs
+  const TRACKS = {
+    shared: ['ws-1', 'ws-2'],
+    construction: ['wc-3','wc-4','wc-5','wc-6','wc-7','wc-8','wc-9','wc-10','wc-11'],
+    automotive:   ['wa-3','wa-4','wa-5','wa-6','wa-7'],
+  };
+
+  let track = 'construction';
+  let trackPos = 0; // index into current full sequence
   let uploadedProofUrl = '';
+
+  const STATE_COUNTIES = {
+    MI: ['Wayne','Oakland','Macomb','Kent','Washtenaw','Ingham','Kalamazoo','Genesee','Ottawa','Saginaw','Muskegon','St. Clair','Jackson','Monroe','Berrien','Calhoun','Eaton','Bay','Livingston','Allegan','Other Michigan County'],
+    OH: ['Franklin','Cuyahoga','Hamilton','Summit','Montgomery','Lucas','Butler','Stark','Lorain','Lake','Mahoning','Medina','Warren','Clark','Delaware','Licking','Allen','Trumbull','Greene','Clermont','Other Ohio County'],
+    IN: ['Marion','Lake','Allen','Hamilton','St. Joseph','Elkhart','Tippecanoe','Vanderburgh','Monroe','Hendricks','Johnson','Kosciusko','Porter','Madison','Delaware','Vigo','Bartholomew','Howard','Clark','Floyd','Other Indiana County'],
+  };
+
+  function getSequence() {
+    return [...TRACKS.shared, ...TRACKS[track]];
+  }
+
+  function currentStepId() {
+    return getSequence()[trackPos];
+  }
+
+  function showStepId(id) {
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const seq = getSequence();
+    const pos = seq.indexOf(id);
+    const pct = Math.round(((pos + 1) / seq.length) * 100);
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('step-label').textContent = 'Step ' + (pos + 1) + ' of ' + seq.length;
+    trackPos = pos;
+
+    // Side effects on specific steps
+    if (id === 'wc-5') populateCounties();
+    if (id === 'wc-11') updateConstructionSummary();
+    if (id === 'wa-7') updateAutoSummary();
+    if (id === 'ws-2') updateWorkTypeOptions();
+  }
 
   function openModal() {
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    track = 'construction';
+    trackPos = 0;
+    showStepId('ws-1');
   }
 
   function closeModal() {
@@ -1387,118 +1465,182 @@
     if (e.target === this) closeModal();
   });
 
-  function showStep(n) {
-    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-    document.getElementById('step-' + n).classList.add('active');
-    const pct = Math.round((n / totalSteps) * 100);
-    document.getElementById('progress').style.width = pct + '%';
-    document.getElementById('step-label').textContent = 'Step ' + n + ' of ' + totalSteps;
-    currentStep = n;
-    if (n === 9) updateSummary();
+  function goNext() {
+    const seq = getSequence();
+    if (trackPos < seq.length - 1) showStepId(seq[trackPos + 1]);
   }
 
-  function nextStep() {
-    if (currentStep < totalSteps) showStep(currentStep + 1);
+  function goBack() {
+    if (trackPos > 0) showStepId(getSequence()[trackPos - 1]);
   }
 
-  function prevStep() {
-    if (currentStep > 1) showStep(currentStep - 1);
+  function updateWorkTypeOptions() {
+    const state = document.querySelector('input[name="state-code"]:checked');
+    const autoOption = document.getElementById('wt-auto-option');
+    if (state && state.value === 'MI') {
+      autoOption.style.display = 'block';
+    } else {
+      autoOption.style.display = 'none';
+      const autoRadio = document.getElementById('wt-automotive');
+      if (autoRadio) autoRadio.checked = false;
+    }
+  }
+
+  function selectTrack() {
+    const selected = document.querySelector('input[name="work-type"]:checked');
+    if (!selected) return;
+    track = selected.value;
+    goNext();
   }
 
   function checkProjectType() {
     const selected = document.querySelector('input[name="project-type"]:checked');
-    if (!selected) {
-      alert('Please select a project type to continue.');
-      return;
-    }
+    if (!selected) return;
     if (selected.value === 'public') {
       document.getElementById('public-project-block').style.display = 'block';
       document.getElementById('project-type-nav').style.display = 'none';
       return;
     }
-    nextStep();
+    goNext();
+  }
+
+  function populateCounties() {
+    const state = document.querySelector('input[name="state-code"]:checked');
+    const code = state ? state.value : 'MI';
+    const select = document.getElementById('prop-county');
+    const counties = STATE_COUNTIES[code] || STATE_COUNTIES.MI;
+    select.innerHTML = '<option value="">Select county...</option>' +
+      counties.map(c => `<option>${c}</option>`).join('');
   }
 
   function checkDates() {
     const last = document.getElementById('date-last').value;
     const alertBox = document.getElementById('deadline-alert-box');
     if (last) {
-      const lastDate = new Date(last);
-      const today = new Date();
-      const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+      const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
       const daysLeft = 90 - daysAgo;
       if (daysLeft <= 14 && daysLeft > 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Rush processing may be required.</strong> You have approximately ' + daysLeft + ' days before your 90-day Claim of Lien deadline. We will flag this during review.</p></div>';
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Rush processing may be required.</strong> Approximately ' + daysLeft + ' days remain before your filing deadline.</p></div>';
       } else if (daysLeft <= 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Your 90-day Claim of Lien window may have passed.</strong> You may still have options. Continue and we will review your situation and advise next steps.</p></div>';
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Your filing window may have passed.</strong> Continue and we will review your situation.</p></div>';
       } else {
         alertBox.innerHTML = '';
       }
     }
-    nextStep();
+    goNext();
   }
 
-  async function uploadAndContinue() {
-    const fileInput = document.getElementById('proof-upload');
-    const statusEl = document.getElementById('upload-status');
+  function checkAutoDates() {
+    const last = document.getElementById('auto-date-last').value;
+    const alertBox = document.getElementById('auto-deadline-alert');
+    if (last) {
+      const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
+      const daysLeft = 105 - daysAgo;
+      if (daysLeft <= 21 && daysLeft > 0) {
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Urgent:</strong> You have approximately ' + daysLeft + ' days before the 105-day Garage Keeper\'s Lien deadline. File immediately.</p></div>';
+      } else if (daysLeft <= 0) {
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>The 105-day deadline may have passed.</strong> Continue and we will review your situation and advise next steps.</p></div>';
+      } else {
+        alertBox.innerHTML = '<div style="font-size:13px;color:#2ea043;margin-top:8px;">You have approximately ' + daysLeft + ' days remaining to file. You\'re in good shape.</div>';
+      }
+    }
+    goNext();
+  }
+
+  async function uploadAndContinue(uploadTrack) {
+    const inputId = uploadTrack === 'automotive' ? 'proof-upload-auto' : 'proof-upload';
+    const statusId = uploadTrack === 'automotive' ? 'upload-status-auto' : 'upload-status';
+    const fileInput = document.getElementById(inputId);
+    const statusEl = document.getElementById(statusId);
 
     if (!fileInput.files || !fileInput.files[0]) {
       statusEl.style.color = '#e84040';
       statusEl.textContent = 'Please select a file before continuing. This is required.';
       return;
     }
-
     const file = fileInput.files[0];
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
+    if (file.size > 10 * 1024 * 1024) {
       statusEl.style.color = '#e84040';
-      statusEl.textContent = 'File is too large. Maximum size is 10MB.';
+      statusEl.textContent = 'File is too large. Maximum 10MB.';
       return;
     }
-
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'Uploading...';
-
     try {
-      const response = await fetch(`/api/upload-proof?filename=${encodeURIComponent(file.name)}`, {
+      const res = await fetch(`/api/upload-proof?filename=${encodeURIComponent(file.name)}`, {
         method: 'POST',
         headers: { 'Content-Type': file.type },
         body: file,
       });
-
-      const result = await response.json();
-
+      const result = await res.json();
       if (result.url) {
         uploadedProofUrl = result.url;
         statusEl.style.color = '#2ea043';
         statusEl.textContent = 'Uploaded: ' + file.name;
-        nextStep();
+        goNext();
       } else {
         throw new Error(result.error || 'Upload failed');
       }
     } catch (err) {
       statusEl.style.color = '#e84040';
-      statusEl.textContent = 'Upload failed: ' + err.message + '. Please try again.';
+      statusEl.textContent = 'Upload failed: ' + err.message;
     }
   }
 
-  function updateSummary() {
+  function updateConstructionSummary() {
+    const state = document.querySelector('input[name="state-code"]:checked');
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana' };
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
+    if (state) document.getElementById('summary-state').textContent = stateNames[state.value] || '';
     if (county) document.getElementById('summary-county').textContent = county + ' County';
     if (amount) document.getElementById('summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('summary-proof').textContent = 'Document uploaded';
   }
 
-  function collectFormData() {
-    const last = document.getElementById('date-last').value;
-    const lastDate = new Date(last);
-    const today = new Date();
-    const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
-    const rushRequired = daysAgo >= 76;
+  function updateAutoSummary() {
+    const vehicle = document.getElementById('auto-vehicle').value;
+    const amount = document.getElementById('auto-amount').value;
+    if (vehicle) document.getElementById('auto-summary-vehicle').textContent = vehicle;
+    if (amount) document.getElementById('auto-summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
+    if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
+  }
 
+  function collectFormData() {
+    const state = document.querySelector('input[name="state-code"]:checked');
+    const stateCode = state ? state.value : 'MI';
+
+    if (track === 'automotive') {
+      const last = document.getElementById('auto-date-last').value;
+      const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
+      return {
+        stateCode: 'MI',
+        workType: 'automotive',
+        vehicleDescription: document.getElementById('auto-vehicle').value,
+        vin: document.getElementById('auto-vin').value,
+        ownerName: document.getElementById('auto-owner-name').value,
+        ownerAddress: document.getElementById('auto-owner-address').value,
+        dateLast: last,
+        amountOwed: document.getElementById('auto-amount').value,
+        workDescription: document.getElementById('auto-work-desc').value,
+        claimantName: document.getElementById('auto-shop-name').value,
+        claimantAddress: document.getElementById('auto-shop-address').value,
+        claimantPhone: document.getElementById('auto-shop-phone').value,
+        claimantEmail: document.getElementById('auto-shop-email').value,
+        licenseNumber: document.getElementById('auto-license').value,
+        packageType: 'full',
+        rushRequired: daysAgo >= 84,
+        proofUrl: uploadedProofUrl,
+      };
+    }
+
+    const last = document.getElementById('date-last').value;
+    const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
     return {
+      stateCode,
+      workType: 'construction',
       role: document.querySelector('input[name="role"]:checked')?.value || '',
+      projectType: document.querySelector('input[name="project-type"]:checked')?.value || 'commercial',
       propertyAddress: document.getElementById('prop-address').value,
       propertyCity: document.getElementById('prop-city').value,
       propertyCounty: document.getElementById('prop-county').value,
@@ -1513,26 +1655,23 @@
       claimantPhone: document.getElementById('claimant-phone').value,
       claimantEmail: document.getElementById('claimant-email').value,
       packageType: 'full',
-      rushRequired,
+      rushRequired: daysAgo >= 76,
       proofUrl: uploadedProofUrl,
     };
   }
 
-  async function fakeCheckout() {
+  async function doCheckout() {
     const btn = document.querySelector('.stripe-button');
     btn.textContent = 'Preparing secure checkout...';
     btn.disabled = true;
-
     try {
       const data = collectFormData();
-      const response = await fetch('/api/create-checkout', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-
-      const result = await response.json();
-
+      const result = await res.json();
       if (result.url) {
         window.location.href = result.url;
       } else {
@@ -1541,22 +1680,7 @@
     } catch (err) {
       btn.textContent = 'Something went wrong — please try again';
       btn.disabled = false;
-      console.error(err);
     }
-  }
-
-  function checkProjectType() {
-    const selected = document.querySelector('input[name="project-type"]:checked');
-    if (!selected) {
-      return;
-    }
-    if (selected.value === 'public') {
-      document.getElementById('public-project-block').style.display = 'block';
-      document.getElementById('project-type-nav').style.display = 'none';
-      return;
-    }
-    nextStep();
-  }
 </script>
 
 </body>
