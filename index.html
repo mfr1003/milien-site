@@ -893,7 +893,7 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">Mi<span>Lien</span></a>
-  <a href="#" class="nav-cta" onclick="openModal(); return false;">File Now</a>
+  <a href="#" class="nav-cta" onclick="openModalWithPackage('full', false); return false;">File Now</a>
 </nav>
 
 <!-- HERO -->
@@ -902,7 +902,7 @@
   <h1>You Did<br>The Work.<em>Now Get Paid.</em></h1>
   <p class="hero-sub">Fast, accurate lien documents for Michigan contractors and tradespeople. We handle the paperwork. You handle the job site.</p>
   <div class="hero-cta-group">
-    <a href="#" class="btn-primary" onclick="openModal(); return false;">
+    <a href="#" class="btn-primary" onclick="openModalWithPackage('full', false); return false;">
       File My Lien — Starting at $97
     </a>
   </div>
@@ -1002,12 +1002,12 @@
         <li><span class="check">✓</span>Ready in under 24 hours</li>
         <li><span class="check">✓</span>Human review included</li>
       </ul>
-      <a href="#" class="btn-card btn-card-outline" onclick="openModal(); return false;">Get Started</a>
+      <a href="#" class="btn-card btn-card-outline" onclick="openModalWithPackage('demand', false); return false;">Get Started</a>
     </div>
     <div class="price-card featured">
       <div class="featured-badge">Most Common</div>
       <div class="card-name">Full Lien Package</div>
-      <div class="card-desc">Complete document set: Notice of Furnishing, Demand Letter, and Claim of Lien.</div>
+      <div class="card-desc">Complete document set: Demand Letter, Claim of Lien, and filing instructions.</div>
       <div class="card-price">
         <div class="price-dollar">$197</div>
         <div class="price-note">flat</div>
@@ -1019,22 +1019,23 @@
         <li><span class="check">✓</span>Human review included</li>
         <li><span class="check">✓</span>Filing instructions step by step</li>
       </ul>
-      <a href="#" class="btn-card btn-card-primary" onclick="openModal(); return false;">File My Lien</a>
+      <a href="#" class="btn-card btn-card-primary" onclick="openModalWithPackage('full', false); return false;">File My Lien</a>
     </div>
     <div class="price-card">
       <div class="card-name">Filing Coordination</div>
-      <div class="card-desc">Add this to either package and we coordinate notarization and county filing on your behalf.</div>
+      <div class="card-desc">Add to the Full Lien Package and we coordinate notarization and county filing on your behalf.</div>
       <div class="card-price">
-        <div class="price-dollar">+$75</div>
-        <div class="price-note">add-on</div>
+        <div class="price-dollar">$272</div>
+        <div class="price-note">full + filing</div>
       </div>
       <ul class="card-features">
+        <li><span class="check">✓</span>Everything in Full Lien Package</li>
         <li><span class="check">✓</span>We coordinate notarization</li>
         <li><span class="check">✓</span>Electronic filing where available</li>
         <li><span class="check">✓</span>Physical filing coordination</li>
         <li><span class="check">✓</span>Confirmation and receipt</li>
       </ul>
-      <a href="#" class="btn-card btn-card-outline" onclick="openModal(); return false;">Add to Package</a>
+      <a href="#" class="btn-card btn-card-outline" onclick="openModalWithPackage('full', true); return false;">Get Full Service</a>
     </div>
   </div>
   <div class="rush-note"><strong>Under 5 business days to your deadline?</strong> Rush processing available — 50% surcharge applies. Don't wait to find out if you qualify.</div>
@@ -1101,7 +1102,7 @@
 <section class="bottom-cta">
   <h2>Stop Waiting<br>To Get Paid</h2>
   <p>You earned it. The paperwork shouldn't stand between you and your money.</p>
-  <a href="#" class="btn-primary" onclick="openModal(); return false;">
+  <a href="#" class="btn-primary" onclick="openModalWithPackage('full', false); return false;">
     File My Lien — Starting at $97
   </a>
 </section>
@@ -1304,14 +1305,27 @@
       <h3>Review & Pay</h3>
       <p class="hint">Documents delivered to your email within 24 hours after review.</p>
       <div class="summary-block">
-        <div class="summary-row"><span class="label">Package</span><span class="value">Full Lien Package</span></div>
+        <div class="summary-row"><span class="label">Package</span><span class="value" id="summary-package">Full Lien Package</span></div>
         <div class="summary-row"><span class="label">State</span><span class="value" id="summary-state">Michigan</span></div>
         <div class="summary-row"><span class="label">County</span><span class="value" id="summary-county">—</span></div>
         <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="summary-amount">—</span></div>
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
-        <div class="summary-row total"><span class="label">Total Due</span><span class="value">$197</span></div>
+        <div class="summary-row" id="filing-coord-row" style="display:none;">
+          <span class="label">Filing Coordination</span>
+          <span class="value" style="color:#2ea043;">+$75</span>
+        </div>
+        <div class="summary-row total"><span class="label">Total Due</span><span class="value" id="summary-total">$197</span></div>
       </div>
-      <button class="stripe-button" onclick="doCheckout()">Pay Securely — $197</button>
+      <div style="background:var(--steel);border-radius:8px;padding:16px;margin-bottom:16px;" id="filing-coord-addon">
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+          <input type="checkbox" id="filing-coord-check" onchange="updatePriceSummary()" style="margin-top:3px;flex-shrink:0;accent-color:var(--amber);">
+          <div>
+            <div style="font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px;">Add Filing Coordination — <span style="color:var(--amber);">+$75</span></div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;">We coordinate notarization and file with the county Register of Deeds on your behalf. Electronic filing where available, physical filing coordination otherwise.</div>
+          </div>
+        </label>
+      </div>
+      <button class="stripe-button" id="pay-btn-construction" onclick="doCheckout()">Pay Securely — <span id="pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
       <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
     </div>
@@ -1435,8 +1449,30 @@
   };
 
   let track = 'construction';
-  let trackPos = 0; // index into current full sequence
+  let trackPos = 0;
   let uploadedProofUrl = '';
+  let selectedPackage = 'full';
+  let selectedFilingCoord = false;
+
+  const PRICES = {
+    demand: 97,
+    full: 197,
+  };
+
+  function openModalWithPackage(pkg, filingCoord) {
+    selectedPackage = pkg;
+    selectedFilingCoord = filingCoord;
+    uploadedProofUrl = '';
+    track = 'construction';
+    trackPos = 0;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    showStepId('ws-1');
+  }
+
+  function openModal() {
+    openModalWithPackage('full', false);
+  }
 
   const STATE_COUNTIES = {
     MI: ['Wayne','Oakland','Macomb','Kent','Washtenaw','Ingham','Kalamazoo','Genesee','Ottawa','Saginaw','Muskegon','St. Clair','Jackson','Monroe','Berrien','Calhoun','Eaton','Bay','Livingston','Allegan','Other Michigan County'],
@@ -1634,10 +1670,39 @@
     const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana' };
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
+    const pkgLabel = selectedPackage === 'demand' ? 'Demand Letter' : 'Full Lien Package';
+
     if (state) document.getElementById('summary-state').textContent = stateNames[state.value] || '';
     if (county) document.getElementById('summary-county').textContent = county + ' County';
     if (amount) document.getElementById('summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('summary-proof').textContent = 'Document uploaded';
+
+    document.getElementById('summary-package').textContent = pkgLabel;
+
+    // Show/hide filing coord checkbox — only for full package
+    const filingAddon = document.getElementById('filing-coord-addon');
+    if (selectedPackage === 'demand') {
+      filingAddon.style.display = 'none';
+      selectedFilingCoord = false;
+    } else {
+      filingAddon.style.display = 'block';
+      document.getElementById('filing-coord-check').checked = selectedFilingCoord;
+    }
+
+    updatePriceSummary();
+  }
+
+  function updatePriceSummary() {
+    const base = PRICES[selectedPackage] || 197;
+    const filingCheck = document.getElementById('filing-coord-check');
+    const addFiling = filingCheck && filingCheck.checked;
+    const total = base + (addFiling ? 75 : 0);
+    const filingRow = document.getElementById('filing-coord-row');
+
+    document.getElementById('summary-total').textContent = '$' + total;
+    document.getElementById('pay-btn-amount').textContent = '$' + total;
+    if (filingRow) filingRow.style.display = addFiling ? 'flex' : 'none';
+    selectedFilingCoord = addFiling;
   }
 
   function updateAutoSummary() {
@@ -1697,7 +1762,8 @@
       claimantAddress: document.getElementById('claimant-address').value,
       claimantPhone: document.getElementById('claimant-phone').value,
       claimantEmail: document.getElementById('claimant-email').value,
-      packageType: 'full',
+      packageType: selectedPackage,
+      filingCoordination: selectedFilingCoord ? 'true' : 'false',
       rushRequired: daysAgo >= 76,
       proofUrl: uploadedProofUrl,
     };
