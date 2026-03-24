@@ -1464,15 +1464,34 @@
     <div class="wizard-step" id="wa-7">
       <h3>Review & Pay</h3>
       <p class="hint">Documents delivered to your email within 24 hours after review.</p>
+
+      <div class="field-group" style="margin-bottom:16px;">
+        <label style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:8px;">Select Your Package</label>
+        <div class="role-options">
+          <div class="role-option">
+            <input type="radio" name="auto-package" id="ap-demand" value="demand" onchange="updateAutoPackage()">
+            <label for="ap-demand">Demand Letter — $97<br><span style="font-size:12px;font-weight:400;">Professional letter citing MCL 570.301. Resolves most disputes.</span></label>
+          </div>
+          <div class="role-option">
+            <input type="radio" name="auto-package" id="ap-full" value="full" checked onchange="updateAutoPackage()">
+            <label for="ap-full">Full Package — $197<br><span style="font-size:12px;font-weight:400;">Demand letter + BDVR-35 guide + step-by-step filing instructions.</span></label>
+          </div>
+          <div class="role-option">
+            <input type="radio" name="auto-package" id="ap-full-filing" value="full-filing" onchange="updateAutoPackage()">
+            <label for="ap-full-filing">Full Package + Filing — $272<br><span style="font-size:12px;font-weight:400;">We coordinate the BDVR-35 submission with MDOS on your behalf.</span></label>
+          </div>
+        </div>
+      </div>
+
       <div class="summary-block">
-        <div class="summary-row"><span class="label">Package</span><span class="value">Garage Keeper's Lien Package</span></div>
+        <div class="summary-row"><span class="label">Package</span><span class="value" id="auto-summary-package">Full Package</span></div>
         <div class="summary-row"><span class="label">State</span><span class="value">Michigan</span></div>
         <div class="summary-row"><span class="label">Vehicle</span><span class="value" id="auto-summary-vehicle">—</span></div>
         <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="auto-summary-amount">—</span></div>
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="auto-summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
-        <div class="summary-row total"><span class="label">Total Due</span><span class="value">$197</span></div>
+        <div class="summary-row total"><span class="label">Total Due</span><span class="value" id="auto-summary-total">$197</span></div>
       </div>
-      <button class="stripe-button" onclick="doCheckout()">Pay Securely — $197</button>
+      <button class="stripe-button" onclick="doCheckout()">Pay Securely — <span id="auto-pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
       <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
     </div>
@@ -1747,6 +1766,16 @@
     selectedFilingCoord = addFiling;
   }
 
+  function updateAutoPackage() {
+    const selected = document.querySelector('input[name="auto-package"]:checked')?.value || 'full';
+    const prices = { demand: 97, full: 197, 'full-filing': 272 };
+    const labels = { demand: 'Demand Letter', full: 'Full Package', 'full-filing': 'Full Package + Filing' };
+    const total = prices[selected] || 197;
+    document.getElementById('auto-summary-package').textContent = labels[selected];
+    document.getElementById('auto-summary-total').textContent = '$' + total;
+    document.getElementById('auto-pay-btn-amount').textContent = '$' + total;
+  }
+
   function updateAutoSummary() {
     const vehicle = document.getElementById('auto-vehicle').value;
     const amount = document.getElementById('auto-amount').value;
@@ -1762,6 +1791,9 @@
     if (track === 'automotive') {
       const last = document.getElementById('auto-date-last').value;
       const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
+      const autoPkg = document.querySelector('input[name="auto-package"]:checked')?.value || 'full';
+      const autoFilingCoord = autoPkg === 'full-filing';
+      const autoPackageType = autoPkg === 'demand' ? 'demand' : 'full';
       return {
         stateCode: 'MI',
         workType: 'automotive',
@@ -1778,7 +1810,8 @@
         claimantEmail: document.getElementById('auto-shop-email').value,
         licenseNumber: document.getElementById('auto-license').value,
         mvsrCompliant: document.querySelector('input[name="mvsr-compliant"]:checked')?.value || 'yes',
-        packageType: 'full',
+        packageType: autoPackageType,
+        filingCoordination: autoFilingCoord ? 'true' : 'false',
         rushRequired: daysAgo >= 84,
         proofUrl: uploadedProofUrl,
       };
