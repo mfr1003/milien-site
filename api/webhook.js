@@ -1,11 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { Resend } from 'resend';
 import { put } from '@vercel/blob';
+import Stripe from 'stripe';
 import { buildDocumentPrompt, buildAutoDocumentPrompt, STATE_MODULES } from '../lib/state-modules.js';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const resend = new Resend(process.env.RESEND_API_KEY);
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const config = {
   api: { bodyParser: false },
