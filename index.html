@@ -1202,7 +1202,7 @@
         </div>
         <div class="role-option" id="wt-auto-option">
           <input type="radio" name="work-type" id="wt-automotive" value="automotive">
-          <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;">Michigan only — Garage Keeper's Lien</span></label>
+          <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;" id="wt-auto-label">Michigan only — Garage Keeper's Lien</span></label>
         </div>
       </div>
       <div class="wizard-nav">
@@ -1378,6 +1378,7 @@
           <div>
             <div style="font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px;">Add Filing Coordination — <span style="color:var(--amber);">+$75</span></div>
             <div style="font-size:12px;color:var(--muted);line-height:1.5;">We coordinate notarization and file with the county Register of Deeds on your behalf. Electronic filing where available, physical filing coordination otherwise.</div>
+            <div id="filing-coord-note" style="display:none;font-size:12px;color:#e84040;margin-top:6px;line-height:1.5;">Filing coordination is currently available in Michigan only. Ohio and Indiana coming soon.</div>
           </div>
         </label>
       </div>
@@ -1627,15 +1628,11 @@
   }
 
   function updateWorkTypeOptions() {
-    const state = document.querySelector('input[name="state-code"]:checked');
-    const autoOption = document.getElementById('wt-auto-option');
-    if (state && state.value === 'MI') {
-      autoOption.style.display = 'block';
-    } else {
-      autoOption.style.display = 'none';
-      const autoRadio = document.getElementById('wt-automotive');
-      if (autoRadio) autoRadio.checked = false;
-    }
+    const autoLabel = document.getElementById('wt-auto-label');
+    autoLabel.textContent = 'Vehicle Repair — Garage Keeper\'s Lien';
+    document.getElementById('wt-automotive').disabled = false;
+    document.getElementById('wt-auto-option').style.opacity = '1';
+    document.getElementById('wt-auto-option').style.pointerEvents = 'auto';
   }
 
   function selectTrack() {
@@ -1840,14 +1837,15 @@
 
     document.getElementById('summary-package').textContent = pkgLabel;
 
-    // Show/hide filing coord checkbox — only for full package
+    // Show filing coord checkbox — always visible for full package
     const filingAddon = document.getElementById('filing-coord-addon');
     if (selectedPackage === 'demand') {
       filingAddon.style.display = 'none';
       selectedFilingCoord = false;
+      document.getElementById('filing-coord-check').checked = false;
     } else {
       filingAddon.style.display = 'block';
-      document.getElementById('filing-coord-check').checked = selectedFilingCoord;
+      filingAddon.style.opacity = '1';
     }
 
     updatePriceSummary();
@@ -1856,7 +1854,20 @@
   function updatePriceSummary() {
     const base = PRICES[selectedPackage] || 197;
     const filingCheck = document.getElementById('filing-coord-check');
-    const addFiling = filingCheck && filingCheck.checked;
+    const stateForFiling = document.querySelector('input[name="state-code"]:checked')?.value;
+    const michiganOnly = stateForFiling === 'MI';
+    const filingNote = document.getElementById('filing-coord-note');
+
+    if (!michiganOnly && filingCheck) {
+      filingCheck.checked = false;
+      filingCheck.disabled = true;
+      if (filingNote) filingNote.style.display = 'block';
+    } else if (filingCheck) {
+      filingCheck.disabled = false;
+      if (filingNote) filingNote.style.display = 'none';
+    }
+
+    const addFiling = filingCheck && filingCheck.checked && michiganOnly;
     const total = base + (addFiling ? 75 : 0);
     const filingRow = document.getElementById('filing-coord-row');
 
