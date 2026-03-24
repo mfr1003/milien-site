@@ -1446,12 +1446,12 @@
         <div class="field"><label>Email (for document delivery) <span style="color:#e84040;">*</span></label><input type="email" placeholder="you@example.com" id="auto-shop-email" required></div>
         <div class="field"><label>Repair Facility License Number <span style="color:#e84040;">*</span></label><input type="text" placeholder="Michigan MVSR License #" id="auto-license" required></div>
 
-        <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:16px;margin-top:8px;">
-          <p style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:12px;line-height:1.6;"><strong>MVSR License Compliance Required</strong><br>Under MCL 570.309, your repair facility must be in full compliance with the Motor Vehicle Service and Repair Act (MCL 257.1301) for the entire period covered by this claim. An expired or suspended license voids your lien rights.</p>
+        <div id="compliance-block" style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:16px;margin-top:8px;">
+          <p id="compliance-text" style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:12px;line-height:1.6;"></p>
           <div class="role-options" style="gap:10px;">
             <div class="role-option">
               <input type="radio" name="mvsr-compliant" id="mvsr-yes" value="yes">
-              <label for="mvsr-yes">Yes, our MVSR license is current and we were in compliance during the entire repair period</label>
+              <label for="mvsr-yes" id="compliance-yes-label">Yes</label>
             </div>
             <div class="role-option">
               <input type="radio" name="mvsr-compliant" id="mvsr-no" value="no">
@@ -1460,9 +1460,7 @@
           </div>
           <div id="mvsr-warning" style="display:none;margin-top:12px;">
             <div class="deadline-alert">
-              <p><strong>LodgeMiLien cannot process this order.</strong></p>
-              <p style="margin-top:8px;">The Michigan Garage Keeper's Lien Act requires full MVSR compliance for the entire repair period. If your license was expired, suspended, or you are unsure of your compliance status, you may not have valid lien rights under MCL 570.309.</p>
-              <p style="margin-top:8px;">We recommend contacting a Michigan attorney before proceeding. The State Bar of Michigan referral service can be reached at <strong>(800) 968-0738</strong>.</p>
+              <p id="compliance-warning-text"></p>
             </div>
           </div>
         </div>
@@ -1598,6 +1596,7 @@
     }
     if (id === 'wc-11') updateConstructionSummary();
     if (id === 'wa-7') updateAutoSummary();
+    if (id === 'wa-5') populateComplianceBlock();
     if (id === 'ws-2') updateWorkTypeOptions();
   }
 
@@ -1625,6 +1624,41 @@
 
   function goBack() {
     if (trackPos > 0) showStepId(getSequence()[trackPos - 1]);
+  }
+
+  function populateComplianceBlock() {
+    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+    const textEl = document.getElementById('compliance-text');
+    const yesLabel = document.getElementById('compliance-yes-label');
+    const warningEl = document.getElementById('compliance-warning-text');
+    document.querySelectorAll('input[name="mvsr-compliant"]').forEach(r => r.checked = false);
+    document.getElementById('mvsr-warning').style.display = 'none';
+
+    const content = {
+      MI: {
+        heading: 'MVSR License Compliance Required',
+        body: 'Under MCL 570.309, your repair facility must be in full compliance with the Motor Vehicle Service and Repair Act (MCL 257.1301) for the entire period covered by this claim. An expired or suspended license voids your lien rights.',
+        yes: 'Yes, our MVSR license is current and we were in compliance during the entire repair period',
+        warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>The Michigan Garage Keeper\'s Lien Act requires full MVSR compliance for the entire repair period. If your license was expired, suspended, or you are unsure of your compliance status, you may not have valid lien rights under MCL 570.309.<br><br>We recommend contacting a Michigan attorney before proceeding. The State Bar of Michigan referral service can be reached at <strong>(800) 968-0738</strong>.',
+      },
+      OH: {
+        heading: 'Ohio Repair Facility Licensing',
+        body: 'Ohio requires repair facilities to comply with applicable state and local business licensing requirements. Under O.R.C. § 4505.101, you must have a signed work order or agreement from the vehicle owner to assert a garage keeper\'s lien. Please confirm you have a signed repair authorization.',
+        yes: 'Yes, we have a signed work order and our facility is properly licensed',
+        warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Ohio law requires a signed contract or work order between the repair facility and the vehicle owner to support a garage keeper\'s lien claim under O.R.C. § 4505.101. Without a signed work order, you may not have valid lien rights. We recommend consulting an Ohio attorney.',
+      },
+      IN: {
+        heading: 'Indiana Repair Facility — Signed Work Order Required',
+        body: 'Indiana\'s mechanic\'s lien on vehicles under I.C. § 9-22-6 requires that repair work was performed at the request of the vehicle owner. You must have a signed repair authorization or work order. Please confirm you have documentation of the owner\'s authorization.',
+        yes: 'Yes, we have a signed work order or repair authorization from the vehicle owner',
+        warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Indiana law (I.C. § 9-22-6-2) requires that repairs were performed at the request of the vehicle owner. Without a signed work order or authorization, your lien rights may be invalid. We recommend consulting an Indiana attorney before proceeding.',
+      },
+    };
+
+    const c = content[state] || content.MI;
+    textEl.innerHTML = `<strong>${c.heading}</strong><br>${c.body}`;
+    yesLabel.textContent = c.yes;
+    warningEl.innerHTML = c.warning;
   }
 
   function updateWorkTypeOptions() {
