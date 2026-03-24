@@ -1259,13 +1259,14 @@
       <h3>Where Was The Job?</h3>
       <p class="hint">The lien must be filed in the county where the property is located.</p>
       <div class="field-group">
-        <div class="field"><label>Property Street Address</label><input type="text" placeholder="123 Main St" id="prop-address"></div>
-        <div class="field"><label>City</label><input type="text" placeholder="Detroit" id="prop-city"></div>
-        <div class="field"><label>County</label><select id="prop-county"><option value="">Select county...</option></select></div>
+        <div class="field"><label>Property Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="123 Main St" id="prop-address" required></div>
+        <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Detroit" id="prop-city" required></div>
+        <div class="field"><label>County <span style="color:#e84040;">*</span></label><select id="prop-county" required><option value="">Select county...</option></select></div>
       </div>
+      <div id="wc-5-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateAndNext('wc-5')">Continue →</button>
       </div>
     </div>
 
@@ -1274,12 +1275,18 @@
       <h3>Who Owns The Property?</h3>
       <p class="hint">The person or company that owns the property, not necessarily who hired you.</p>
       <div class="field-group">
-        <div class="field"><label>Owner Name or Company</label><input type="text" placeholder="Smith Properties LLC" id="owner-name"></div>
-        <div class="field"><label>Owner Mailing Address (if known)</label><input type="text" placeholder="Same as property, or different address" id="owner-address"></div>
+        <div class="field"><label>Owner Name or Company <span style="color:#e84040;">*</span></label><input type="text" placeholder="Smith Properties LLC" id="owner-name" required></div>
+        <div class="field"><label>Owner Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="123 Main St" id="owner-street" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Detroit" id="owner-city" required></div>
+          <div class="field"><label>State <span style="color:#e84040;">*</span></label><input type="text" placeholder="MI" id="owner-state" value="MI" maxlength="2" style="text-transform:uppercase;" required></div>
+        </div>
+        <div class="field"><label>ZIP Code <span style="color:#e84040;">*</span></label><input type="text" placeholder="48201" id="owner-zip" maxlength="10" required></div>
       </div>
+      <div id="wc-6-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateAndNext('wc-6')">Continue →</button>
       </div>
     </div>
 
@@ -1303,12 +1310,13 @@
       <h3>How Much Are You Owed?</h3>
       <p class="hint">Enter the total unpaid amount including materials and labor.</p>
       <div class="field-group">
-        <div class="field"><label>Amount Owed ($)</label><input type="number" placeholder="15000" id="amount-owed" min="1"></div>
-        <div class="field"><label>Brief Description of Work</label><input type="text" placeholder="Roofing installation, 3,200 sq ft" id="work-desc"></div>
+        <div class="field"><label>Amount Owed ($) <span style="color:#e84040;">*</span></label><input type="number" placeholder="15000" id="amount-owed" min="1" required></div>
+        <div class="field"><label>Brief Description of Work <span style="color:#e84040;">*</span></label><input type="text" placeholder="Roofing installation, 3,200 sq ft" id="work-desc" required></div>
       </div>
+      <div id="wc-8-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateAndNext('wc-8')">Continue →</button>
       </div>
     </div>
 
@@ -1317,14 +1325,20 @@
       <h3>Your Information</h3>
       <p class="hint">This appears on your documents. Use your legal business name if you operate as an LLC or Corp.</p>
       <div class="field-group">
-        <div class="field"><label>Your Name or Business Name</label><input type="text" placeholder="Russo Roofing LLC" id="claimant-name"></div>
-        <div class="field"><label>Your Address</label><input type="text" placeholder="Your business or mailing address" id="claimant-address"></div>
-        <div class="field"><label>Phone</label><input type="tel" placeholder="(313) 555-0100" id="claimant-phone"></div>
-        <div class="field"><label>Email (for document delivery)</label><input type="email" placeholder="you@example.com" id="claimant-email"></div>
+        <div class="field"><label>Your Name or Business Name <span style="color:#e84040;">*</span></label><input type="text" placeholder="Russo Roofing LLC" id="claimant-name" required></div>
+        <div class="field"><label>Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="456 Main St" id="claimant-street" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Troy" id="claimant-city" required></div>
+          <div class="field"><label>State <span style="color:#e84040;">*</span></label><input type="text" placeholder="MI" id="claimant-state" maxlength="2" style="text-transform:uppercase;" required></div>
+        </div>
+        <div class="field"><label>ZIP Code <span style="color:#e84040;">*</span></label><input type="text" placeholder="48084" id="claimant-zip" maxlength="10" required></div>
+        <div class="field"><label>Phone <span style="color:#e84040;">*</span></label><input type="tel" placeholder="(313) 555-0100" id="claimant-phone" required></div>
+        <div class="field"><label>Email (for document delivery) <span style="color:#e84040;">*</span></label><input type="email" placeholder="you@example.com" id="claimant-email" required></div>
       </div>
+      <div id="wc-9-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateAndNext('wc-9')">Continue →</button>
       </div>
     </div>
 
@@ -1381,14 +1395,20 @@
       <h3>Vehicle Information</h3>
       <p class="hint">The garage keeper's lien attaches to the vehicle itself. Enter the vehicle details and owner information.</p>
       <div class="field-group">
-        <div class="field"><label>Vehicle Year, Make, Model</label><input type="text" placeholder="2019 Ford F-150" id="auto-vehicle"></div>
-        <div class="field"><label>VIN (Vehicle Identification Number)</label><input type="text" placeholder="1FTFW1E50KFA00000" id="auto-vin" style="font-family:monospace;letter-spacing:1px;"></div>
-        <div class="field"><label>Vehicle Owner Name (as shown on title)</label><input type="text" placeholder="John Smith" id="auto-owner-name"></div>
-        <div class="field"><label>Vehicle Owner Address</label><input type="text" placeholder="123 Main St, Detroit, MI 48201" id="auto-owner-address"></div>
+        <div class="field"><label>Vehicle Year, Make, Model <span style="color:#e84040;">*</span></label><input type="text" placeholder="2019 Ford F-150" id="auto-vehicle" required></div>
+        <div class="field"><label>VIN (Vehicle Identification Number) <span style="color:#e84040;">*</span></label><input type="text" placeholder="1FTFW1E50KFA00000" id="auto-vin" style="font-family:monospace;letter-spacing:1px;" required></div>
+        <div class="field"><label>Vehicle Owner Name (as shown on title) <span style="color:#e84040;">*</span></label><input type="text" placeholder="John Smith" id="auto-owner-name" required></div>
+        <div class="field"><label>Owner Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="123 Main St" id="auto-owner-street" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Detroit" id="auto-owner-city" required></div>
+          <div class="field"><label>State <span style="color:#e84040;">*</span></label><input type="text" placeholder="MI" id="auto-owner-state" value="MI" maxlength="2" style="text-transform:uppercase;" required></div>
+        </div>
+        <div class="field"><label>ZIP Code <span style="color:#e84040;">*</span></label><input type="text" placeholder="48201" id="auto-owner-zip" maxlength="10" required></div>
       </div>
+      <div id="wa-3-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateAndNext('wa-3')">Continue →</button>
       </div>
     </div>
 
@@ -1397,11 +1417,12 @@
       <h3>Work Details</h3>
       <p class="hint">The 105-day deadline to file a Garage Keeper's Lien runs from the last day work was performed.</p>
       <div class="field-group">
-        <div class="field"><label>Last Date Work Was Performed</label><input type="date" id="auto-date-last"></div>
-        <div class="field"><label>Amount Owed ($)</label><input type="number" placeholder="2500" id="auto-amount" min="1"></div>
-        <div class="field"><label>Description of Work Performed</label><input type="text" placeholder="Engine replacement, labor and parts" id="auto-work-desc"></div>
+        <div class="field"><label>Last Date Work Was Performed <span style="color:#e84040;">*</span></label><input type="date" id="auto-date-last" required></div>
+        <div class="field"><label>Amount Owed ($) <span style="color:#e84040;">*</span></label><input type="number" placeholder="2500" id="auto-amount" min="1" required></div>
+        <div class="field"><label>Description of Work Performed <span style="color:#e84040;">*</span></label><input type="text" placeholder="Engine replacement, labor and parts" id="auto-work-desc" required></div>
         <div id="auto-deadline-alert"></div>
       </div>
+      <div id="wa-4-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
         <button class="btn-next" onclick="checkAutoDates()">Continue →</button>
@@ -1413,11 +1434,16 @@
       <h3>Your Shop Information</h3>
       <p class="hint">Your Michigan repair facility information. You must be licensed under the Motor Vehicle Service and Repair Act (MCL 257.1301) to file a Garage Keeper's Lien.</p>
       <div class="field-group">
-        <div class="field"><label>Shop Name</label><input type="text" placeholder="Russo Auto Repair LLC" id="auto-shop-name"></div>
-        <div class="field"><label>Shop Address</label><input type="text" placeholder="456 Garage St, Troy, MI 48084" id="auto-shop-address"></div>
-        <div class="field"><label>Phone</label><input type="tel" placeholder="(248) 555-0100" id="auto-shop-phone"></div>
-        <div class="field"><label>Email (for document delivery)</label><input type="email" placeholder="you@example.com" id="auto-shop-email"></div>
-        <div class="field"><label>Repair Facility License Number</label><input type="text" placeholder="Michigan MVSR License #" id="auto-license"></div>
+        <div class="field"><label>Shop Name <span style="color:#e84040;">*</span></label><input type="text" placeholder="Russo Auto Repair LLC" id="auto-shop-name" required></div>
+        <div class="field"><label>Shop Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="456 Garage St" id="auto-shop-street" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Troy" id="auto-shop-city" required></div>
+          <div class="field"><label>State <span style="color:#e84040;">*</span></label><input type="text" placeholder="MI" id="auto-shop-state" value="MI" maxlength="2" style="text-transform:uppercase;" required></div>
+        </div>
+        <div class="field"><label>ZIP Code <span style="color:#e84040;">*</span></label><input type="text" placeholder="48084" id="auto-shop-zip" maxlength="10" required></div>
+        <div class="field"><label>Phone <span style="color:#e84040;">*</span></label><input type="tel" placeholder="(248) 555-0100" id="auto-shop-phone" required></div>
+        <div class="field"><label>Email (for document delivery) <span style="color:#e84040;">*</span></label><input type="email" placeholder="you@example.com" id="auto-shop-email" required></div>
+        <div class="field"><label>Repair Facility License Number <span style="color:#e84040;">*</span></label><input type="text" placeholder="Michigan MVSR License #" id="auto-license" required></div>
 
         <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:16px;margin-top:8px;">
           <p style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:12px;line-height:1.6;"><strong>MVSR License Compliance Required</strong><br>Under MCL 570.309, your repair facility must be in full compliance with the Motor Vehicle Service and Repair Act (MCL 257.1301) for the entire period covered by this claim. An expired or suspended license voids your lien rights.</p>
@@ -1440,13 +1466,12 @@
           </div>
         </div>
       </div>
+      <div id="wa-5-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields and confirm MVSR compliance.</div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
         <button class="btn-next" onclick="checkMvsrCompliance()">Continue →</button>
       </div>
     </div>
-
-    <!-- A6: Upload -->
     <div class="wizard-step" id="wa-6">
       <h3>Upload Proof of Work</h3>
       <p class="hint">Upload your repair order, invoice, or signed work authorization. Required. JPG, PNG, or PDF accepted.</p>
@@ -1561,6 +1586,15 @@
 
     // Side effects on specific steps
     if (id === 'wc-5') populateCounties();
+    if (id === 'wc-9') {
+      const state = document.querySelector('input[name="state-code"]:checked');
+      if (state) {
+        const stateField = document.getElementById('claimant-state');
+        if (stateField && !stateField.value) stateField.value = state.value;
+        const ownerStateField = document.getElementById('owner-state');
+        if (ownerStateField && !ownerStateField.value) ownerStateField.value = state.value;
+      }
+    }
     if (id === 'wc-11') updateConstructionSummary();
     if (id === 'wa-7') updateAutoSummary();
     if (id === 'ws-2') updateWorkTypeOptions();
@@ -1622,13 +1656,56 @@
     goNext();
   }
 
+  function validateAndNext(stepId) {
+    const step = document.getElementById(stepId);
+    const required = step.querySelectorAll('[required]');
+    const errorEl = document.getElementById(stepId + '-error');
+    let valid = true;
+
+    required.forEach(field => {
+      if (!field.value.trim()) {
+        field.style.borderColor = '#e84040';
+        valid = false;
+      } else {
+        field.style.borderColor = '';
+      }
+    });
+
+    if (!valid) {
+      if (errorEl) errorEl.style.display = 'block';
+      return;
+    }
+    if (errorEl) errorEl.style.display = 'none';
+    goNext();
+  }
+
   function checkMvsrCompliance() {
+    const step = document.getElementById('wa-5');
+    const required = step.querySelectorAll('[required]');
+    const errorEl = document.getElementById('wa-5-error');
+    let valid = true;
+
+    required.forEach(field => {
+      if (!field.value.trim()) {
+        field.style.borderColor = '#e84040';
+        valid = false;
+      } else {
+        field.style.borderColor = '';
+      }
+    });
+
     const selected = document.querySelector('input[name="mvsr-compliant"]:checked');
-    if (!selected) return;
-    if (selected.value === 'no') {
+    if (!selected) { valid = false; }
+    else if (selected.value === 'no') {
       document.getElementById('mvsr-warning').style.display = 'block';
       return;
     }
+
+    if (!valid) {
+      if (errorEl) errorEl.style.display = 'block';
+      return;
+    }
+    if (errorEl) errorEl.style.display = 'none';
     goNext();
   }
 
@@ -1656,20 +1733,43 @@
     const last = document.getElementById('date-last').value;
     const alertBox = document.getElementById('deadline-alert-box');
     if (last) {
+      const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+      const projectType = document.querySelector('input[name="project-type"]:checked')?.value || 'commercial';
+
+      // Deadline days by state and project type
+      const deadlines = {
+        MI: { residential: 90, commercial: 90 },
+        OH: { residential: 60, commercial: 75 },
+        IN: { residential: 60, commercial: 90 },
+      };
+      const maxDays = (deadlines[state] || deadlines.MI)[projectType] || 90;
+      const rushThreshold = Math.round(maxDays * 0.15); // ~15% of window left = rush warning
+
       const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
-      const daysLeft = 90 - daysAgo;
-      if (daysLeft <= 14 && daysLeft > 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Rush processing may be required.</strong> Approximately ' + daysLeft + ' days remain before your filing deadline.</p></div>';
+      const daysLeft = maxDays - daysAgo;
+
+      if (daysLeft <= rushThreshold && daysLeft > 0) {
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Rush processing may be required.</strong> Approximately ' + daysLeft + ' days remain before your ' + maxDays + '-day filing deadline.</p></div>';
       } else if (daysLeft <= 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Your filing window may have passed.</strong> Continue and we will review your situation.</p></div>';
+        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Your ' + maxDays + '-day filing window may have passed.</strong> You may still have options. Continue and we will review your situation.</p></div>';
       } else {
-        alertBox.innerHTML = '';
+        alertBox.innerHTML = '<div style="font-size:13px;color:#2ea043;margin-top:8px;">You have approximately ' + daysLeft + ' days remaining to file. Deadline: ' + maxDays + ' days from last furnishing.</div>';
       }
     }
     goNext();
   }
 
   function checkAutoDates() {
+    const errorEl = document.getElementById('wa-4-error');
+    const required = document.getElementById('wa-4').querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(f => {
+      if (!f.value.trim()) { f.style.borderColor = '#e84040'; valid = false; }
+      else f.style.borderColor = '';
+    });
+    if (!valid) { if (errorEl) errorEl.style.display = 'block'; return; }
+    if (errorEl) errorEl.style.display = 'none';
+
     const last = document.getElementById('auto-date-last').value;
     const alertBox = document.getElementById('auto-deadline-alert');
     if (last) {
@@ -1800,12 +1900,22 @@
         vehicleDescription: document.getElementById('auto-vehicle').value,
         vin: document.getElementById('auto-vin').value,
         ownerName: document.getElementById('auto-owner-name').value,
-        ownerAddress: document.getElementById('auto-owner-address').value,
+        ownerAddress: [
+          document.getElementById('auto-owner-street').value,
+          document.getElementById('auto-owner-city').value,
+          document.getElementById('auto-owner-state').value.toUpperCase(),
+          document.getElementById('auto-owner-zip').value
+        ].filter(Boolean).join(', '),
+        claimantAddress: [
+          document.getElementById('auto-shop-street').value,
+          document.getElementById('auto-shop-city').value,
+          document.getElementById('auto-shop-state').value.toUpperCase(),
+          document.getElementById('auto-shop-zip').value
+        ].filter(Boolean).join(', '),
         dateLast: last,
         amountOwed: document.getElementById('auto-amount').value,
         workDescription: document.getElementById('auto-work-desc').value,
         claimantName: document.getElementById('auto-shop-name').value,
-        claimantAddress: document.getElementById('auto-shop-address').value,
         claimantPhone: document.getElementById('auto-shop-phone').value,
         claimantEmail: document.getElementById('auto-shop-email').value,
         licenseNumber: document.getElementById('auto-license').value,
@@ -1828,13 +1938,23 @@
       propertyCity: document.getElementById('prop-city').value,
       propertyCounty: document.getElementById('prop-county').value,
       ownerName: document.getElementById('owner-name').value,
-      ownerAddress: document.getElementById('owner-address').value,
+      ownerAddress: [
+        document.getElementById('owner-street').value,
+        document.getElementById('owner-city').value,
+        document.getElementById('owner-state').value.toUpperCase(),
+        document.getElementById('owner-zip').value
+      ].filter(Boolean).join(', '),
       dateFirst: document.getElementById('date-first').value,
       dateLast: last,
       amountOwed: document.getElementById('amount-owed').value,
       workDescription: document.getElementById('work-desc').value,
       claimantName: document.getElementById('claimant-name').value,
-      claimantAddress: document.getElementById('claimant-address').value,
+      claimantAddress: [
+        document.getElementById('claimant-street').value,
+        document.getElementById('claimant-city').value,
+        document.getElementById('claimant-state').value.toUpperCase(),
+        document.getElementById('claimant-zip').value
+      ].filter(Boolean).join(', '),
       claimantPhone: document.getElementById('claimant-phone').value,
       claimantEmail: document.getElementById('claimant-email').value,
       packageType: selectedPackage,
