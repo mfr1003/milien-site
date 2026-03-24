@@ -69,6 +69,8 @@ export default async function handler(req, res) {
     rushRequired: body.rushRequired ? 'true' : 'false',
     proofUrl: body.proofUrl || '',
   };
+
+  try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
