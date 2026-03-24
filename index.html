@@ -963,8 +963,15 @@
 <section class="law-section">
   <div class="section-label">Michigan Law</div>
   <h2>Know Your<br>Deadlines</h2>
-  <p class="section-intro">The clock starts the day you set foot on that job site. These dates are not flexible.</p>
-  <div class="deadline-cards">
+  <p class="section-intro">The clock starts the moment work is done. These dates are not flexible.</p>
+
+  <div style="display:flex;gap:12px;margin-bottom:28px;">
+    <button onclick="showDeadlineTrack('construction')" id="dt-btn-construction" style="flex:1;padding:10px;border-radius:6px;font-family:var(--font-display);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;cursor:pointer;border:1px solid var(--amber);background:var(--amber);color:var(--ink);transition:all 0.15s;">Construction</button>
+    <button onclick="showDeadlineTrack('automotive')" id="dt-btn-automotive" style="flex:1;padding:10px;border-radius:6px;font-family:var(--font-display);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;cursor:pointer;border:1px solid rgba(255,255,255,0.2);background:transparent;color:var(--muted);transition:all 0.15s;">Automotive</button>
+  </div>
+
+  <!-- Construction Deadlines -->
+  <div id="dt-construction" class="deadline-cards">
     <div class="deadline-card">
       <div class="days">20</div>
       <h4>Notice of Furnishing</h4>
@@ -981,7 +988,42 @@
       <p>Not legally required, but we always recommend sending one first. Resolves 40-60% of disputes without ever touching a lien form. No deadline, but send it today.</p>
     </div>
   </div>
+
+  <!-- Automotive Deadlines -->
+  <div id="dt-automotive" class="deadline-cards" style="display:none;">
+    <div class="deadline-card">
+      <div class="days">105</div>
+      <h4>BDVR-35 Filing Deadline</h4>
+      <p>Application to the Michigan Department of State must be filed within 105 days of the last day work was performed on the vehicle. This is the lien attachment date.</p>
+    </div>
+    <div class="deadline-card">
+      <div class="days">30</div>
+      <h4>Certified Letter After TR-42</h4>
+      <p>Once MDOS issues the TR-42 Certificate, you have 30 days to send certified letters to all owners, lienholders, and MDOS with itemized charges and sale details.</p>
+    </div>
+    <div class="deadline-card">
+      <div class="days">75</div>
+      <h4>Earliest Vehicle Sale</h4>
+      <p>The public sale of the vehicle cannot occur until at least 75 days after the TR-42 issuance date. The entire process cannot exceed 225 days from lien attachment.</p>
+    </div>
+  </div>
 </section>
+
+<script>
+  function showDeadlineTrack(track) {
+    document.getElementById('dt-construction').style.display = track === 'construction' ? 'flex' : 'none';
+    document.getElementById('dt-automotive').style.display = track === 'automotive' ? 'flex' : 'none';
+    const btnC = document.getElementById('dt-btn-construction');
+    const btnA = document.getElementById('dt-btn-automotive');
+    if (track === 'construction') {
+      btnC.style.background = 'var(--amber)'; btnC.style.color = 'var(--ink)'; btnC.style.borderColor = 'var(--amber)';
+      btnA.style.background = 'transparent'; btnA.style.color = 'var(--muted)'; btnA.style.borderColor = 'rgba(255,255,255,0.2)';
+    } else {
+      btnA.style.background = 'var(--amber)'; btnA.style.color = 'var(--ink)'; btnA.style.borderColor = 'var(--amber)';
+      btnC.style.background = 'transparent'; btnC.style.color = 'var(--muted)'; btnC.style.borderColor = 'rgba(255,255,255,0.2)';
+    }
+  }
+</script>
 
 <!-- PRICING -->
 <section class="pricing">
