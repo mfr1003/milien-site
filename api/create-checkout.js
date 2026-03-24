@@ -1,4 +1,3 @@
-
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
@@ -11,7 +10,8 @@ export default async function handler(req, res) {
 
   const basePrice = body.packageType === 'demand' ? 9700 : 19700;
   const rushSurcharge = body.rushRequired ? Math.round(basePrice * 0.5) : 0;
-  const totalPrice = basePrice + rushSurcharge;
+  const filingFee = (body.filingCoordination === 'true' && body.packageType !== 'demand') ? 7500 : 0;
+  const totalPrice = basePrice + rushSurcharge + filingFee;
 
   const packageLabel = isAuto
     ? "Michigan Garage Keeper's Lien Package"
@@ -63,11 +63,10 @@ export default async function handler(req, res) {
     claimantPhone: body.claimantPhone || '',
     claimantEmail: body.claimantEmail || '',
     packageType: body.packageType || 'full',
+    filingCoordination: body.filingCoordination || 'false',
     rushRequired: body.rushRequired ? 'true' : 'false',
     proofUrl: body.proofUrl || '',
   };
-
-  try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -87,6 +86,17 @@ export default async function handler(req, res) {
               description: 'Priority processing within 4 business hours',
             },
             unit_amount: rushSurcharge,
+          },
+          quantity: 1,
+        }] : []),
+        ...(filingFee > 0 ? [{
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Filing Coordination',
+              description: 'We coordinate notarization and file with the county Register of Deeds on your behalf',
+            },
+            unit_amount: filingFee,
           },
           quantity: 1,
         }] : []),
