@@ -166,6 +166,7 @@ export default async function handler(req, res) {
         <tr><td style="padding:8px 0;color:#666;">Owner</td><td style="padding:8px 0;">${metadata.ownerName}</td></tr>
         <tr><td style="padding:8px 0;color:#666;">Amount disputed</td><td style="padding:8px 0;font-weight:600;">$${parseInt(metadata.amountOwed).toLocaleString()}</td></tr>
         <tr><td style="padding:8px 0;color:#666;">Project type</td><td style="padding:8px 0;">${metadata.projectType || 'Not specified'}</td></tr>
+        <tr><td style="padding:8px 0;color:#666;">Filing coordination</td><td style="padding:8px 0;${metadata.filingCoordination === 'true' ? 'color:#f5a623;font-weight:600;' : 'color:#666;'}">${metadata.filingCoordination === 'true' ? 'YES — you need to coordinate filing' : 'No'}</td></tr>
         <tr><td style="padding:8px 0;color:#666;">Lien deadline</td><td style="padding:8px 0;${daysRemaining <= 14 ? 'color:#e84040;font-weight:600;' : ''}">${deadlineStr} (${daysRemaining} days)</td></tr>
       `;
 
