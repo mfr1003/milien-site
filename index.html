@@ -1600,14 +1600,6 @@
     if (id === 'ws-2') updateWorkTypeOptions();
   }
 
-  function openModal() {
-    document.getElementById('modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    track = 'construction';
-    trackPos = 0;
-    showStepId('ws-1');
-  }
-
   function closeModal() {
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
@@ -2013,6 +2005,9 @@
     btn.disabled = true;
     const originalHtml = btn.innerHTML;
     btn.innerHTML = 'Preparing secure checkout...';
+    btn.style.background = '';
+    const existing = btn.parentElement.querySelector('.checkout-error');
+    if (existing) existing.remove();
     try {
       const data = collectFormData();
       const res = await fetch('/api/create-checkout', {
@@ -2029,8 +2024,11 @@
     } catch (err) {
       btn.innerHTML = originalHtml;
       btn.disabled = false;
-      btn.style.background = '#e84040';
-      btn.insertAdjacentHTML('afterend', '<div style="color:#e84040;font-size:13px;margin-top:8px;text-align:center;">Something went wrong — please try again.</div>');
+      const errDiv = document.createElement('div');
+      errDiv.className = 'checkout-error';
+      errDiv.style.cssText = 'color:#e84040;font-size:13px;margin-top:8px;text-align:center;';
+      errDiv.textContent = 'Something went wrong — please try again. (' + (err.message || 'network error') + ')';
+      btn.insertAdjacentElement('afterend', errDiv);
     }
   }
 </script>
