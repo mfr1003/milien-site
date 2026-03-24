@@ -1,3 +1,4 @@
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
@@ -5,33 +6,66 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const {
-    role,
-    propertyAddress,
-    propertyCity,
-    propertyCounty,
-    ownerName,
-    ownerAddress,
-    dateFirst,
-    dateLast,
-    amountOwed,
-    workDescription,
-    claimantName,
-    claimantAddress,
-    claimantPhone,
-    claimantEmail,
-    packageType,
-    rushRequired,
-    proofUrl
-  } = req.body;
+  const body = req.body;
+  const isAuto = body.workType === 'automotive';
 
-  const basePrice = packageType === 'demand' ? 9700 : 19700;
-  const rushSurcharge = rushRequired ? Math.round(basePrice * 0.5) : 0;
+  const basePrice = body.packageType === 'demand' ? 9700 : 19700;
+  const rushSurcharge = body.rushRequired ? Math.round(basePrice * 0.5) : 0;
   const totalPrice = basePrice + rushSurcharge;
 
-  const packageLabel = packageType === 'demand'
-    ? 'MiLien Demand Letter'
-    : 'MiLien Full Lien Package';
+  const packageLabel = isAuto
+    ? "Michigan Garage Keeper's Lien Package"
+    : body.packageType === 'demand'
+      ? 'LodgeMiLien Demand Letter'
+      : 'LodgeMiLien Full Lien Package';
+
+  const description = isAuto
+    ? `Garage Keeper's Lien documents — ${body.vehicleDescription} — VIN: ${body.vin}`
+    : `Mechanics lien documents for ${body.propertyAddress}, ${body.propertyCity} — ${body.propertyCounty} County`;
+
+  const customerEmail = body.claimantEmail;
+
+  // Build metadata — Stripe has a 500 char limit per value and 50 key limit
+  const metadata = isAuto ? {
+    workType: 'automotive',
+    stateCode: 'MI',
+    vehicleDescription: body.vehicleDescription || '',
+    vin: body.vin || '',
+    ownerName: body.ownerName || '',
+    ownerAddress: body.ownerAddress || '',
+    dateLast: body.dateLast || '',
+    amountOwed: body.amountOwed || '',
+    workDescription: body.workDescription || '',
+    claimantName: body.claimantName || '',
+    claimantAddress: body.claimantAddress || '',
+    claimantPhone: body.claimantPhone || '',
+    claimantEmail: body.claimantEmail || '',
+    licenseNumber: body.licenseNumber || '',
+    packageType: body.packageType || 'full',
+    rushRequired: body.rushRequired ? 'true' : 'false',
+    proofUrl: body.proofUrl || '',
+  } : {
+    workType: 'construction',
+    stateCode: body.stateCode || 'MI',
+    role: body.role || '',
+    projectType: body.projectType || 'commercial',
+    propertyAddress: body.propertyAddress || '',
+    propertyCity: body.propertyCity || '',
+    propertyCounty: body.propertyCounty || '',
+    ownerName: body.ownerName || '',
+    ownerAddress: body.ownerAddress || '',
+    dateFirst: body.dateFirst || '',
+    dateLast: body.dateLast || '',
+    amountOwed: body.amountOwed || '',
+    workDescription: body.workDescription || '',
+    claimantName: body.claimantName || '',
+    claimantAddress: body.claimantAddress || '',
+    claimantPhone: body.claimantPhone || '',
+    claimantEmail: body.claimantEmail || '',
+    packageType: body.packageType || 'full',
+    rushRequired: body.rushRequired ? 'true' : 'false',
+    proofUrl: body.proofUrl || '',
+  };
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -40,15 +74,12 @@ export default async function handler(req, res) {
         {
           price_data: {
             currency: 'usd',
-            product_data: {
-              name: packageLabel,
-              description: `Michigan mechanics lien documents for ${propertyAddress}, ${propertyCity} — ${propertyCounty} County`,
-            },
+            product_data: { name: packageLabel, description },
             unit_amount: totalPrice,
           },
           quantity: 1,
         },
-        ...(rushRequired ? [{
+        ...(body.rushRequired ? [{
           price_data: {
             currency: 'usd',
             product_data: {
@@ -61,28 +92,11 @@ export default async function handler(req, res) {
         }] : []),
       ],
       mode: 'payment',
+      allow_promotion_codes: true,
       success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}`,
-      customer_email: claimantEmail,
-      metadata: {
-        role,
-        propertyAddress,
-        propertyCity,
-        propertyCounty,
-        ownerName,
-        ownerAddress,
-        dateFirst,
-        dateLast,
-        amountOwed,
-        workDescription,
-        claimantName,
-        claimantAddress,
-        claimantPhone,
-        claimantEmail,
-        packageType,
-        rushRequired: rushRequired ? 'true' : 'false',
-        proofUrl: proofUrl || '',
-      },
+      customer_email: customerEmail,
+      metadata,
     });
 
     res.status(200).json({ url: session.url });
