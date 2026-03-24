@@ -1382,7 +1382,7 @@
           </div>
         </label>
       </div>
-      <button class="stripe-button" id="pay-btn-construction" onclick="doCheckout()">Pay Securely — <span id="pay-btn-amount">$197</span></button>
+      <button class="stripe-button" id="pay-btn-construction" onclick="doCheckout(this)">Pay Securely — <span id="pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
       <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
     </div>
@@ -1515,7 +1515,7 @@
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="auto-summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
         <div class="summary-row total"><span class="label">Total Due</span><span class="value" id="auto-summary-total">$197</span></div>
       </div>
-      <button class="stripe-button" onclick="doCheckout()">Pay Securely — <span id="auto-pay-btn-amount">$197</span></button>
+      <button class="stripe-button" onclick="doCheckout(this)">Pay Securely — <span id="auto-pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
       <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
     </div>
@@ -1940,7 +1940,7 @@
       const autoFilingCoord = autoPkg === 'full-filing';
       const autoPackageType = autoPkg === 'demand' ? 'demand' : 'full';
       return {
-        stateCode: 'MI',
+        stateCode: stateCode,
         workType: 'automotive',
         vehicleDescription: document.getElementById('auto-vehicle').value,
         vin: document.getElementById('auto-vin').value,
@@ -2009,10 +2009,10 @@
     };
   }
 
-  async function doCheckout() {
-    const btn = document.querySelector('.stripe-button');
-    btn.textContent = 'Preparing secure checkout...';
+  async function doCheckout(btn) {
     btn.disabled = true;
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = 'Preparing secure checkout...';
     try {
       const data = collectFormData();
       const res = await fetch('/api/create-checkout', {
@@ -2027,8 +2027,10 @@
         throw new Error(result.error || 'Unknown error');
       }
     } catch (err) {
-      btn.textContent = 'Something went wrong — please try again';
+      btn.innerHTML = originalHtml;
       btn.disabled = false;
+      btn.style.background = '#e84040';
+      btn.insertAdjacentHTML('afterend', '<div style="color:#e84040;font-size:13px;margin-top:8px;text-align:center;">Something went wrong — please try again.</div>');
     }
   }
 </script>
