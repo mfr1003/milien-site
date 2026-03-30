@@ -1921,42 +1921,52 @@
     if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
   }
 
+  function safeVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  function safeChecked(selector) {
+    const el = document.querySelector(selector);
+    return el ? el.value : '';
+  }
+
   function collectFormData() {
     const state = document.querySelector('input[name="state-code"]:checked');
     const stateCode = state ? state.value : 'MI';
 
     if (track === 'automotive') {
-      const last = document.getElementById('auto-date-last').value;
+      const last = safeVal('auto-date-last');
       const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
-      const autoPkg = document.querySelector('input[name="auto-package"]:checked')?.value || 'full';
+      const autoPkg = safeChecked('input[name="auto-package"]:checked') || 'full';
       const autoFilingCoord = autoPkg === 'full-filing';
       const autoPackageType = autoPkg === 'demand' ? 'demand' : 'full';
       return {
-        stateCode: stateCode,
+        stateCode,
         workType: 'automotive',
-        vehicleDescription: document.getElementById('auto-vehicle').value,
-        vin: document.getElementById('auto-vin').value,
-        ownerName: document.getElementById('auto-owner-name').value,
+        vehicleDescription: safeVal('auto-vehicle'),
+        vin: safeVal('auto-vin'),
+        ownerName: safeVal('auto-owner-name'),
         ownerAddress: [
-          document.getElementById('auto-owner-street').value,
-          document.getElementById('auto-owner-city').value,
-          document.getElementById('auto-owner-state').value.toUpperCase(),
-          document.getElementById('auto-owner-zip').value
+          safeVal('auto-owner-street'),
+          safeVal('auto-owner-city'),
+          safeVal('auto-owner-state').toUpperCase(),
+          safeVal('auto-owner-zip')
         ].filter(Boolean).join(', '),
         claimantAddress: [
-          document.getElementById('auto-shop-street').value,
-          document.getElementById('auto-shop-city').value,
-          document.getElementById('auto-shop-state').value.toUpperCase(),
-          document.getElementById('auto-shop-zip').value
+          safeVal('auto-shop-street'),
+          safeVal('auto-shop-city'),
+          safeVal('auto-shop-state').toUpperCase(),
+          safeVal('auto-shop-zip')
         ].filter(Boolean).join(', '),
         dateLast: last,
-        amountOwed: document.getElementById('auto-amount').value,
-        workDescription: document.getElementById('auto-work-desc').value,
-        claimantName: document.getElementById('auto-shop-name').value,
-        claimantPhone: document.getElementById('auto-shop-phone').value,
-        claimantEmail: document.getElementById('auto-shop-email').value,
-        licenseNumber: document.getElementById('auto-license').value,
-        mvsrCompliant: document.querySelector('input[name="mvsr-compliant"]:checked')?.value || 'yes',
+        amountOwed: safeVal('auto-amount'),
+        workDescription: safeVal('auto-work-desc'),
+        claimantName: safeVal('auto-shop-name'),
+        claimantPhone: safeVal('auto-shop-phone'),
+        claimantEmail: safeVal('auto-shop-email'),
+        licenseNumber: safeVal('auto-license'),
+        mvsrCompliant: safeChecked('input[name="mvsr-compliant"]:checked') || 'yes',
         packageType: autoPackageType,
         filingCoordination: autoFilingCoord ? 'true' : 'false',
         rushRequired: daysAgo >= 84,
@@ -1964,36 +1974,36 @@
       };
     }
 
-    const last = document.getElementById('date-last').value;
+    const last = safeVal('date-last');
     const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
     return {
       stateCode,
       workType: 'construction',
-      role: document.querySelector('input[name="role"]:checked')?.value || '',
-      projectType: document.querySelector('input[name="project-type"]:checked')?.value || 'commercial',
-      propertyAddress: document.getElementById('prop-address').value,
-      propertyCity: document.getElementById('prop-city').value,
-      propertyCounty: document.getElementById('prop-county').value,
-      ownerName: document.getElementById('owner-name').value,
+      role: safeChecked('input[name="role"]:checked'),
+      projectType: safeChecked('input[name="project-type"]:checked') || 'commercial',
+      propertyAddress: safeVal('prop-address'),
+      propertyCity: safeVal('prop-city'),
+      propertyCounty: safeVal('prop-county'),
+      ownerName: safeVal('owner-name'),
       ownerAddress: [
-        document.getElementById('owner-street').value,
-        document.getElementById('owner-city').value,
-        document.getElementById('owner-state').value.toUpperCase(),
-        document.getElementById('owner-zip').value
+        safeVal('owner-street'),
+        safeVal('owner-city'),
+        safeVal('owner-state').toUpperCase(),
+        safeVal('owner-zip')
       ].filter(Boolean).join(', '),
-      dateFirst: document.getElementById('date-first').value,
+      dateFirst: safeVal('date-first'),
       dateLast: last,
-      amountOwed: document.getElementById('amount-owed').value,
-      workDescription: document.getElementById('work-desc').value,
-      claimantName: document.getElementById('claimant-name').value,
+      amountOwed: safeVal('amount-owed'),
+      workDescription: safeVal('work-desc'),
+      claimantName: safeVal('claimant-name'),
       claimantAddress: [
-        document.getElementById('claimant-street').value,
-        document.getElementById('claimant-city').value,
-        document.getElementById('claimant-state').value.toUpperCase(),
-        document.getElementById('claimant-zip').value
+        safeVal('claimant-street'),
+        safeVal('claimant-city'),
+        safeVal('claimant-state').toUpperCase(),
+        safeVal('claimant-zip')
       ].filter(Boolean).join(', '),
-      claimantPhone: document.getElementById('claimant-phone').value,
-      claimantEmail: document.getElementById('claimant-email').value,
+      claimantPhone: safeVal('claimant-phone'),
+      claimantEmail: safeVal('claimant-email'),
       packageType: selectedPackage,
       filingCoordination: selectedFilingCoord ? 'true' : 'false',
       rushRequired: daysAgo >= 76,
@@ -2002,13 +2012,14 @@
   }
 
   const STRIPE_LINKS = {
-    demand:       'https://buy.stripe.com/7sYeVceqY13eeDh8Ke0oM02',
-    full:         'https://buy.stripe.com/4gM7sK0A813e52H9Oi0oM00',
-    'full-filing':'https://buy.stripe.com/28E28q82AdQ0fHlaSm0oM01',
-    'demand-filing':'https://buy.stripe.com/00w4gyeqY5judzdbWq0oM03',
+    demand:           'https://buy.stripe.com/7sYeVceqY13eeDh8Ke0oM02',
+    full:             'https://buy.stripe.com/4gM7sK0A813e52H9Oi0oM00',
+    'full-filing':    'https://buy.stripe.com/28E28q82AdQ0fHlaSm0oM01',
+    'demand-filing':  'https://buy.stripe.com/00w4gyeqY5judzdbWq0oM03',
   };
 
   async function doCheckout(btn) {
+    if (btn.disabled) return;
     btn.disabled = true;
     const originalHtml = btn.innerHTML;
     btn.innerHTML = 'Preparing secure checkout...';
@@ -2018,26 +2029,19 @@
     try {
       const data = collectFormData();
 
-      // Save intake data before redirecting so admin has it
-      await fetch('/api/save-intake', {
+      // Save intake data — fire and forget, never blocks payment
+      fetch('/api/save-intake', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      }).catch(() => {}); // non-blocking — don't let this stop payment
+      }).catch(() => {});
 
-      // Determine which Stripe link to use
+      // Pick the right Stripe link
       let linkKey = data.packageType || 'full';
-      if (data.filingCoordination === 'true') {
-        linkKey = linkKey + '-filing';
-      }
-      // automotive full-filing uses same key
-      const url = STRIPE_LINKS[linkKey] || STRIPE_LINKS['full'];
-
-      // Prefill email if available
+      if (data.filingCoordination === 'true') linkKey = linkKey + '-filing';
+      const baseUrl = STRIPE_LINKS[linkKey] || STRIPE_LINKS['full'];
       const email = data.claimantEmail;
-      const finalUrl = email
-        ? url + '?prefilled_email=' + encodeURIComponent(email)
-        : url;
+      const finalUrl = email ? baseUrl + '?prefilled_email=' + encodeURIComponent(email) : baseUrl;
 
       window.location.href = finalUrl;
 
@@ -2047,7 +2051,7 @@
       const errDiv = document.createElement('div');
       errDiv.className = 'checkout-error';
       errDiv.style.cssText = 'color:#e84040;font-size:13px;margin-top:8px;text-align:center;';
-      errDiv.textContent = 'Something went wrong — please try again.';
+      errDiv.textContent = 'Error: ' + (err.message || 'unknown — please try again');
       btn.insertAdjacentElement('afterend', errDiv);
     }
   }
