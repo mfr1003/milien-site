@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { get, del } from '@vercel/blob';
+import { list, del } from '@vercel/blob';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -19,24 +19,36 @@ export default async function handler(req, res) {
   }
 
   try {
-    const blobUrl = `${process.env.VERCEL_BLOB_BASE_URL}/orders/${sessionId}.json`;
-    const response = await fetch(blobUrl);
-
-    if (!response.ok) {
+    // Find the blob by prefix
+    const { blobs } = await list({ prefix: `orders/${sessionId}` });
+    if (!blobs || blobs.length === 0) {
       return res.status(404).json({ error: 'Order not found or already approved' });
+    }
+
+    const blobUrl = blobs[0].url;
+    const response = await fetch(blobUrl);
+    if (!response.ok) {
+      return res.status(404).json({ error: 'Order not found' });
     }
 
     const orderData = await response.json();
     const { htmlDocuments, metadata } = orderData;
 
+    // Build subject line that works for both construction and automotive
+    const isAuto = metadata.workType === 'automotive';
+    const subjectRef = isAuto
+      ? `${metadata.vehicleDescription} — Garage Keeper's Lien`
+      : `${metadata.propertyAddress}, ${metadata.propertyCity}`;
+
     await resend.emails.send({
-      from: 'MiLien <hello@lodgemilien.com>',
+      from: 'LodgeMiLien <hello@lodgemilien.com>',
       to: metadata.claimantEmail,
-      subject: `Your MiLien documents are ready — ${metadata.propertyAddress}`,
+      subject: `Your LodgeMiLien documents are ready — ${subjectRef}`,
       html: htmlDocuments,
     });
 
-    await fetch(blobUrl, { method: 'DELETE' }).catch(() => {});
+    // Delete the order blob after sending
+    await del(blobs[0].url);
 
     res.status(200).json({ success: true, emailSentTo: metadata.claimantEmail });
   } catch (err) {
