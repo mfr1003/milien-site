@@ -146,6 +146,41 @@
 
   .loading { color: var(--muted); font-size: 14px; padding: 32px 0; }
 
+  .tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid var(--white);
+    background: var(--white);
+    color: var(--ink);
+  }
+
+  .tab-btn.inactive {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .tab-btn.inactive:hover {
+    border-color: rgba(255,255,255,0.6);
+  }
+
+  .tab-section { display: none; }
+  .tab-section.active { display: block; }
+
   .approve-status {
     font-size: 13px; margin-top: 6px; display: none;
   }
@@ -172,14 +207,39 @@
     <button class="logout-btn" onclick="logout()">Sign Out</button>
   </nav>
   <div class="main">
-    <div class="page-title">Pending Orders</div>
-    <div class="page-sub" id="orders-sub">Loading orders...</div>
-    <div class="orders-list" id="orders-list"></div>
+    <div class="tabs">
+      <button class="tab-btn" id="tab-pending" onclick="switchTab('pending')">Pending Orders</button>
+      <button class="tab-btn inactive" id="tab-completed" onclick="switchTab('completed')">Completed Orders</button>
+    </div>
+
+    <!-- PENDING TAB -->
+    <div class="tab-section active" id="section-pending">
+      <div class="page-sub" id="orders-sub">Loading orders...</div>
+      <div class="orders-list" id="orders-list"></div>
+    </div>
+
+    <!-- COMPLETED TAB -->
+    <div class="tab-section" id="section-completed">
+      <div class="page-sub" id="completed-sub">Loading completed orders...</div>
+      <div class="orders-list" id="completed-list"></div>
+    </div>
   </div>
 </div>
 
 <script>
   let adminPassword = '';
+  let completedLoaded = false;
+
+  function switchTab(tab) {
+    document.getElementById('section-pending').classList.toggle('active', tab === 'pending');
+    document.getElementById('section-completed').classList.toggle('active', tab === 'completed');
+    document.getElementById('tab-pending').classList.toggle('inactive', tab !== 'pending');
+    document.getElementById('tab-completed').classList.toggle('inactive', tab !== 'completed');
+
+    if (tab === 'completed' && !completedLoaded) {
+      loadCompletedOrders();
+    }
+  }
 
   function login() {
     const pw = document.getElementById('password-input').value;
@@ -480,6 +540,111 @@
       status.textContent = '✗ Failed: ' + err.message;
       status.className = 'approve-status error';
       status.style.display = 'block';
+    }
+  }
+
+  async function loadCompletedOrders() {
+    try {
+      const res = await fetch('/api/completed-orders', {
+        headers: { 'Authorization': `Bearer ${adminPassword}` }
+      });
+      const data = await res.json();
+      const orders = data.orders || [];
+      const sub = document.getElementById('completed-sub');
+      const list = document.getElementById('completed-list');
+
+      if (orders.length === 0) {
+        sub.textContent = 'No completed orders yet.';
+        list.innerHTML = '<div class="empty-state"><strong>Nothing Yet</strong>Completed orders will appear here after approval.</div>';
+      } else {
+        sub.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''} completed`;
+        list.innerHTML = orders.map(order => renderCompletedCard(order)).join('');
+      }
+      completedLoaded = true;
+    } catch (err) {
+      document.getElementById('completed-sub').textContent = 'Failed to load completed orders.';
+    }
+  }
+
+  function renderCompletedCard(order) {
+    const m = order.metadata || {};
+    const isAuto = m.workType === 'automotive';
+    const paidAt = order.paidAt ? new Date(order.paidAt).toLocaleString() : '—';
+    const completedAt = order.completedAt ? new Date(order.completedAt).toLocaleString() : '—';
+    const amount = m.amountOwed ? '$' + parseInt(m.amountOwed).toLocaleString() : '—';
+
+    const typeLabel = isAuto
+      ? `<span class="order-badge badge-auto">Automotive</span>`
+      : `<span class="order-badge badge-construction">Construction</span>`;
+
+    const detail = isAuto
+      ? `${m.vehicleDescription || '—'} · VIN: ${m.vin || '—'}`
+      : `${m.propertyAddress || '—'}, ${m.propertyCity || '—'}`;
+
+    return `
+      <div class="order-card" id="card-c-${order.sessionId}" style="opacity:0.85;">
+        <div class="order-header">
+          <div class="order-meta">
+            <div class="order-name">${m.claimantName || 'Unknown'}</div>
+            <div class="order-detail">
+              ${typeLabel}
+              <br>${detail}
+              <br>${m.claimantEmail || '—'} · ${m.claimantPhone || '—'}
+              <br>Paid: ${paidAt}
+            </div>
+          </div>
+          <div class="order-amount">${amount}</div>
+          <div class="order-actions" style="flex-direction:column;align-items:flex-end;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button class="btn-view" id="toggle-btn-c-${order.sessionId}" onclick="toggleCompletedDocs('${order.sessionId}')" title="View Documents" style="padding:10px 14px;font-size:18px;">›</button>
+              <div style="text-align:right;">
+                <div class="completed-sent">✓ Sent</div>
+                <div style="font-size:12px;color:var(--muted);">${completedAt}</div>
+                <div style="font-size:12px;color:var(--muted);">${order.emailSentTo || m.claimantEmail || '—'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="doc-panel" id="docs-c-${order.sessionId}">
+          <div style="padding:16px 24px;background:var(--steel);border-top:1px solid var(--border);font-size:13px;color:var(--muted);">
+            Loading documents...
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function toggleCompletedDocs(sessionId) {
+    const panel = document.getElementById(`docs-c-${sessionId}`);
+    const btn = document.getElementById(`toggle-btn-c-${sessionId}`);
+
+    if (panel.classList.contains('open')) {
+      panel.classList.remove('open');
+      btn.textContent = '›';
+      btn.style.transform = 'rotate(0deg)';
+      return;
+    }
+
+    panel.classList.add('open');
+    btn.textContent = '›';
+    btn.style.transform = 'rotate(90deg)';
+    btn.style.transition = 'transform 0.2s ease';
+    panel.innerHTML = '<div style="padding:24px;background:var(--steel);color:var(--muted);font-size:14px;">Loading documents...</div>';
+
+    try {
+      const res = await fetch(`/api/get-order?sessionId=${sessionId}&prefix=completed`, {
+        headers: { 'Authorization': `Bearer ${adminPassword}` }
+      });
+      const data = await res.json();
+
+      if (data.htmlDocuments) {
+        const blobUrl = URL.createObjectURL(new Blob([data.htmlDocuments], { type: 'text/html' }));
+        panel.innerHTML = `<iframe src="${blobUrl}" style="width:100%;height:600px;border:none;display:block;"></iframe>`;
+      } else {
+        panel.innerHTML = '<div style="padding:24px;color:#e84040;font-size:14px;">Documents not found.</div>';
+      }
+    } catch (err) {
+      panel.innerHTML = `<div style="padding:24px;color:#e84040;font-size:14px;">Failed to load: ${err.message}</div>`;
     }
   }
 </script>
