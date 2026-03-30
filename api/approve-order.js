@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { list, del } from '@vercel/blob';
+import { list, del, put } from '@vercel/blob';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -50,7 +50,19 @@ export default async function handler(req, res) {
       html: htmlDocuments,
     });
 
-    // Delete the order blob after sending
+    // Archive to completed/ instead of deleting
+    await put(
+      `completed/${sessionId}.json`,
+      JSON.stringify({
+        ...orderData,
+        completedAt: new Date().toISOString(),
+        emailSentTo: metadata.claimantEmail,
+        htmlDocuments: req.body.editedHtml || originalHtml,
+      }),
+      { access: 'public', contentType: 'application/json' }
+    );
+
+    // Delete from pending
     await del(blobs[0].url);
 
     res.status(200).json({ success: true, emailSentTo: metadata.claimantEmail });
