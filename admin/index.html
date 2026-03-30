@@ -268,7 +268,7 @@
           <div class="order-amount">${amount}</div>
           <div class="order-actions" style="flex-direction:column;align-items:flex-end;">
             <div style="display:flex;gap:10px;">
-              <button class="btn-view" onclick="toggleDocs('${order.sessionId}')">View Docs</button>
+              <button class="btn-view" id="toggle-btn-${order.sessionId}" onclick="toggleDocs('${order.sessionId}')" title="View Documents" style="padding:10px 14px;font-size:18px;">›</button>
               <button class="btn-approve" id="approve-btn-${order.sessionId}" onclick="approveOrder('${order.sessionId}', '${m.claimantEmail}')">Approve & Send</button>
             </div>
             <div class="approve-status" id="approve-status-${order.sessionId}"></div>
@@ -285,12 +285,19 @@
 
   async function toggleDocs(sessionId) {
     const panel = document.getElementById(`docs-${sessionId}`);
+    const btn = document.getElementById(`toggle-btn-${sessionId}`);
+
     if (panel.classList.contains('open')) {
       panel.classList.remove('open');
+      btn.textContent = '›';
+      btn.style.transform = 'rotate(0deg)';
       return;
     }
 
     panel.classList.add('open');
+    btn.textContent = '›';
+    btn.style.transform = 'rotate(90deg)';
+    btn.style.transition = 'transform 0.2s ease';
     panel.innerHTML = '<div style="padding:24px;background:var(--steel);color:var(--muted);font-size:14px;">Loading documents...</div>';
 
     try {
@@ -300,16 +307,129 @@
       const data = await res.json();
 
       if (data.htmlDocuments) {
-        // Render in iframe via blob URL
-        const blob = new Blob([data.htmlDocuments], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        panel.innerHTML = `<iframe src="${url}"></iframe>`;
+        orderDocs[sessionId] = data.htmlDocuments;
+        renderDocPanel(sessionId);
       } else {
         panel.innerHTML = '<div style="padding:24px;color:#e84040;font-size:14px;">Documents not found.</div>';
       }
     } catch (err) {
       panel.innerHTML = `<div style="padding:24px;color:#e84040;font-size:14px;">Failed to load: ${err.message}</div>`;
     }
+  }
+
+  // Storage for current document HTML per order
+  const orderDocs = {};
+
+  function extractPlaceholders(html) {
+    // Strip HTML tags to search text content only
+    const text = html.replace(/<[^>]+>/g, ' ');
+    const found = [];
+    const seen = new Set();
+    const regex = /\[([^\]]{3,200})\]/g;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const inner = match[1].trim();
+      // Skip obvious non-placeholder brackets (CSS, code-like content)
+      if (inner.includes('{') || inner.includes(':') && inner.length < 8) continue;
+      if (!seen.has(inner)) {
+        seen.add(inner);
+        found.push({ full: `[${inner}]`, inner });
+      }
+    }
+    return found;
+  }
+
+  function renderDocPanel(sessionId) {
+    const panel = document.getElementById(`docs-${sessionId}`);
+    const html = orderDocs[sessionId];
+    const placeholders = extractPlaceholders(html);
+
+    const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+
+    const placeholderRows = placeholders.length > 0
+      ? placeholders.map((p, i) => `
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:5px;">
+              ${p.inner.length > 60 ? p.inner.substring(0, 60) + '...' : p.inner}
+            </label>
+            <input
+              type="text"
+              id="ph-${sessionId}-${i}"
+              data-placeholder="${escHtml(p.full)}"
+              placeholder="Enter value..."
+              style="width:100%;background:#1c2333;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:10px 12px;font-family:Barlow,sans-serif;font-size:14px;color:#fff;outline:none;"
+              onfocus="this.style.borderColor='#f5a623'"
+              onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
+            >
+          </div>
+        `).join('')
+      : '<p style="color:#2ea043;font-size:13px;">✓ No placeholders detected. Documents look complete.</p>';
+
+    panel.innerHTML = `
+      <iframe id="iframe-${sessionId}" src="${blobUrl}" style="width:100%;height:600px;border:none;display:block;border-bottom:1px solid rgba(255,255,255,0.08);"></iframe>
+
+      <div style="background:#1c2333;padding:24px;border-top:3px solid #f5a623;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:4px;">
+          Fill In Placeholders Before Sending
+        </div>
+        <div style="font-size:13px;color:#7a8499;margin-bottom:20px;">
+          ${placeholders.length > 0
+            ? `${placeholders.length} item${placeholders.length !== 1 ? 's' : ''} need your input. Fill them in, then click Update Preview before approving.`
+            : 'All fields appear complete.'}
+        </div>
+        ${placeholderRows}
+        ${placeholders.length > 0 ? `
+          <button onclick="applyPlaceholders('${sessionId}')"
+            style="background:#f5a623;color:#0d1117;border:none;border-radius:7px;padding:12px 24px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;">
+            Update Preview
+          </button>
+          <div id="update-status-${sessionId}" style="font-size:13px;margin-top:8px;display:none;"></div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function applyPlaceholders(sessionId) {
+    let html = orderDocs[sessionId];
+    const panel = document.getElementById(`docs-${sessionId}`);
+    const inputs = panel.querySelectorAll('[data-placeholder]');
+    let filled = 0;
+    let skipped = 0;
+
+    inputs.forEach(input => {
+      const value = input.value.trim();
+      const placeholder = input.getAttribute('data-placeholder');
+      if (value) {
+        // Replace all occurrences in the document
+        html = html.split(placeholder).join(value);
+        filled++;
+      } else {
+        skipped++;
+      }
+    });
+
+    // Save updated version
+    orderDocs[sessionId] = html;
+
+    // Refresh the iframe
+    const iframe = document.getElementById(`iframe-${sessionId}`);
+    const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    iframe.src = blobUrl;
+
+    // Show status
+    const statusEl = document.getElementById(`update-status-${sessionId}`);
+    if (skipped === 0) {
+      statusEl.textContent = `✓ All ${filled} placeholders filled. Preview updated. Ready to send.`;
+      statusEl.style.color = '#2ea043';
+    } else {
+      statusEl.textContent = `${filled} filled, ${skipped} still empty. Remaining placeholders will appear as-is in the document.`;
+      statusEl.style.color = '#f5a623';
+    }
+    statusEl.style.display = 'block';
   }
 
   async function approveOrder(sessionId, email) {
@@ -321,13 +441,16 @@
     status.style.display = 'none';
 
     try {
+      // Use edited version if available, otherwise let server fetch original
+      const editedHtml = orderDocs[sessionId] || null;
+
       const res = await fetch('/api/approve-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminPassword}`
         },
-        body: JSON.stringify({ sessionId }),
+        body: JSON.stringify({ sessionId, editedHtml }),
       });
 
       const data = await res.json();
@@ -338,7 +461,6 @@
         status.style.display = 'block';
         btn.textContent = 'Sent ✓';
 
-        // Fade out the card after 3 seconds
         setTimeout(() => {
           const card = document.getElementById(`card-${sessionId}`);
           if (card) card.style.opacity = '0.4';
