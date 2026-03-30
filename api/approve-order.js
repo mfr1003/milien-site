@@ -32,7 +32,10 @@ export default async function handler(req, res) {
     }
 
     const orderData = await response.json();
-    const { htmlDocuments, metadata } = orderData;
+    const { htmlDocuments: originalHtml, metadata } = orderData;
+
+    // Use admin-edited version if provided, otherwise use original
+    const htmlDocuments = req.body.editedHtml || originalHtml;
 
     // Build subject line that works for both construction and automotive
     const isAuto = metadata.workType === 'automotive';
