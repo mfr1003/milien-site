@@ -7,19 +7,22 @@ export default async function handler(req, res) {
 
   try {
     const data = req.body;
-    const timestamp = new Date().toISOString();
-    const id = `intake_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const timestamp = Date.now();
+    const email = (data.claimantEmail || 'unknown').toLowerCase().trim();
+    const safeEmail = email.replace(/[^a-z0-9._+-]/g, '_');
+
+    // Key by email so webhook can look up by email after Stripe payment
+    const blobKey = `intakes/${safeEmail}/${timestamp}.json`;
 
     await put(
-      `intakes/${id}.json`,
-      JSON.stringify({ id, timestamp, ...data }),
+      blobKey,
+      JSON.stringify({ timestamp, ...data }),
       { access: 'public', contentType: 'application/json' }
     );
 
-    res.status(200).json({ saved: true, id });
+    res.status(200).json({ saved: true });
   } catch (err) {
     console.error('Save intake error:', err);
-    // Return 200 anyway — we don't want this to block payment
     res.status(200).json({ saved: false });
   }
 }
