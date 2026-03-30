@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   try {
     const { blobs } = await list({ prefix: 'orders/' });
 
-    const pending = await Promise.all(
+    const orders = await Promise.all(
       blobs.map(async (blob) => {
         try {
           const response = await fetch(blob.url);
@@ -22,6 +22,7 @@ export default async function handler(req, res) {
             sessionId: data.sessionId,
             blobUrl: blob.url,
             uploadedAt: blob.uploadedAt,
+            paidAt: data.paidAt || blob.uploadedAt,
             metadata: data.metadata,
           };
         } catch {
@@ -31,8 +32,8 @@ export default async function handler(req, res) {
     );
 
     res.status(200).json({
-      pending: pending.filter(Boolean).sort((a, b) =>
-        new Date(b.uploadedAt) - new Date(a.uploadedAt)
+      orders: orders.filter(Boolean).sort((a, b) =>
+        new Date(b.paidAt) - new Date(a.paidAt)
       )
     });
   } catch (err) {
