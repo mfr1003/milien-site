@@ -3,336 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MiLien Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<title>LodgeMiLien Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --ink: #0d1117; --ink-soft: #1c2333; --steel: #2a3347;
     --amber: #f5a623; --amber-dark: #d4891a;
-    --white: #ffffff; --muted: #7a8499;
-    --border: rgba(255,255,255,0.08);
-    --success: #2ea043; --danger: #e84040;
+    --white: #ffffff; --muted: #7a8499; --border: rgba(255,255,255,0.08);
     --font-display: 'Barlow Condensed', sans-serif;
     --font-body: 'Barlow', sans-serif;
   }
-  body { font-family: var(--font-body); background: var(--ink); color: var(--white); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-  header { background: var(--ink-soft); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--white); }
+  body { font-family: var(--font-body); background: var(--ink); color: var(--white); min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 20px;
+  }
+  .login-box {
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 12px; padding: 40px 32px; width: 100%; max-width: 360px;
+  }
+  .login-box h1 {
+    font-family: var(--font-display); font-size: 28px; font-weight: 800;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .login-box h1 span { color: var(--amber); }
+  .login-input {
+    width: 100%; background: var(--steel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px; font-family: var(--font-body);
+    font-size: 16px; color: var(--white); outline: none; margin-bottom: 12px;
+  }
+  .login-input:focus { border-color: var(--amber); }
+  .login-btn {
+    width: 100%; background: var(--amber); color: var(--ink);
+    border: none; border-radius: 8px; padding: 14px;
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer;
+  }
+  .login-btn:hover { background: var(--amber-dark); }
+  .login-error { color: #e84040; font-size: 13px; margin-top: 8px; display: none; }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; }
+  nav {
+    background: rgba(13,17,23,0.95); border-bottom: 1px solid var(--border);
+    padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--white); }
   .logo span { color: var(--amber); }
-  .header-right { display: flex; gap: 12px; align-items: center; }
-  .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; }
-  .nav-link:hover { color: var(--white); }
-  .admin-badge { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
-
-  .login-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 57px); padding: 40px 20px; }
-  .login-card { background: var(--ink-soft); border: 1px solid var(--border); border-radius: 12px; padding: 40px 32px; width: 100%; max-width: 380px; text-align: center; }
-  .login-card h2 { font-family: var(--font-display); font-size: 28px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
-  .login-card p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
-  input[type="password"] { width: 100%; background: var(--steel); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; font-family: var(--font-body); font-size: 16px; color: var(--white); outline: none; margin-bottom: 12px; transition: border-color 0.15s; }
-  input[type="password"]:focus { border-color: var(--amber); }
-  .btn-login { width: 100%; background: var(--amber); color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; border: none; border-radius: 8px; padding: 14px; cursor: pointer; transition: background 0.15s; }
-  .btn-login:hover { background: var(--amber-dark); }
-  .error-msg { color: var(--danger); font-size: 13px; margin-top: 10px; display: none; }
-
-  .dashboard { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; }
-
-  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 40px; }
-  .stat-card { background: var(--steel); border-radius: 10px; padding: 20px; border: 1px solid var(--border); }
-  .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .stat-value { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--amber); line-height: 1; }
-
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .section-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
-  .section-count { font-size: 12px; color: var(--muted); background: var(--steel); padding: 4px 10px; border-radius: 12px; }
-
-  .pending-section { margin-bottom: 48px; }
-
-  .pending-card {
-    background: var(--ink-soft);
-    border: 1px solid rgba(245,166,35,0.25);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 12px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 20px;
-    align-items: start;
+  .logout-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 16px; border-radius: 6px; font-family: var(--font-body);
+    font-size: 13px; cursor: pointer;
   }
-  .pending-card-body {}
-  .pending-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .pending-detail { font-size: 13px; color: var(--muted); line-height: 1.7; }
-  .pending-detail strong { color: rgba(255,255,255,0.7); }
-  .pending-proof { margin-top: 10px; }
-  .proof-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--amber); text-decoration: none; background: var(--amber-glow); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(245,166,35,0.2); }
-  .proof-link:hover { background: rgba(245,166,35,0.2); }
-  .pending-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  .logout-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+  .main { padding: 32px 24px; max-width: 1100px; margin: 0 auto; }
+  .page-title {
+    font-family: var(--font-display); font-size: 36px; font-weight: 800;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  .orders-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .order-card {
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .order-card.urgent { border-color: rgba(232,64,64,0.4); }
+
+  .order-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; gap: 16px; flex-wrap: wrap;
+  }
+  .order-meta { flex: 1; min-width: 200px; }
+  .order-name {
+    font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .order-detail { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .order-badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; margin-right: 6px;
+  }
+  .badge-auto { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .badge-construction { background: rgba(255,255,255,0.08); color: var(--muted); }
+  .badge-filing { background: rgba(46,160,67,0.15); color: #2ea043; }
+  .badge-urgent { background: rgba(232,64,64,0.15); color: #e84040; }
+
+  .order-amount {
+    font-family: var(--font-display); font-size: 28px; font-weight: 700;
+    color: var(--amber); white-space: nowrap;
+  }
+
+  .order-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn-view {
+    background: var(--steel); border: 1px solid var(--border);
+    color: var(--white); padding: 10px 20px; border-radius: 7px;
+    font-family: var(--font-display); font-size: 15px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-view:hover { border-color: rgba(255,255,255,0.25); }
+
   .btn-approve {
-    background: var(--success);
-    color: var(--white);
-    font-family: var(--font-display);
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 7px;
-    padding: 11px 20px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: opacity 0.15s, transform 0.1s;
+    background: var(--amber); border: none; color: var(--ink);
+    padding: 10px 20px; border-radius: 7px;
+    font-family: var(--font-display); font-size: 15px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer; transition: all 0.15s;
   }
-  .btn-approve:hover { opacity: 0.85; }
-  .btn-approve:active { transform: scale(0.97); }
-  .btn-approve:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-preview-link {
-    display: block;
-    text-align: center;
-    font-size: 13px;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    transition: all 0.15s;
+  .btn-approve:hover { background: var(--amber-dark); }
+  .btn-approve:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── DOCUMENT PREVIEW PANEL ── */
+  .doc-panel {
+    display: none; border-top: 1px solid var(--border);
+    background: #fff; padding: 0;
   }
-  .btn-preview-link:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
-
-  .deadline-pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; margin-left: 8px; }
-  .deadline-urgent { background: rgba(232,64,64,0.15); color: #e84040; }
-  .deadline-ok { background: rgba(46,160,67,0.12); color: #2ea043; }
-
-  .approved-section { margin-bottom: 48px; }
-  .orders-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .orders-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); }
-  .orders-table td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.5; }
-  .orders-table tr:hover td { background: rgba(255,255,255,0.02); }
-  .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
-  .badge-full { background: rgba(245,166,35,0.15); color: var(--amber); }
-  .badge-demand { background: rgba(255,255,255,0.08); color: var(--muted); }
-  .badge-rush { background: rgba(232,64,64,0.15); color: #e84040; }
-  .customer-name { font-weight: 500; color: var(--white); }
-  .customer-detail { color: var(--muted); font-size: 12px; }
-  .amount { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--amber); }
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; background: var(--steel); border-radius: 10px; }
-
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--success); color: var(--white); font-size: 14px; font-weight: 500; padding: 12px 20px; border-radius: 8px; display: none; animation: fadeIn 0.2s ease; z-index: 100; }
-  .toast.error { background: var(--danger); }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  @media (max-width: 600px) {
-    .pending-card { grid-template-columns: 1fr; }
-    .pending-actions { flex-direction: row; }
+  .doc-panel.open { display: block; }
+  .doc-panel iframe {
+    width: 100%; height: 600px; border: none; display: block;
   }
+
+  /* ── PROOF LINK ── */
+  .proof-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #1a6ef5; font-size: 13px; text-decoration: none;
+  }
+  .proof-link:hover { text-decoration: underline; }
+
+  /* ── EMPTY / LOADING ── */
+  .empty-state {
+    text-align: center; padding: 64px 20px;
+    color: var(--muted); font-size: 15px;
+  }
+  .empty-state strong { display: block; font-family: var(--font-display); font-size: 24px; font-weight: 700; text-transform: uppercase; color: var(--white); margin-bottom: 8px; }
+
+  .loading { color: var(--muted); font-size: 14px; padding: 32px 0; }
+
+  .approve-status {
+    font-size: 13px; margin-top: 6px; display: none;
+  }
+  .approve-status.success { color: #2ea043; }
+  .approve-status.error { color: #e84040; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Mi<span>Lien</span></div>
-  <div class="header-right">
-    <a href="/preview" class="nav-link">Preview Tool</a>
-    <div class="admin-badge">Admin</div>
-  </div>
-</header>
-
-<div class="login-screen" id="login-screen">
-  <div class="login-card">
-    <h2>Admin Access</h2>
-    <p>Enter your admin password to view orders.</p>
-    <input type="password" id="password-input" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
-    <button class="btn-login" onclick="login()">Sign In</button>
-    <div class="error-msg" id="error-msg">Incorrect password. Try again.</div>
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Lodge<span>Mi</span>Lien<br>Admin</h1>
+    <input type="password" class="login-input" id="password-input" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">Sign In</button>
+    <div class="login-error" id="login-error">Incorrect password.</div>
   </div>
 </div>
 
-<div class="dashboard" id="dashboard">
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Pending Review</div><div class="stat-value" id="stat-pending">—</div></div>
-    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value" id="stat-orders">—</div></div>
-    <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" id="stat-revenue">—</div></div>
-    <div class="stat-card"><div class="stat-label">Avg Order</div><div class="stat-value" id="stat-avg">—</div></div>
-  </div>
-
-  <div class="pending-section">
-    <div class="section-header">
-      <div class="section-title">Pending Approval</div>
-      <div class="section-count" id="pending-count">0 orders</div>
-    </div>
-    <div id="pending-container"><div class="empty-state">No orders pending review.</div></div>
-  </div>
-
-  <div class="approved-section">
-    <div class="section-header">
-      <div class="section-title">Approved Orders</div>
-      <div class="section-count" id="approved-count">0 orders</div>
-    </div>
-    <div id="approved-container"><div class="empty-state">No approved orders yet.</div></div>
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <nav>
+    <div class="logo">Lodge<span>Mi</span>Lien <span style="color:var(--muted);font-size:16px;font-weight:600;">Admin</span></div>
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+  </nav>
+  <div class="main">
+    <div class="page-title">Pending Orders</div>
+    <div class="page-sub" id="orders-sub">Loading orders...</div>
+    <div class="orders-list" id="orders-list"></div>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-  let adminToken = '';
+  let adminPassword = '';
 
-  async function login() {
+  function login() {
     const pw = document.getElementById('password-input').value;
     if (!pw) return;
-    adminToken = pw;
-
-    const [pendingOk, ordersOk] = await Promise.all([loadPending(), loadOrders()]);
-    if (pendingOk || ordersOk) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-    } else {
-      document.getElementById('error-msg').style.display = 'block';
-      adminToken = '';
-    }
+    adminPassword = pw;
+    loadOrders();
   }
 
-  async function loadPending() {
-    try {
-      const res = await fetch('/api/pending-orders', {
-        headers: { 'Authorization': `Bearer ${adminToken}` }
-      });
-      if (res.status === 401) return false;
-      const data = await res.json();
-      renderPending(data.pending || []);
-      document.getElementById('stat-pending').textContent = (data.pending || []).length;
-      return true;
-    } catch { return false; }
+  function logout() {
+    adminPassword = '';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('password-input').value = '';
   }
 
   async function loadOrders() {
     try {
-      const res = await fetch('/api/admin-orders', {
-        headers: { 'Authorization': `Bearer ${adminToken}` }
+      const res = await fetch('/api/pending-orders', {
+        headers: { 'Authorization': `Bearer ${adminPassword}` }
       });
-      if (res.status === 401) return false;
+
+      if (res.status === 401) {
+        document.getElementById('login-error').style.display = 'block';
+        adminPassword = '';
+        return;
+      }
+
+      document.getElementById('login-error').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
       const data = await res.json();
-      renderApproved(data.orders || []);
-      renderStats(data.orders || []);
-      return true;
-    } catch { return false; }
-  }
+      const orders = data.orders || [];
 
-  function renderStats(orders) {
-    const total = orders.length;
-    const revenue = orders.reduce((sum, o) => sum + parseFloat(o.total), 0);
-    const avg = total > 0 ? revenue / total : 0;
-    document.getElementById('stat-orders').textContent = total;
-    document.getElementById('stat-revenue').textContent = '$' + revenue.toFixed(0);
-    document.getElementById('stat-avg').textContent = '$' + avg.toFixed(0);
-  }
+      const sub = document.getElementById('orders-sub');
+      const list = document.getElementById('orders-list');
 
-  function daysRemaining(dateLast) {
-    const last = new Date(dateLast);
-    const elapsed = Math.floor((new Date() - last) / (1000 * 60 * 60 * 24));
-    return 90 - elapsed;
-  }
+      if (orders.length === 0) {
+        sub.textContent = 'No pending orders.';
+        list.innerHTML = '<div class="empty-state"><strong>All Clear</strong>No orders awaiting review.</div>';
+        return;
+      }
 
-  function renderPending(orders) {
-    const container = document.getElementById('pending-container');
-    document.getElementById('pending-count').textContent = orders.length + ' order' + (orders.length !== 1 ? 's' : '');
+      sub.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''} awaiting review`;
+      list.innerHTML = orders.map(order => renderOrderCard(order)).join('');
 
-    if (!orders.length) {
-      container.innerHTML = '<div class="empty-state">No orders pending review. You\'re all caught up.</div>';
-      return;
+    } catch (err) {
+      document.getElementById('orders-sub').textContent = 'Failed to load orders.';
     }
+  }
 
-    container.innerHTML = orders.map(o => {
-      const m = o.metadata;
-      const days = daysRemaining(m.dateLast);
-      const urgentClass = days <= 14 ? 'deadline-urgent' : 'deadline-ok';
-      const proofUrl = m.proofUrl || '';
+  function renderOrderCard(order) {
+    const m = order.metadata || {};
+    const isAuto = m.workType === 'automotive';
+    const paidAt = order.paidAt ? new Date(order.paidAt).toLocaleString() : '—';
+    const amount = m.amountOwed ? '$' + parseInt(m.amountOwed).toLocaleString() : '—';
 
-      return `
-        <div class="pending-card" id="card-${o.sessionId}">
-          <div class="pending-card-body">
-            <div class="pending-name">
-              ${m.claimantName}
-              <span class="deadline-pill ${urgentClass}">${days} days to deadline</span>
+    const typeLabel = isAuto
+      ? `<span class="order-badge badge-auto">Automotive</span>`
+      : `<span class="order-badge badge-construction">Construction</span>`;
+
+    const filingLabel = m.filingCoordination === 'true'
+      ? `<span class="order-badge badge-filing">+ Filing Coord</span>` : '';
+
+    const detail = isAuto
+      ? `${m.vehicleDescription || '—'} · VIN: ${m.vin || '—'} · ${m.claimantName || '—'}`
+      : `${m.propertyAddress || '—'}, ${m.propertyCity || '—'} · ${m.claimantName || '—'}`;
+
+    const proofUrl = m.proofUrl || '';
+    const proofLink = proofUrl
+      ? `<a href="${proofUrl}" target="_blank" class="proof-link">📎 View Proof of Work</a>`
+      : `<span style="color:#e84040;font-size:13px;">⚠ No proof uploaded</span>`;
+
+    return `
+      <div class="order-card" id="card-${order.sessionId}">
+        <div class="order-header">
+          <div class="order-meta">
+            <div class="order-name">${m.claimantName || 'Unknown'}</div>
+            <div class="order-detail">
+              ${typeLabel}${filingLabel}
+              <br>${detail}
+              <br>${m.claimantEmail || '—'} · ${m.claimantPhone || '—'}
+              <br>Paid: ${paidAt} · ${proofLink}
             </div>
-            <div class="pending-detail">
-              <strong>${m.propertyAddress}, ${m.propertyCity}</strong> — ${m.propertyCounty} County<br>
-              Owner: ${m.ownerName}<br>
-              Amount disputed: <strong>$${parseInt(m.amountOwed).toLocaleString()}</strong> &nbsp;|&nbsp;
-              Package: <strong>${m.packageType === 'full' ? 'Full Lien Package' : 'Demand Letter'}</strong><br>
-              Role: ${m.role} &nbsp;|&nbsp; Last furnished: ${m.dateLast}<br>
-              Email: ${m.claimantEmail} &nbsp;|&nbsp; Phone: ${m.claimantPhone}
-            </div>
-            ${proofUrl ? `
-            <div class="pending-proof">
-              <a href="${proofUrl}" target="_blank" class="proof-link">
-                View Proof of Work Upload
-              </a>
-            </div>` : '<div class="pending-proof" style="margin-top:10px;font-size:13px;color:#e84040;">No proof of work uploaded</div>'}
           </div>
-          <div class="pending-actions">
-            <button class="btn-approve" onclick="approveOrder('${o.sessionId}', this)">
-              Approve &amp; Send
-            </button>
-            <a href="/preview" class="btn-preview-link">Preview Docs</a>
+          <div class="order-amount">${amount}</div>
+          <div class="order-actions" style="flex-direction:column;align-items:flex-end;">
+            <div style="display:flex;gap:10px;">
+              <button class="btn-view" onclick="toggleDocs('${order.sessionId}')">View Docs</button>
+              <button class="btn-approve" id="approve-btn-${order.sessionId}" onclick="approveOrder('${order.sessionId}', '${m.claimantEmail}')">Approve & Send</button>
+            </div>
+            <div class="approve-status" id="approve-status-${order.sessionId}"></div>
           </div>
         </div>
-      `;
-    }).join('');
-  }
-
-  function renderApproved(orders) {
-    const container = document.getElementById('approved-container');
-    document.getElementById('approved-count').textContent = orders.length + ' order' + (orders.length !== 1 ? 's' : '');
-
-    if (!orders.length) {
-      container.innerHTML = '<div class="empty-state">No approved orders yet.</div>';
-      return;
-    }
-
-    const rows = orders.map(o => `
-      <tr>
-        <td>
-          <div class="customer-name">${o.customer}</div>
-          <div class="customer-detail">${o.email}</div>
-          <div class="customer-detail">${o.phone}</div>
-        </td>
-        <td>
-          <div>${o.property}</div>
-          <div class="customer-detail">${o.county} County</div>
-        </td>
-        <td>$${parseInt(o.amount).toLocaleString()} disputed<br><div class="customer-detail">Last furnished: ${o.dateLast}</div></td>
-        <td>
-          <span class="badge ${o.package === 'full' ? 'badge-full' : 'badge-demand'}">${o.package === 'full' ? 'Full Package' : 'Demand Letter'}</span>
-          ${o.rush ? '<br><span class="badge badge-rush" style="margin-top:4px">Rush</span>' : ''}
-        </td>
-        <td><div class="amount">$${o.total}</div></td>
-        <td><div class="customer-detail">${o.created}</div></td>
-      </tr>
-    `).join('');
-
-    container.innerHTML = `
-      <table class="orders-table">
-        <thead>
-          <tr>
-            <th>Customer</th><th>Property</th><th>Dispute</th>
-            <th>Package</th><th>Paid</th><th>Date</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
+        <div class="doc-panel" id="docs-${order.sessionId}">
+          <div style="padding:16px 24px;background:var(--steel);border-top:1px solid var(--border);font-size:13px;color:var(--muted);">
+            Loading documents...
+          </div>
+        </div>
+      </div>
     `;
   }
 
-  async function approveOrder(sessionId, btn) {
+  async function toggleDocs(sessionId) {
+    const panel = document.getElementById(`docs-${sessionId}`);
+    if (panel.classList.contains('open')) {
+      panel.classList.remove('open');
+      return;
+    }
+
+    panel.classList.add('open');
+    panel.innerHTML = '<div style="padding:24px;background:var(--steel);color:var(--muted);font-size:14px;">Loading documents...</div>';
+
+    try {
+      const res = await fetch(`/api/get-order?sessionId=${sessionId}`, {
+        headers: { 'Authorization': `Bearer ${adminPassword}` }
+      });
+      const data = await res.json();
+
+      if (data.htmlDocuments) {
+        // Render in iframe via blob URL
+        const blob = new Blob([data.htmlDocuments], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        panel.innerHTML = `<iframe src="${url}"></iframe>`;
+      } else {
+        panel.innerHTML = '<div style="padding:24px;color:#e84040;font-size:14px;">Documents not found.</div>';
+      }
+    } catch (err) {
+      panel.innerHTML = `<div style="padding:24px;color:#e84040;font-size:14px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  async function approveOrder(sessionId, email) {
+    const btn = document.getElementById(`approve-btn-${sessionId}`);
+    const status = document.getElementById(`approve-status-${sessionId}`);
+
     btn.disabled = true;
     btn.textContent = 'Sending...';
+    status.style.display = 'none';
 
     try {
       const res = await fetch('/api/approve-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`,
+          'Authorization': `Bearer ${adminPassword}`
         },
         body: JSON.stringify({ sessionId }),
       });
@@ -340,30 +333,26 @@
       const data = await res.json();
 
       if (data.success) {
-        const card = document.getElementById('card-' + sessionId);
-        card.style.opacity = '0.4';
-        card.style.pointerEvents = 'none';
-        btn.textContent = 'Sent';
-        showToast('Documents sent to ' + data.emailSentTo);
-        setTimeout(() => loadPending(), 1500);
+        status.textContent = `✓ Sent to ${email}`;
+        status.className = 'approve-status success';
+        status.style.display = 'block';
+        btn.textContent = 'Sent ✓';
+
+        // Fade out the card after 3 seconds
+        setTimeout(() => {
+          const card = document.getElementById(`card-${sessionId}`);
+          if (card) card.style.opacity = '0.4';
+        }, 3000);
       } else {
-        btn.disabled = false;
-        btn.textContent = 'Approve & Send';
-        showToast('Error: ' + (data.error || 'Unknown error'), true);
+        throw new Error(data.error || 'Unknown error');
       }
     } catch (err) {
       btn.disabled = false;
       btn.textContent = 'Approve & Send';
-      showToast('Request failed: ' + err.message, true);
+      status.textContent = '✗ Failed: ' + err.message;
+      status.className = 'approve-status error';
+      status.style.display = 'block';
     }
-  }
-
-  function showToast(msg, isError = false) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.className = 'toast' + (isError ? ' error' : '');
-    toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 4000);
   }
 </script>
 </body>
