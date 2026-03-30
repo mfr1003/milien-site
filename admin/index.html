@@ -321,16 +321,22 @@
   const orderDocs = {};
 
   function extractPlaceholders(html) {
-    // Strip HTML tags to search text content only
     const text = html.replace(/<[^>]+>/g, ' ');
     const found = [];
     const seen = new Set();
     const regex = /\[([^\]]{3,200})\]/g;
+
+    // These are informational markers, not fillable fields
+    const skipPatterns = [
+      /notary seal/i,
+      /affix seal/i,
+    ];
+
     let match;
     while ((match = regex.exec(text)) !== null) {
       const inner = match[1].trim();
-      // Skip obvious non-placeholder brackets (CSS, code-like content)
-      if (inner.includes('{') || inner.includes(':') && inner.length < 8) continue;
+      if (inner.includes('{') || (inner.includes(':') && inner.length < 8)) continue;
+      if (skipPatterns.some(p => p.test(inner))) continue;
       if (!seen.has(inner)) {
         seen.add(inner);
         found.push({ full: `[${inner}]`, inner });
@@ -350,7 +356,7 @@
       ? placeholders.map((p, i) => `
           <div style="margin-bottom:12px;">
             <label style="display:block;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:5px;">
-              ${p.inner.length > 60 ? p.inner.substring(0, 60) + '...' : p.inner}
+              ${p.inner.length > 80 ? p.inner.substring(0, 80) + '...' : p.inner}
             </label>
             <input
               type="text"
