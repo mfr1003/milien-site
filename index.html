@@ -2001,33 +2001,53 @@
     };
   }
 
+  const STRIPE_LINKS = {
+    demand:       'https://buy.stripe.com/7sYeVceqY13eeDh8Ke0oM02',
+    full:         'https://buy.stripe.com/4gM7sK0A813e52H9Oi0oM00',
+    'full-filing':'https://buy.stripe.com/28E28q82AdQ0fHlaSm0oM01',
+    'demand-filing':'https://buy.stripe.com/00w4gyeqY5judzdbWq0oM03',
+  };
+
   async function doCheckout(btn) {
     btn.disabled = true;
     const originalHtml = btn.innerHTML;
     btn.innerHTML = 'Preparing secure checkout...';
-    btn.style.background = '';
     const existing = btn.parentElement.querySelector('.checkout-error');
     if (existing) existing.remove();
+
     try {
       const data = collectFormData();
-      const res = await fetch('/api/create-checkout', {
+
+      // Save intake data before redirecting so admin has it
+      await fetch('/api/save-intake', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      if (result.url) {
-        window.location.href = result.url;
-      } else {
-        throw new Error(result.error || 'Unknown error');
+      }).catch(() => {}); // non-blocking — don't let this stop payment
+
+      // Determine which Stripe link to use
+      let linkKey = data.packageType || 'full';
+      if (data.filingCoordination === 'true') {
+        linkKey = linkKey + '-filing';
       }
+      // automotive full-filing uses same key
+      const url = STRIPE_LINKS[linkKey] || STRIPE_LINKS['full'];
+
+      // Prefill email if available
+      const email = data.claimantEmail;
+      const finalUrl = email
+        ? url + '?prefilled_email=' + encodeURIComponent(email)
+        : url;
+
+      window.location.href = finalUrl;
+
     } catch (err) {
       btn.innerHTML = originalHtml;
       btn.disabled = false;
       const errDiv = document.createElement('div');
       errDiv.className = 'checkout-error';
       errDiv.style.cssText = 'color:#e84040;font-size:13px;margin-top:8px;text-align:center;';
-      errDiv.textContent = 'Something went wrong — please try again. (' + (err.message || 'network error') + ')';
+      errDiv.textContent = 'Something went wrong — please try again.';
       btn.insertAdjacentElement('afterend', errDiv);
     }
   }
