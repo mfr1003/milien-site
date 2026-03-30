@@ -384,7 +384,6 @@
     const text = html.replace(/<[^>]+>/g, ' ');
     const found = [];
     const seen = new Set();
-    const regex = /\[([^\]]{3,200})\]/g;
 
     // These are informational markers, not fillable fields
     const skipPatterns = [
@@ -392,16 +391,37 @@
       /affix seal/i,
     ];
 
+    // 1 — Detect standard [bracketed] placeholders
+    const bracketRegex = /\[([^\]]{3,200})\]/g;
     let match;
-    while ((match = regex.exec(text)) !== null) {
+    while ((match = bracketRegex.exec(text)) !== null) {
       const inner = match[1].trim();
       if (inner.includes('{') || (inner.includes(':') && inner.length < 8)) continue;
       if (skipPatterns.some(p => p.test(inner))) continue;
       if (!seen.has(inner)) {
         seen.add(inner);
-        found.push({ full: `[${inner}]`, inner });
+        found.push({ full: `[${inner}]`, inner, unbracketed: false });
       }
     }
+
+    // 2 — Detect known patterns Claude sometimes outputs WITHOUT brackets
+    const knownPatterns = [
+      { regex: /TO BE CONFIRMED[^.\n]*/gi, label: 'TO BE CONFIRMED — owner name from county records' },
+      { regex: /LEGAL DESCRIPTION[^.\n]*obtain[^.\n]*/gi, label: 'LEGAL DESCRIPTION — obtain from county Register of Deeds' },
+      { regex: /TAX PARCEL ID[^.\n]*obtain[^.\n]*/gi, label: 'TAX PARCEL ID — obtain from county records' },
+      { regex: /LIENHOLDER NAME[^.\n]*obtain[^.\n]*/gi, label: 'LIENHOLDER NAME — obtain from title search' },
+      { regex: /ENTER MVSR LICENSE[^.\n]*/gi, label: 'MVSR LICENSE NUMBER — enter before filing' },
+    ];
+
+    knownPatterns.forEach(({ regex, label }) => {
+      const patternMatch = text.match(regex);
+      if (patternMatch && !seen.has(label)) {
+        seen.add(label);
+        // Use the matched text as the replacement target
+        found.push({ full: patternMatch[0].trim(), inner: label, unbracketed: true });
+      }
+    });
+
     return found;
   }
 
@@ -422,6 +442,7 @@
               type="text"
               id="ph-${sessionId}-${i}"
               data-placeholder="${escHtml(p.full)}"
+              data-unbracketed="${p.unbracketed ? 'true' : 'false'}"
               placeholder="Enter value..."
               style="width:100%;background:#1c2333;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:10px 12px;font-family:Barlow,sans-serif;font-size:14px;color:#fff;outline:none;"
               onfocus="this.style.borderColor='#f5a623'"
@@ -469,30 +490,34 @@
     inputs.forEach(input => {
       const value = input.value.trim();
       const placeholder = input.getAttribute('data-placeholder');
+      const unbracketed = input.getAttribute('data-unbracketed') === 'true';
+
       if (value) {
-        // Replace all occurrences in the document
-        html = html.split(placeholder).join(value);
+        if (unbracketed) {
+          // For unbracketed patterns, replace the raw matched text
+          html = html.split(placeholder).join(value);
+        } else {
+          // For bracketed patterns, replace [text]
+          html = html.split(placeholder).join(value);
+        }
         filled++;
       } else {
         skipped++;
       }
     });
 
-    // Save updated version
     orderDocs[sessionId] = html;
 
-    // Refresh the iframe
     const iframe = document.getElementById(`iframe-${sessionId}`);
     const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
     iframe.src = blobUrl;
 
-    // Show status
     const statusEl = document.getElementById(`update-status-${sessionId}`);
     if (skipped === 0) {
       statusEl.textContent = `✓ All ${filled} placeholders filled. Preview updated. Ready to send.`;
       statusEl.style.color = '#2ea043';
     } else {
-      statusEl.textContent = `${filled} filled, ${skipped} still empty. Remaining placeholders will appear as-is in the document.`;
+      statusEl.textContent = `${filled} filled, ${skipped} still empty. Remaining items will appear as-is.`;
       statusEl.style.color = '#f5a623';
     }
     statusEl.style.display = 'block';
