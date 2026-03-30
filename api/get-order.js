@@ -10,13 +10,15 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { sessionId } = req.query;
+  const { sessionId, prefix } = req.query;
   if (!sessionId) {
     return res.status(400).json({ error: 'Session ID required' });
   }
 
+  const folder = prefix === 'completed' ? 'completed' : 'orders';
+
   try {
-    const { blobs } = await list({ prefix: `orders/${sessionId}` });
+    const { blobs } = await list({ prefix: `${folder}/${sessionId}` });
     if (!blobs || blobs.length === 0) {
       return res.status(404).json({ error: 'Order not found' });
     }
