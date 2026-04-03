@@ -173,7 +173,12 @@ function formatDocumentsAsHtml(rawDocuments, metadata, logoUrl) {
     ? `<img src="${logoUrl}" alt="${claimantName}" style="max-height:60px;max-width:240px;object-fit:contain;display:block;">`
     : `<span style="font-size:22px;font-weight:700;color:#0d1117;letter-spacing:-0.5px;">${claimantName}</span>`;
 
-  // Document sections with legal formatting
+  // Watermark SVG — diagonal repeating pattern with client name + date
+  // Encodes client identity so any shared copy is traceable
+  const watermarkText = encodeURIComponent(`${claimantName} · ${today}`);
+  const watermarkSvg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200'><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' transform='rotate(-30 200 100)' font-family='Arial,sans-serif' font-size='13' fill='rgba(0,0,0,0.045)' font-weight='600' letter-spacing='1'>Prepared exclusively for ${watermarkText}</text></svg>`;
+
+  // Document sections with legal formatting + watermark
   const docSections = docs.map((doc, i) => `
     <div style="page-break-inside:avoid;margin-bottom:48px;">
       <div style="border-top:2px solid #0d1117;padding-top:24px;margin-bottom:24px;">
@@ -182,12 +187,13 @@ function formatDocumentsAsHtml(rawDocuments, metadata, logoUrl) {
         </span>
       </div>
       <div style="
+        position:relative;
         font-family:'Times New Roman',Times,serif;
         font-size:13px;
         line-height:2;
         color:#1a1a1a;
         white-space:pre-wrap;
-        background:#fff;
+        background:#fff url('${watermarkSvg}') repeat;
         padding:40px 48px;
         border:1px solid #d0d0d0;
         border-radius:4px;
