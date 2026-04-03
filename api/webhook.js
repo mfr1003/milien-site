@@ -21,7 +21,6 @@ async function getRawBody(req) {
   });
 }
 
-// Map Stripe amount_total (cents) to package type and filing flag
 function packageFromAmount(amountTotal) {
   switch (amountTotal) {
     case 9700:  return { packageType: 'demand', filingCoordination: 'false' };
@@ -32,20 +31,14 @@ function packageFromAmount(amountTotal) {
   }
 }
 
-// Find most recent intake blob for a given email
 async function getIntakeByEmail(email) {
   const safeEmail = email.toLowerCase().trim().replace(/[^a-z0-9._+-]/g, '_');
   const prefix = `intakes/${safeEmail}/`;
-
   try {
     const { blobs } = await list({ prefix });
     if (!blobs || blobs.length === 0) return null;
-
-    // Sort by uploadedAt descending, take most recent
     blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
-    const latest = blobs[0];
-
-    const res = await fetch(latest.url);
+    const res = await fetch(blobs[0].url);
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
@@ -54,6 +47,83 @@ async function getIntakeByEmail(email) {
   }
 }
 
+// ── Logo Scraper ─────────────────────────────────────────────────────────────
+async function scrapeLogoFromWebsite(websiteUrl) {
+  if (!websiteUrl) return null;
+
+  try {
+    // Normalize URL
+    let url = websiteUrl.trim();
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LodgeMiLien/1.0)' },
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) return null;
+
+    const html = await response.text();
+    const baseUrl = new URL(url).origin;
+
+    // Priority 1: og:image meta tag
+    const ogMatch = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+      || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if (ogMatch) {
+      const src = resolveUrl(ogMatch[1], baseUrl);
+      if (src) return src;
+    }
+
+    // Priority 2: logo in header/nav by class or id
+    const logoPatterns = [
+      /<(?:img|source)[^>]+(?:class|id)=["'][^"']*logo[^"']*["'][^>]+src=["']([^"']+)["']/gi,
+      /src=["']([^"']+)["'][^>]*(?:class|id)=["'][^"']*logo[^"']*["']/gi,
+      /<(?:img)[^>]+(?:class|id)=["'][^"']*brand[^"']*["'][^>]+src=["']([^"']+)["']/gi,
+    ];
+
+    for (const pattern of logoPatterns) {
+      const match = pattern.exec(html);
+      if (match) {
+        const src = resolveUrl(match[1], baseUrl);
+        if (src) return src;
+      }
+    }
+
+    // Priority 3: apple-touch-icon
+    const appleMatch = html.match(/<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']([^"']+)["']/i);
+    if (appleMatch) {
+      const src = resolveUrl(appleMatch[1], baseUrl);
+      if (src) return src;
+    }
+
+    // Priority 4: favicon (better than nothing)
+    const faviconMatch = html.match(/<link[^>]+rel=["'][^"']*icon[^"']*["'][^>]+href=["']([^"']+)["']/i);
+    if (faviconMatch) {
+      const src = resolveUrl(faviconMatch[1], baseUrl);
+      if (src) return src;
+    }
+
+    return null;
+  } catch (err) {
+    console.error('Logo scrape failed:', err.message);
+    return null;
+  }
+}
+
+function resolveUrl(src, baseUrl) {
+  if (!src || src.startsWith('data:')) return null;
+  try {
+    return src.startsWith('http') ? src : new URL(src, baseUrl).href;
+  } catch {
+    return null;
+  }
+}
+
+// ── Document Generation ──────────────────────────────────────────────────────
 async function generateDocuments(metadata) {
   const stateCode = metadata.stateCode || 'MI';
   const isAuto = metadata.workType === 'automotive';
@@ -76,17 +146,19 @@ async function generateDocuments(metadata) {
   };
 }
 
-function formatDocumentsAsHtml(rawDocuments, metadata) {
-  const { claimantName, amountOwed, stateCode, workType, vehicleDescription, propertyAddress, propertyCity } = metadata;
+// ── Professional HTML Document Formatter ─────────────────────────────────────
+function formatDocumentsAsHtml(rawDocuments, metadata, logoUrl) {
+  const {
+    claimantName, claimantEmail, claimantPhone,
+    amountOwed, stateCode, workType,
+    vehicleDescription, propertyAddress, propertyCity,
+    websiteUrl,
+  } = metadata;
+
   const isAuto = workType === 'automotive';
   const stateModule = STATE_MODULES[stateCode || 'MI'];
   const docs = rawDocuments.split('---DOCUMENT BREAK---').map(d => d.trim()).filter(Boolean);
-
-  const docSections = docs.map(doc => `
-    <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:32px;margin-bottom:32px;font-family:Georgia,serif;font-size:14px;line-height:1.8;white-space:pre-wrap;">
-      ${doc}
-    </div>
-  `).join('');
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const subjectLine = isAuto
     ? `${vehicleDescription} — $${parseInt(amountOwed).toLocaleString()}`
@@ -96,38 +168,112 @@ function formatDocumentsAsHtml(rawDocuments, metadata) {
     ? `${(stateModule || STATE_MODULES['MI']).name} Garage Keeper's Lien`
     : (stateModule || STATE_MODULES['MI']).statute;
 
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>LodgeMiLien Documents — ${claimantName}</title>
-    </head>
-    <body style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:40px 20px;color:#1a1a1a;">
-      <div style="background:#0d1117;padding:20px 28px;border-radius:8px;margin-bottom:32px;">
-        <span style="font-size:24px;font-weight:800;color:#fff;">Lodge<span style="color:#f5a623;">Mi</span>Lien</span>
-        <p style="color:rgba(255,255,255,0.6);margin:8px 0 0;font-size:13px;">${isAuto ? "Garage Keeper's Lien Service" : (stateModule || STATE_MODULES['MI']).name + ' Mechanics Lien Document Service'}</p>
+  // Logo block — uses scraped logo if available, falls back to text
+  const logoBlock = logoUrl
+    ? `<img src="${logoUrl}" alt="${claimantName}" style="max-height:60px;max-width:240px;object-fit:contain;display:block;">`
+    : `<span style="font-size:22px;font-weight:700;color:#0d1117;letter-spacing:-0.5px;">${claimantName}</span>`;
+
+  // Document sections with legal formatting
+  const docSections = docs.map((doc, i) => `
+    <div style="page-break-inside:avoid;margin-bottom:48px;">
+      <div style="border-top:2px solid #0d1117;padding-top:24px;margin-bottom:24px;">
+        <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#666;">
+          Document ${i + 1} of ${docs.length}
+        </span>
       </div>
-      <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">Your Documents Are Ready</h2>
-      <p style="color:#555;font-size:14px;margin-bottom:8px;">
-        Prepared for <strong>${claimantName}</strong> regarding <strong>${subjectLine}</strong>
-      </p>
-      <p style="color:#555;font-size:13px;margin-bottom:32px;">Applicable law: ${statuteNote}</p>
+      <div style="
+        font-family:'Times New Roman',Times,serif;
+        font-size:13px;
+        line-height:2;
+        color:#1a1a1a;
+        white-space:pre-wrap;
+        background:#fff;
+        padding:40px 48px;
+        border:1px solid #d0d0d0;
+        border-radius:4px;
+        box-shadow:0 1px 4px rgba(0,0,0,0.06);
+      ">${doc}</div>
+    </div>
+  `).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lien Documents — ${claimantName}</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+
+  <div style="max-width:760px;margin:0 auto;background:#fff;padding:0 0 60px;">
+
+    <!-- Header: Client logo + LodgeMiLien brand -->
+    <div style="background:#fff;border-bottom:1px solid #e0e0e0;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;">
+      <div>${logoBlock}</div>
+      <div style="text-align:right;">
+        <span style="font-size:13px;font-weight:800;color:#0d1117;letter-spacing:-0.3px;">
+          Lodge<span style="color:#f5a623;">Mi</span>Lien
+        </span>
+        <div style="font-size:11px;color:#888;margin-top:2px;">Document Preparation Service</div>
+      </div>
+    </div>
+
+    <!-- Status banner -->
+    <div style="background:#0d1117;padding:20px 40px;">
+      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">Your Documents Are Ready</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.55);">Prepared for ${claimantName} &nbsp;·&nbsp; ${today}</div>
+    </div>
+
+    <!-- Matter summary -->
+    <div style="padding:28px 40px;background:#fafafa;border-bottom:1px solid #e8e8e8;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr>
+          <td style="padding:6px 0;color:#888;width:160px;">Matter</td>
+          <td style="padding:6px 0;font-weight:600;">${subjectLine}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;">Governing Law</td>
+          <td style="padding:6px 0;">${statuteNote}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;">Prepared By</td>
+          <td style="padding:6px 0;">LodgeMiLien LLC &nbsp;·&nbsp; Reviewed ${today}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Documents -->
+    <div style="padding:40px 40px 0;">
       ${docSections}
-      <div style="background:#fff8e8;border:1px solid #f5a623;border-radius:8px;padding:20px;margin-top:32px;">
-        <p style="font-size:13px;color:#7a5c00;margin:0;line-height:1.6;">
-          <strong>Important:</strong> These documents were prepared by LodgeMiLien LLC and reviewed for accuracy.
-          LodgeMiLien is a document preparation service, not a law firm. This is not legal advice.
-        </p>
-      </div>
-      <p style="font-size:12px;color:#999;margin-top:32px;text-align:center;">
-        LodgeMiLien LLC · lodgemilien.com · hello@lodgemilien.com
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="margin:0 40px;background:#fff8e8;border:1px solid #f5c842;border-radius:6px;padding:18px 24px;">
+      <p style="font-size:12px;color:#7a5c00;margin:0;line-height:1.7;">
+        <strong>Important Notice:</strong> These documents were prepared by LodgeMiLien LLC and reviewed by a human
+        before delivery. LodgeMiLien is a document preparation service — not a law firm — and this is not legal advice.
+        If you have questions about enforcing your lien rights or face a complex dispute, consult a licensed attorney.
       </p>
-    </body>
-    </html>
-  `;
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top:40px;padding:0 40px;">
+      <div style="border-top:1px solid #e0e0e0;padding-top:20px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:11px;color:#aaa;">
+          LodgeMiLien LLC &nbsp;·&nbsp; Troy, Michigan &nbsp;·&nbsp; lodgemilien.com
+        </div>
+        <div style="font-size:11px;color:#aaa;">
+          Prepared ${today}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>`;
 }
 
+// ── Admin notification email (unchanged) ─────────────────────────────────────
 function buildNotificationEmail(metadata, sessionId, deadlineStr, daysRemaining, isAuto, proofUrl) {
   const stateModule = STATE_MODULES[metadata.stateCode || 'MI'] || STATE_MODULES['MI'];
   const orderType = isAuto ? "Garage Keeper's Lien" : 'Mechanics Lien';
@@ -140,6 +286,7 @@ function buildNotificationEmail(metadata, sessionId, deadlineStr, daysRemaining,
     <tr><td style="padding:8px 0;color:#666;">Shop</td><td style="padding:8px 0;font-weight:500;">${metadata.claimantName}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Email</td><td style="padding:8px 0;">${metadata.claimantEmail}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Phone</td><td style="padding:8px 0;">${metadata.claimantPhone}</td></tr>
+    <tr><td style="padding:8px 0;color:#666;">Website</td><td style="padding:8px 0;">${metadata.websiteUrl || '—'}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Vehicle</td><td style="padding:8px 0;">${metadata.vehicleDescription}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">VIN</td><td style="padding:8px 0;font-family:monospace;">${metadata.vin}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Owner</td><td style="padding:8px 0;">${metadata.ownerName}</td></tr>
@@ -151,6 +298,7 @@ function buildNotificationEmail(metadata, sessionId, deadlineStr, daysRemaining,
     <tr><td style="padding:8px 0;color:#666;">Customer</td><td style="padding:8px 0;font-weight:500;">${metadata.claimantName}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Email</td><td style="padding:8px 0;">${metadata.claimantEmail}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Phone</td><td style="padding:8px 0;">${metadata.claimantPhone}</td></tr>
+    <tr><td style="padding:8px 0;color:#666;">Website</td><td style="padding:8px 0;">${metadata.websiteUrl || '—'}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Property</td><td style="padding:8px 0;">${metadata.propertyAddress}, ${metadata.propertyCity}, ${metadata.propertyCounty} County</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Owner</td><td style="padding:8px 0;">${metadata.ownerName}</td></tr>
     <tr><td style="padding:8px 0;color:#666;">Amount</td><td style="padding:8px 0;font-weight:600;">$${parseInt(metadata.amountOwed).toLocaleString()}</td></tr>
@@ -185,6 +333,7 @@ function buildNotificationEmail(metadata, sessionId, deadlineStr, daysRemaining,
   };
 }
 
+// ── Main Handler ─────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -211,33 +360,36 @@ export default async function handler(req, res) {
     let metadata;
 
     if (session.payment_link) {
-      // ── Payment link purchase — look up intake by email ──────────────────
       const email = session.customer_details?.email || session.customer_email;
       if (!email) throw new Error('No customer email in payment link session');
-
       const intake = await getIntakeByEmail(email);
       if (!intake) throw new Error(`No intake found for email: ${email}`);
-
-      // Determine package from amount charged
       const { packageType, filingCoordination } = packageFromAmount(session.amount_total);
       metadata = { ...intake, packageType, filingCoordination };
-
     } else {
-      // ── Dynamic checkout — use session metadata ──────────────────────────
       metadata = session.metadata;
       if (!metadata || !metadata.claimantEmail) {
         throw new Error('No metadata in dynamic checkout session');
       }
     }
 
+    // Scrape logo from client website (non-blocking — failure is fine)
+    const logoUrl = await scrapeLogoFromWebsite(metadata.websiteUrl).catch(() => null);
+
     // Generate documents
     const { raw, deadlineStr, daysRemaining, isAuto } = await generateDocuments(metadata);
-    const htmlDocuments = formatDocumentsAsHtml(raw, metadata);
+    const htmlDocuments = formatDocumentsAsHtml(raw, metadata, logoUrl);
 
     // Store order in Blob
     await put(
       `orders/${session.id}.json`,
-      JSON.stringify({ sessionId: session.id, metadata, htmlDocuments, paidAt: new Date().toISOString() }),
+      JSON.stringify({
+        sessionId: session.id,
+        metadata,
+        htmlDocuments,
+        logoUrl: logoUrl || null,
+        paidAt: new Date().toISOString(),
+      }),
       { access: 'public', contentType: 'application/json' }
     );
 
