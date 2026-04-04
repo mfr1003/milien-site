@@ -175,8 +175,8 @@ function formatDocumentsAsHtml(rawDocuments, metadata, logoUrl) {
 
   // Watermark SVG — diagonal repeating pattern with client name + date
   // Encodes client identity so any shared copy is traceable
-  const watermarkText = encodeURIComponent(`${claimantName} · ${today}`);
-  const watermarkSvg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200'><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' transform='rotate(-30 200 100)' font-family='Arial,sans-serif' font-size='13' fill='rgba(0,0,0,0.045)' font-weight='600' letter-spacing='1'>Prepared exclusively for ${watermarkText}</text></svg>`;
+  const watermarkText = encodeURIComponent(`Prepared exclusively for ${claimantName} \u00b7 ${today}`);
+  const watermarkSvg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200'><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' transform='rotate(-30 200 100)' font-family='Arial,sans-serif' font-size='13' fill='%23000000' opacity='0.08' font-weight='600' letter-spacing='1'>${watermarkText}</text></svg>`;
 
   // Document sections with legal formatting + watermark
   const docSections = docs.map((doc, i) => `
