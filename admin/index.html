@@ -361,7 +361,7 @@
 
   async function loadOrders() {
     try {
-      const res = await fetch('/api/pending-orders', {
+      const res = await fetch('/api/orders?type=pending', {
         headers: { 'Authorization': `Bearer ${adminPassword}` }
       });
 
@@ -820,7 +820,7 @@
 
   async function loadCompletedOrders() {
     try {
-      const res = await fetch('/api/completed-orders', {
+      const res = await fetch('/api/orders?type=completed', {
         headers: { 'Authorization': `Bearer ${adminPassword}` }
       });
       const data = await res.json();
@@ -927,7 +927,7 @@
 
   async function loadRejectedOrders() {
     try {
-      const res = await fetch('/api/rejected-orders', {
+      const res = await fetch('/api/archive?type=rejected', {
         headers: { 'Authorization': `Bearer ${adminPassword}` }
       });
       const data = await res.json();
@@ -1094,7 +1094,7 @@
 
   async function loadFilingQueue() {
     try {
-      const res = await fetch('/api/filing-orders', {
+      const res = await fetch('/api/archive?type=filing', {
         headers: { 'Authorization': `Bearer ${adminPassword}` }
       });
       const data = await res.json();
@@ -1209,7 +1209,7 @@
 
   async function updateFilingStatus(sessionId, status) {
     try {
-      await fetch('/api/filing-orders', {
+      await fetch('/api/archive', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPassword}` },
         body: JSON.stringify({ sessionId, filingStatus: status }),
@@ -1237,7 +1237,7 @@
   async function saveTracking(sessionId, trackingNumber) {
     if (!trackingNumber) return;
     try {
-      await fetch('/api/filing-orders', {
+      await fetch('/api/archive', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPassword}` },
         body: JSON.stringify({ sessionId, filingStatus: 'mailed', trackingNumber }),
