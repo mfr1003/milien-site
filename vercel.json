@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/approve-order.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "api/verify-order.js": {
+      "maxDuration": 30
+    }
+  }
+}
