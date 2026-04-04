@@ -219,6 +219,47 @@
   }
   .approve-status.success { color: #2ea043; }
   .approve-status.error { color: #e84040; }
+
+  /* ── FILING QUEUE ── */
+  .county-group { margin-bottom: 32px; }
+  .county-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 2px solid var(--amber);
+    margin-bottom: 12px;
+  }
+  .county-name {
+    font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    text-transform: uppercase; color: var(--amber);
+  }
+  .county-rod {
+    font-size: 12px; color: var(--muted); text-align: right; line-height: 1.5;
+  }
+  .filing-status-select {
+    background: var(--steel); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px; padding: 6px 10px; font-family: var(--font-body);
+    font-size: 13px; color: var(--white); cursor: pointer; outline: none;
+  }
+  .filing-status-select:focus { border-color: var(--amber); }
+  .status-awaiting { color: var(--muted); }
+  .status-received { color: #4a9eff; }
+  .status-ready { color: var(--amber); font-weight: 600; }
+  .status-mailed { color: #2ea043; }
+  .status-recorded { color: #2ea043; font-weight: 700; }
+  .batch-bar {
+    position: sticky; bottom: 0; background: var(--ink-soft);
+    border-top: 1px solid var(--border); padding: 16px 24px;
+    display: none; align-items: center; justify-content: space-between;
+    gap: 16px; z-index: 50;
+  }
+  .batch-bar.visible { display: flex; }
+  .batch-count { font-size: 14px; color: var(--white); }
+  .btn-manifest {
+    background: var(--amber); border: none; color: var(--ink);
+    padding: 10px 24px; border-radius: 7px; font-family: var(--font-display);
+    font-size: 16px; font-weight: 700; text-transform: uppercase; cursor: pointer;
+  }
+  .btn-manifest:hover { background: var(--amber-dark); }
+  .filing-check { accent-color: var(--amber); width: 16px; height: 16px; cursor: pointer; margin-right: 8px; }
 </style>
 </head>
 <body>
@@ -243,6 +284,7 @@
     <div class="tabs">
       <button class="tab-btn" id="tab-pending" onclick="switchTab('pending')">Pending Orders</button>
       <button class="tab-btn inactive" id="tab-completed" onclick="switchTab('completed')">Completed Orders</button>
+      <button class="tab-btn inactive" id="tab-filing" onclick="switchTab('filing')">Filing Queue</button>
     </div>
 
     <!-- PENDING TAB -->
@@ -256,8 +298,19 @@
       <div class="page-sub" id="completed-sub">Loading completed orders...</div>
       <div class="orders-list" id="completed-list"></div>
     </div>
+
+    <!-- FILING QUEUE TAB -->
+    <div class="tab-section" id="section-filing">
+      <div class="page-sub" id="filing-sub">Loading filing queue...</div>
+      <div id="filing-list"></div>
+    </div>
   </div>
-</div>
+
+  <!-- Batch manifest bar -->
+  <div class="batch-bar" id="batch-bar">
+    <div class="batch-count"><span id="batch-count-num">0</span> orders selected for mail run</div>
+    <button class="btn-manifest" onclick="buildManifest()">Print Mail Manifest</button>
+  </div>
 
 <script>
   let adminPassword = '';
@@ -275,12 +328,13 @@
   function switchTab(tab) {
     document.getElementById('section-pending').classList.toggle('active', tab === 'pending');
     document.getElementById('section-completed').classList.toggle('active', tab === 'completed');
+    document.getElementById('section-filing').classList.toggle('active', tab === 'filing');
     document.getElementById('tab-pending').classList.toggle('inactive', tab !== 'pending');
     document.getElementById('tab-completed').classList.toggle('inactive', tab !== 'completed');
+    document.getElementById('tab-filing').classList.toggle('inactive', tab !== 'filing');
 
-    if (tab === 'completed' && !completedLoaded) {
-      loadCompletedOrders();
-    }
+    if (tab === 'completed' && !completedLoaded) loadCompletedOrders();
+    if (tab === 'filing' && !filingLoaded) loadFilingQueue();
   }
 
   function login() {
@@ -861,6 +915,395 @@
     } catch (err) {
       panel.innerHTML = `<div style="padding:24px;color:#e84040;font-size:14px;">Failed to load: ${err.message}</div>`;
     }
+  }
+
+  // ── FILING QUEUE ─────────────────────────────────────────────────────────────
+
+  let filingLoaded = false;
+  let filingOrders = [];
+  const selectedForBatch = new Set();
+
+  const FILING_STATUSES = [
+    { value: 'awaiting_docs',  label: 'Awaiting Customer Docs', cls: 'status-awaiting' },
+    { value: 'docs_received',  label: 'Docs Received',          cls: 'status-received' },
+    { value: 'ready_to_mail',  label: 'Ready to Mail',          cls: 'status-ready'    },
+    { value: 'mailed',         label: 'Mailed',                 cls: 'status-mailed'   },
+    { value: 'recorded',       label: 'Confirmed Recorded',     cls: 'status-recorded' },
+  ];
+
+  // Michigan Register of Deeds — all 83 counties
+  const ROD_ADDRESSES = {
+    'Alcona':        { address: '106 5th St, P.O. Box 269', city: 'Harrisville, MI 48740',   phone: '989-724-9450' },
+    'Alger':         { address: '101 Court St, P.O. Box 538', city: 'Munising, MI 48962',    phone: '906-387-2076' },
+    'Allegan':       { address: '113 Chestnut St',            city: 'Allegan, MI 49010',     phone: '269-673-0390' },
+    'Alpena':        { address: '720 W. Chisholm St',         city: 'Alpena, MI 49707',      phone: '989-354-9547' },
+    'Antrim':        { address: 'P.O. Box 376',               city: 'Bellaire, MI 49615',    phone: '231-533-6683' },
+    'Arenac':        { address: '120 N. Grove St, P.O. Box 296', city: 'Standish, MI 48658', phone: '989-846-9201' },
+    'Baraga':        { address: '2 S. Main St',               city: "L'Anse, MI 49946",      phone: '906-524-6100' },
+    'Barry':         { address: '220 W. State St, Room 102',  city: 'Hastings, MI 49058',    phone: '269-945-1289' },
+    'Bay':           { address: '515 Center Ave',             city: 'Bay City, MI 48708',    phone: '989-895-4230' },
+    'Benzie':        { address: '448 Court Pl',               city: 'Beulah, MI 49617',      phone: '231-882-9671' },
+    'Berrien':       { address: '811 Port St',                city: 'St. Joseph, MI 49085',  phone: '269-983-7111' },
+    'Branch':        { address: '31 Division St',             city: 'Coldwater, MI 49036',   phone: '517-279-4306' },
+    'Calhoun':       { address: '315 W. Green St',            city: 'Marshall, MI 49068',    phone: '269-781-0720' },
+    'Cass':          { address: '120 N. Broadway',            city: 'Cassopolis, MI 49031',  phone: '269-445-4440' },
+    'Charlevoix':    { address: '203 Antrim St',              city: 'Charlevoix, MI 49720',  phone: '231-547-7200' },
+    'Cheboygan':     { address: '870 S. Main St, P.O. Box 70', city: 'Cheboygan, MI 49721', phone: '231-627-8808' },
+    'Chippewa':      { address: '319 Court St',               city: 'Sault Ste. Marie, MI 49783', phone: '906-635-6300' },
+    'Clare':         { address: '225 W. Main St',             city: 'Harrison, MI 48625',    phone: '989-539-7131' },
+    'Clinton':       { address: '100 E. State St',            city: 'St. Johns, MI 48879',   phone: '989-224-5140' },
+    'Crawford':      { address: '200 W. Michigan Ave',        city: 'Grayling, MI 49738',    phone: '989-348-2841' },
+    'Delta':         { address: '310 Ludington St',           city: 'Escanaba, MI 49829',    phone: '906-789-5100' },
+    'Dickinson':     { address: '705 S. Stephenson Ave',      city: 'Iron Mountain, MI 49801', phone: '906-774-2573' },
+    'Eaton':         { address: '1045 Independence Blvd',     city: 'Charlotte, MI 48813',   phone: '517-543-7500' },
+    'Emmet':         { address: '200 Division St',            city: 'Petoskey, MI 49770',    phone: '231-348-1718' },
+    'Genesee':       { address: '900 S. Saginaw St',          city: 'Flint, MI 48502',       phone: '810-257-3060' },
+    'Gladwin':       { address: '401 W. Cedar Ave',           city: 'Gladwin, MI 48624',     phone: '989-426-9231' },
+    'Gogebic':       { address: '200 N. Moore St',            city: 'Bessemer, MI 49911',    phone: '906-663-4518' },
+    'Grand Traverse':{ address: '400 Boardman Ave',           city: 'Traverse City, MI 49684', phone: '231-922-4753' },
+    'Gratiot':       { address: '214 E. Center St',           city: 'Ithaca, MI 48847',      phone: '989-875-5215' },
+    'Hillsdale':     { address: '29 N. Howell St',            city: 'Hillsdale, MI 49242',   phone: '517-437-2231' },
+    'Houghton':      { address: '401 E. Houghton Ave',        city: 'Houghton, MI 49931',    phone: '906-482-1150' },
+    'Huron':         { address: '250 E. Huron Ave',           city: 'Bad Axe, MI 48413',     phone: '989-269-9942' },
+    'Ingham':        { address: '341 S. Jefferson St',        city: 'Mason, MI 48854',        phone: '517-676-7216' },
+    'Ionia':         { address: '101 W. Main St',             city: 'Ionia, MI 48846',       phone: '616-527-5320' },
+    'Iosco':         { address: '422 W. Lake St, P.O. Box 578', city: 'Tawas City, MI 48764', phone: '989-362-3497' },
+    'Iron':          { address: '2 S. 6th St',                city: 'Crystal Falls, MI 49920', phone: '906-875-3221' },
+    'Isabella':      { address: '200 N. Main St',             city: 'Mt. Pleasant, MI 48858', phone: '989-772-0911' },
+    'Jackson':       { address: '312 S. Jackson St',          city: 'Jackson, MI 49201',     phone: '517-788-4350' },
+    'Kalamazoo':     { address: '201 W. Kalamazoo Ave',       city: 'Kalamazoo, MI 49007',   phone: '269-384-8160' },
+    'Kalkaska':      { address: '605 N. Birch St',            city: 'Kalkaska, MI 49646',    phone: '231-258-3310' },
+    'Kent':          { address: '300 Monroe Ave NW',          city: 'Grand Rapids, MI 49503', phone: '616-632-7610' },
+    'Keweenaw':      { address: '5095 Fourth St, P.O. Box 607', city: 'Eagle River, MI 49924', phone: '906-337-2229' },
+    'Lake':          { address: '800 10th St',                city: 'Baldwin, MI 49304',     phone: '231-745-4641' },
+    'Lapeer':        { address: '255 Clay St',                city: 'Lapeer, MI 48446',      phone: '810-667-0356' },
+    'Leelanau':      { address: '8527 E. Government Center Dr', city: 'Suttons Bay, MI 49682', phone: '231-256-9682' },
+    'Lenawee':       { address: '301 N. Main St, Suite 3',    city: 'Adrian, MI 49221',      phone: '517-264-4538' },
+    'Livingston':    { address: '200 E. Grand River',         city: 'Howell, MI 48843',      phone: '517-546-0270' },
+    'Luce':          { address: '407 W. Harrie St',           city: 'Newberry, MI 49868',    phone: '906-293-5521' },
+    'Mackinac':      { address: '100 S. Marley St, P.O. Box 160', city: 'St. Ignace, MI 49781', phone: '906-643-7300' },
+    'Macomb':        { address: '120 N. Main St',             city: 'Mt. Clemens, MI 48043', phone: '586-469-5120' },
+    'Manistee':      { address: '415 Third St',               city: 'Manistee, MI 49660',    phone: '231-723-3331' },
+    'Marquette':     { address: '234 W. Baraga Ave',          city: 'Marquette, MI 49855',   phone: '906-225-8415' },
+    'Mason':         { address: '304 E. Ludington Ave',       city: 'Ludington, MI 49431',   phone: '231-843-8411' },
+    'Mecosta':       { address: '400 Elm St',                 city: 'Big Rapids, MI 49307',  phone: '231-592-0783' },
+    'Menominee':     { address: '839 10th Ave',               city: 'Menominee, MI 49858',   phone: '906-863-2634' },
+    'Midland':       { address: '301 W. Main St',             city: 'Midland, MI 48640',     phone: '989-832-6820' },
+    'Missaukee':     { address: '111 S. Canal St, P.O. Box 800', city: 'Lake City, MI 49651', phone: '231-839-4967' },
+    'Monroe':        { address: '125 E. Second St',           city: 'Monroe, MI 48161',      phone: '734-240-7390' },
+    'Montcalm':      { address: '211 W. Main St, P.O. Box 368', city: 'Stanton, MI 48888', phone: '989-831-7337' },
+    'Montmorency':   { address: '12265 M-32, P.O. Box 789',   city: 'Atlanta, MI 49709',     phone: '989-785-8022' },
+    'Muskegon':      { address: '173 E. Apple Ave',           city: 'Muskegon, MI 49442',    phone: '231-724-6361' },
+    'Newaygo':       { address: '1087 Newell St, P.O. Box 885', city: 'White Cloud, MI 49349', phone: '231-689-7246' },
+    'Oakland':       { address: '1200 N. Telegraph Rd, Dept 481', city: 'Pontiac, MI 48341', phone: '248-858-0581' },
+    'Oceana':        { address: '100 S. State St, Suite M-4', city: 'Hart, MI 49420',        phone: '231-873-4328' },
+    'Ogemaw':        { address: '806 W. Houghton Ave',        city: 'West Branch, MI 48661', phone: '989-345-0215' },
+    'Ontonagon':     { address: '725 Greenland Rd',           city: 'Ontonagon, MI 49953',   phone: '906-884-4255' },
+    'Osceola':       { address: '301 W. Upton Ave',           city: 'Reed City, MI 49677',   phone: '231-832-6113' },
+    'Oscoda':        { address: '311 Morenci Ave, P.O. Box 399', city: 'Mio, MI 48647',      phone: '989-826-1110' },
+    'Otsego':        { address: '225 W. Main St',             city: 'Gaylord, MI 49735',     phone: '989-731-7551' },
+    'Ottawa':        { address: '414 Washington Ave',         city: 'Grand Haven, MI 49417', phone: '616-846-8315' },
+    'Presque Isle':  { address: '151 E. Huron Ave, P.O. Box 110', city: 'Rogers City, MI 49779', phone: '989-734-3288' },
+    'Roscommon':     { address: '500 Lake St, P.O. Box 98',   city: 'Roscommon, MI 48653',   phone: '989-275-5923' },
+    'Saginaw':       { address: '111 S. Michigan Ave',        city: 'Saginaw, MI 48602',     phone: '989-790-5270' },
+    'Sanilac':       { address: '60 W. Sanilac Ave',          city: 'Sandusky, MI 48471',    phone: '810-648-2975' },
+    'Schoolcraft':   { address: '300 Walnut St',              city: 'Manistique, MI 49854',  phone: '906-341-3618' },
+    'Shiawassee':    { address: '208 N. Shiawassee St',       city: 'Corunna, MI 48817',     phone: '989-743-2242' },
+    'St. Clair':     { address: '201 McMorran Blvd',          city: 'Port Huron, MI 48060',  phone: '810-985-2200' },
+    'St. Joseph':    { address: '125 W. Main St',             city: 'Centreville, MI 49032', phone: '269-467-5530' },
+    'Tuscola':       { address: '440 N. State St',            city: 'Caro, MI 48723',        phone: '989-672-3840' },
+    'Van Buren':     { address: '212 Paw Paw St',             city: 'Paw Paw, MI 49079',     phone: '269-657-8242' },
+    'Washtenaw':     { address: '200 N. Main St, Suite 120',  city: 'Ann Arbor, MI 48107',   phone: '734-222-6720' },
+    'Wayne':         { address: '400 Monroe St, 7th Floor',   city: 'Detroit, MI 48226',     phone: '313-224-5854' },
+    'Wexford':       { address: '437 E. Division',            city: 'Cadillac, MI 49601',    phone: '231-779-9455' },
+  };
+
+  function getRod(county) {
+    const clean = (county || '').replace(' County', '').trim();
+    return ROD_ADDRESSES[clean] || { address: 'See michigan.gov/taxes', city: '', phone: '' };
+  }
+
+  async function loadFilingQueue() {
+    try {
+      const res = await fetch('/api/filing-orders', {
+        headers: { 'Authorization': `Bearer ${adminPassword}` }
+      });
+      const data = await res.json();
+      filingOrders = data.orders || [];
+
+      const sub = document.getElementById('filing-sub');
+      const list = document.getElementById('filing-list');
+
+      if (filingOrders.length === 0) {
+        sub.textContent = 'No filing coordination orders yet.';
+        list.innerHTML = '<div class="empty-state"><strong>Queue Empty</strong>Approved filing coordination orders will appear here.</div>';
+        filingLoaded = true;
+        return;
+      }
+
+      sub.textContent = `${filingOrders.length} order${filingOrders.length !== 1 ? 's' : ''} in filing queue`;
+
+      // Group by county
+      const byCounty = {};
+      filingOrders.forEach(order => {
+        const county = (order.metadata?.propertyCounty || order.metadata?.stateCode || 'Unknown').replace(' County', '');
+        if (!byCounty[county]) byCounty[county] = [];
+        byCounty[county].push(order);
+      });
+
+      // Sort counties by order count desc
+      const sorted = Object.entries(byCounty).sort((a, b) => b[1].length - a[1].length);
+
+      list.innerHTML = sorted.map(([county, orders]) => renderCountyGroup(county, orders)).join('');
+      filingLoaded = true;
+    } catch (err) {
+      document.getElementById('filing-sub').textContent = 'Failed to load filing queue.';
+    }
+  }
+
+  function renderCountyGroup(county, orders) {
+    const rod = getRod(county);
+    return `
+      <div class="county-group">
+        <div class="county-header">
+          <div>
+            <div class="county-name">${county} County</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">${orders.length} order${orders.length !== 1 ? 's' : ''}</div>
+          </div>
+          <div class="county-rod">
+            <div style="color:var(--white);font-weight:600;">Register of Deeds</div>
+            <div>${rod.address}</div>
+            <div>${rod.city}</div>
+            <div>${rod.phone}</div>
+          </div>
+        </div>
+        <div class="orders-list">
+          ${orders.map(order => renderFilingCard(order, county)).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFilingCard(order, county) {
+    const m = order.metadata || {};
+    const isAuto = m.workType === 'automotive';
+    const completedAt = order.completedAt ? new Date(order.completedAt).toLocaleDateString() : '—';
+    const amount = m.amountOwed ? '$' + parseInt(m.amountOwed).toLocaleString() : '—';
+    const currentStatus = order.filingStatus || 'awaiting_docs';
+    const isReady = currentStatus === 'ready_to_mail';
+
+    const statusOptions = FILING_STATUSES.map(s =>
+      `<option value="${s.value}" ${s.value === currentStatus ? 'selected' : ''}>${s.label}</option>`
+    ).join('');
+
+    const detail = isAuto
+      ? `${m.vehicleDescription || '—'} · VIN: ${m.vin || '—'}`
+      : `${m.propertyAddress || '—'}, ${m.propertyCity || '—'}`;
+
+    return `
+      <div class="order-card" id="filing-card-${order.sessionId}" style="${currentStatus === 'recorded' ? 'opacity:0.5;' : ''}">
+        <div class="order-header">
+          <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">
+            <input type="checkbox" class="filing-check" id="batch-check-${order.sessionId}"
+              ${isReady ? '' : 'disabled'}
+              onchange="toggleBatch('${order.sessionId}', '${county}', this.checked)"
+              title="${isReady ? 'Select for mail run' : 'Set status to Ready to Mail first'}">
+            <div class="order-meta">
+              <div class="order-name">${m.claimantName || 'Unknown'}</div>
+              <div class="order-detail">
+                ${detail}
+                <br>${m.claimantEmail || '—'} · Docs sent: ${completedAt}
+                ${order.trackingNumber ? `<br>Tracking: <span style="font-family:monospace;color:#2ea043;">${order.trackingNumber}</span>` : ''}
+                ${order.filingNotes ? `<br><span style="color:var(--muted);">${order.filingNotes}</span>` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="order-amount">${amount}</div>
+          <div class="order-actions" style="flex-direction:column;align-items:flex-end;gap:8px;">
+            <select class="filing-status-select" id="status-select-${order.sessionId}"
+              onchange="updateFilingStatus('${order.sessionId}', this.value)">
+              ${statusOptions}
+            </select>
+            ${currentStatus === 'mailed' ? `
+              <input type="text" placeholder="Tracking number..."
+                value="${order.trackingNumber || ''}"
+                style="background:var(--steel);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 10px;font-family:monospace;font-size:12px;color:var(--white);width:180px;outline:none;"
+                onblur="saveTracking('${order.sessionId}', this.value)"
+                onfocus="this.style.borderColor='#f5a623'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.1)';saveTracking('${order.sessionId}', this.value)">
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function updateFilingStatus(sessionId, status) {
+    try {
+      await fetch('/api/filing-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPassword}` },
+        body: JSON.stringify({ sessionId, filingStatus: status }),
+      });
+
+      // Enable/disable batch checkbox based on status
+      const checkbox = document.getElementById(`batch-check-${sessionId}`);
+      if (checkbox) {
+        checkbox.disabled = status !== 'ready_to_mail';
+        if (status !== 'ready_to_mail') {
+          checkbox.checked = false;
+          selectedForBatch.delete(sessionId);
+          updateBatchBar();
+        }
+      }
+
+      // Fade out if recorded
+      const card = document.getElementById(`filing-card-${sessionId}`);
+      if (card) card.style.opacity = status === 'recorded' ? '0.5' : '1';
+    } catch (err) {
+      console.error('Status update failed:', err);
+    }
+  }
+
+  async function saveTracking(sessionId, trackingNumber) {
+    if (!trackingNumber) return;
+    try {
+      await fetch('/api/filing-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPassword}` },
+        body: JSON.stringify({ sessionId, filingStatus: 'mailed', trackingNumber }),
+      });
+    } catch {}
+  }
+
+  function toggleBatch(sessionId, county, checked) {
+    const order = filingOrders.find(o => o.sessionId === sessionId);
+    if (checked && order) {
+      selectedForBatch.set(sessionId, { order, county });
+    } else {
+      selectedForBatch.delete(sessionId);
+    }
+    updateBatchBar();
+  }
+
+  // Use Map for selectedForBatch so we can store data
+  selectedForBatch.set = function(k, v) { Map.prototype.set.call(this, k, v); };
+  selectedForBatch.delete = function(k) { Map.prototype.delete.call(this, k); };
+  Object.setPrototypeOf(selectedForBatch, Map.prototype);
+
+  function updateBatchBar() {
+    const bar = document.getElementById('batch-bar');
+    const count = document.getElementById('batch-count-num');
+    const size = selectedForBatch.size;
+    count.textContent = size;
+    bar.classList.toggle('visible', size > 0);
+  }
+
+  function buildManifest() {
+    if (selectedForBatch.size === 0) return;
+
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const recordingFeePerPage = 30;
+
+    // Group selected by county
+    const byCounty = {};
+    selectedForBatch.forEach(({ order, county }) => {
+      if (!byCounty[county]) byCounty[county] = [];
+      byCounty[county].push(order);
+    });
+
+    let html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LodgeMiLien Mail Manifest — ${today}</title>
+<style>
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a1a; margin: 40px; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .sub { color: #666; font-size: 13px; margin-bottom: 32px; }
+  .county-block { margin-bottom: 40px; page-break-inside: avoid; }
+  .county-title { font-size: 16px; font-weight: 700; text-transform: uppercase; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 12px; }
+  .rod-addr { font-size: 12px; color: #555; margin-bottom: 16px; padding: 10px; background: #f5f5f5; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  th { background: #1a1a1a; color: #fff; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  .fee { font-weight: 700; }
+  .tracking-col { width: 160px; }
+  .totals { margin-top: 32px; padding: 16px; background: #f5f5f5; border-radius: 4px; font-size: 14px; }
+  .totals strong { font-size: 16px; }
+  @media print { body { margin: 20px; } }
+</style>
+</head>
+<body>
+<h1>LodgeMiLien — Mail Run Manifest</h1>
+<div class="sub">Generated: ${today} &nbsp;·&nbsp; ${selectedForBatch.size} order${selectedForBatch.size !== 1 ? 's' : ''} across ${Object.keys(byCounty).length} county${Object.keys(byCounty).length !== 1 ? 'ies' : ''}</div>
+`;
+
+    let totalFee = 0;
+    let totalOrders = 0;
+
+    Object.entries(byCounty).sort().forEach(([county, orders]) => {
+      const rod = getRod(county);
+      html += `
+<div class="county-block">
+  <div class="county-title">${county} County Register of Deeds</div>
+  <div class="rod-addr">
+    <strong>Mail to:</strong> ${rod.address}, ${rod.city}<br>
+    <strong>Phone:</strong> ${rod.phone}<br>
+    <strong>Standard recording fee:</strong> $30 first page + $3 each additional page (check or money order payable to ${county} County Register of Deeds)
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Claimant</th>
+        <th>Property / Matter</th>
+        <th>Amount</th>
+        <th class="fee">Est. Fee</th>
+        <th class="tracking-col">USPS Tracking #</th>
+      </tr>
+    </thead>
+    <tbody>
+`;
+      orders.forEach(order => {
+        const m = order.metadata || {};
+        const isAuto = m.workType === 'automotive';
+        const matter = isAuto
+          ? `${m.vehicleDescription || '—'}`
+          : `${m.propertyAddress || '—'}, ${m.propertyCity || '—'}`;
+        const amount = m.amountOwed ? '$' + parseInt(m.amountOwed).toLocaleString() : '—';
+        const estFee = recordingFeePerPage; // $30 base — actual depends on page count
+        totalFee += estFee;
+        totalOrders++;
+
+        html += `
+      <tr>
+        <td>${m.claimantName || '—'}<br><span style="font-size:11px;color:#666;">${m.claimantEmail || ''}</span></td>
+        <td>${matter}</td>
+        <td>${amount}</td>
+        <td class="fee">$${estFee}+</td>
+        <td class="tracking-col">&nbsp;</td>
+      </tr>`;
+      });
+
+      html += `
+    </tbody>
+  </table>
+</div>`;
+    });
+
+    html += `
+<div class="totals">
+  <div>Total orders this run: <strong>${totalOrders}</strong></div>
+  <div style="margin-top:4px;">Estimated minimum recording fees: <strong>$${totalFee}+</strong> (actual varies by page count)</div>
+  <div style="margin-top:12px;font-size:12px;color:#666;">Each county requires a separate check or money order. Include a cover letter citing the claimant name and order type. Michigan standard recording fee: $30 first page, $3 each additional page.</div>
+</div>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    win.print();
   }
 </script>
 </body>
