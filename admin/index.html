@@ -120,6 +120,39 @@
   .btn-approve:hover { background: var(--amber-dark); }
   .btn-approve:disabled { opacity: 0.5; cursor: not-allowed; }
 
+  .btn-reject {
+    background: transparent; border: 1px solid rgba(232,64,64,0.4); color: #e84040;
+    padding: 10px 20px; border-radius: 7px;
+    font-family: var(--font-display); font-size: 15px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-reject:hover { background: rgba(232,64,64,0.1); border-color: #e84040; }
+  .btn-reject:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-verify {
+    background: transparent; border: 1px solid rgba(30,120,255,0.4); color: #4a9eff;
+    padding: 10px 20px; border-radius: 7px;
+    font-family: var(--font-display); font-size: 15px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-verify:hover { background: rgba(30,120,255,0.08); border-color: #4a9eff; }
+  .btn-verify:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .verify-panel {
+    display: none; border-top: 1px solid var(--border);
+    background: #111b2b; padding: 20px 24px;
+  }
+  .verify-panel.open { display: block; }
+  .verify-row { display: flex; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+  .verify-row:last-child { border-bottom: none; }
+  .verify-label { color: var(--muted); width: 160px; flex-shrink: 0; }
+  .verify-value { color: var(--white); flex: 1; }
+  .verify-match { color: #2ea043; font-weight: 600; }
+  .verify-mismatch { color: #e84040; font-weight: 600; }
+  .verify-link { color: #4a9eff; text-decoration: none; font-size: 12px; }
+  .verify-link:hover { text-decoration: underline; }
+  .verify-section { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
+
   /* ── DOCUMENT PREVIEW PANEL ── */
   .doc-panel {
     display: none; border-top: 1px solid var(--border);
@@ -230,6 +263,15 @@
   let adminPassword = '';
   let completedLoaded = false;
 
+  // Restore session on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('milien_admin_pw');
+    if (saved) {
+      adminPassword = saved;
+      loadOrders();
+    }
+  });
+
   function switchTab(tab) {
     document.getElementById('section-pending').classList.toggle('active', tab === 'pending');
     document.getElementById('section-completed').classList.toggle('active', tab === 'completed');
@@ -245,11 +287,13 @@
     const pw = document.getElementById('password-input').value;
     if (!pw) return;
     adminPassword = pw;
+    localStorage.setItem('milien_admin_pw', pw);
     loadOrders();
   }
 
   function logout() {
     adminPassword = '';
+    localStorage.removeItem('milien_admin_pw');
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('password-input').value = '';
@@ -329,6 +373,8 @@
           <div class="order-actions" style="flex-direction:column;align-items:flex-end;">
             <div style="display:flex;gap:10px;">
               <button class="btn-view" id="toggle-btn-${order.sessionId}" onclick="toggleDocs('${order.sessionId}')" title="View Documents" style="padding:10px 14px;font-size:18px;">›</button>
+              <button class="btn-verify" id="verify-btn-${order.sessionId}" onclick="verifyOrder('${order.sessionId}')">Verify</button>
+              <button class="btn-reject" id="reject-btn-${order.sessionId}" onclick="rejectOrder('${order.sessionId}', '${m.claimantEmail}')">Reject</button>
               <button class="btn-approve" id="approve-btn-${order.sessionId}" onclick="approveOrder('${order.sessionId}', '${m.claimantEmail}')">Approve & Send</button>
             </div>
             <div class="approve-status" id="approve-status-${order.sessionId}"></div>
@@ -339,6 +385,7 @@
             Loading documents...
           </div>
         </div>
+        <div class="verify-panel" id="verify-${order.sessionId}"></div>
       </div>
     `;
   }
@@ -563,6 +610,149 @@
       btn.disabled = false;
       btn.textContent = 'Approve & Send';
       status.textContent = '✗ Failed: ' + err.message;
+      status.className = 'approve-status error';
+      status.style.display = 'block';
+    }
+  }
+
+  async function verifyOrder(sessionId) {
+    const btn = document.getElementById(`verify-btn-${sessionId}`);
+    const panel = document.getElementById(`verify-${sessionId}`);
+
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
+    panel.innerHTML = '<div style="padding:16px 0;color:var(--muted);font-size:13px;">Running verification...</div>';
+    panel.classList.add('open');
+
+    try {
+      const res = await fetch('/api/verify-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPassword}` },
+        body: JSON.stringify({ sessionId }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Verification failed');
+
+      if (data.type === 'automotive') {
+        renderAutoVerify(panel, data);
+      } else {
+        renderConstructionVerify(panel, data);
+      }
+
+      btn.textContent = 'Re-Verify';
+      btn.disabled = false;
+    } catch (err) {
+      panel.innerHTML = `<div style="color:#e84040;font-size:13px;padding:16px 0;">✗ Verification failed: ${err.message}</div>`;
+      btn.textContent = 'Verify';
+      btn.disabled = false;
+    }
+  }
+
+  function renderAutoVerify(panel, data) {
+    const d = data.decoded || {};
+    const submitted = data.submittedDescription || '—';
+    const confidence = data.confidence || 0;
+    const confidenceLabel = confidence === 3
+      ? '<span class="verify-match">✓ Strong match</span>'
+      : confidence >= 1
+        ? '<span style="color:#f5a623;">⚠ Partial match — review carefully</span>'
+        : '<span class="verify-mismatch">✗ No match — VIN may be wrong</span>';
+
+    const decodedStr = [d.year, d.make, d.model, d.trim].filter(Boolean).join(' ');
+
+    panel.innerHTML = `
+      <div class="verify-section">VIN Decode — NHTSA</div>
+      <div class="verify-row"><span class="verify-label">VIN</span><span class="verify-value" style="font-family:monospace;">${data.vin}</span></div>
+      <div class="verify-row"><span class="verify-label">Decoded</span><span class="verify-value">${decodedStr || 'Unable to decode'}</span></div>
+      <div class="verify-row"><span class="verify-label">Body Type</span><span class="verify-value">${d.bodyType || '—'}</span></div>
+      <div class="verify-row"><span class="verify-label">Customer submitted</span><span class="verify-value">${submitted}</span></div>
+      <div class="verify-row"><span class="verify-label">Match status</span><span class="verify-value">${confidenceLabel}</span></div>
+      ${d.errorText && d.errorCode !== '0' ? `<div class="verify-row"><span class="verify-label">NHTSA note</span><span class="verify-value" style="color:#f5a623;font-size:12px;">${d.errorText}</span></div>` : ''}
+      <div class="verify-section">Manual Lookup</div>
+      <div class="verify-row">
+        <span class="verify-label">Title / Lienholder</span>
+        <span class="verify-value">
+          <a href="${data.mdosLink.url}" target="_blank" class="verify-link">${data.mdosLink.label} ↗</a>
+          <span style="color:var(--muted);font-size:11px;margin-left:8px;">${data.mdosLink.note}</span>
+        </span>
+      </div>
+    `;
+  }
+
+  function renderConstructionVerify(panel, data) {
+    const p = data.propertyData || {};
+    const bsa = data.bsaLink || {};
+    const google = data.googleLink || {};
+
+    panel.innerHTML = `
+      <div class="verify-section">Property Lookup — Claude Web Search</div>
+      <div class="verify-row">
+        <span class="verify-label">Owner found</span>
+        <span class="verify-value ${p.ownerName ? 'verify-match' : 'verify-mismatch'}">${p.ownerName || 'Not found'}</span>
+      </div>
+      ${p.parcelId ? `<div class="verify-row"><span class="verify-label">Parcel ID</span><span class="verify-value" style="font-family:monospace;">${p.parcelId}</span></div>` : ''}
+      ${p.legalDescription ? `<div class="verify-row"><span class="verify-label">Legal description</span><span class="verify-value" style="font-size:12px;">${p.legalDescription}</span></div>` : ''}
+      <div class="verify-row"><span class="verify-label">Source</span><span class="verify-value" style="font-size:12px;color:var(--muted);">${p.source || '—'}</span></div>
+      <div class="verify-section">Direct County Lookup (Option C)</div>
+      <div class="verify-row">
+        <span class="verify-label">${bsa.label || 'County Portal'}</span>
+        <span class="verify-value">
+          <a href="${bsa.url}" target="_blank" class="verify-link">${bsa.url ? 'Open county records ↗' : '—'}</a>
+          ${bsa.note ? `<span style="color:var(--muted);font-size:11px;margin-left:8px;">${bsa.note}</span>` : ''}
+        </span>
+      </div>
+      <div class="verify-row">
+        <span class="verify-label">Google search</span>
+        <span class="verify-value">
+          <a href="${google.url}" target="_blank" class="verify-link">Search public records ↗</a>
+        </span>
+      </div>
+    `;
+  }
+
+  async function rejectOrder(sessionId, email) {
+    const reason = prompt(`Reject this order?\n\nOptionally enter a reason (for your records):\n(Leave blank to reject without a note)`);
+    if (reason === null) return; // cancelled
+
+    const rejectBtn = document.getElementById(`reject-btn-${sessionId}`);
+    const approveBtn = document.getElementById(`approve-btn-${sessionId}`);
+    const status = document.getElementById(`approve-status-${sessionId}`);
+
+    rejectBtn.disabled = true;
+    rejectBtn.textContent = 'Rejecting...';
+    approveBtn.disabled = true;
+
+    try {
+      const res = await fetch('/api/reject-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminPassword}`
+        },
+        body: JSON.stringify({ sessionId, reason: reason || 'No reason provided' }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        status.textContent = `✗ Rejected — ${email}`;
+        status.className = 'approve-status error';
+        status.style.display = 'block';
+        rejectBtn.textContent = 'Rejected';
+
+        setTimeout(() => {
+          const card = document.getElementById(`card-${sessionId}`);
+          if (card) card.style.opacity = '0.3';
+        }, 1500);
+      } else {
+        throw new Error(data.error || 'Rejection failed');
+      }
+    } catch (err) {
+      rejectBtn.disabled = false;
+      rejectBtn.textContent = 'Reject';
+      approveBtn.disabled = false;
+      status.textContent = '✗ Rejection failed: ' + err.message;
       status.className = 'approve-status error';
       status.style.display = 'block';
     }
