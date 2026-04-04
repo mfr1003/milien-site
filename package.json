@@ -1,15 +1,15 @@
 {
   "name": "milien-site",
   "version": "1.0.0",
-  "description": "LodgeMiLien - Mechanics Lien Document Service",
+  "description": "LodgeMiLien - Property Lien Document Preparation Service",
   "type": "module",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
-    "@vercel/blob": "^0.27.0",
-    "resend": "^3.2.0",
-    "stripe": "^14.21.0",
-    "puppeteer-core": "^22.0.0",
     "@sparticuz/chromium": "^123.0.0",
+    "@vercel/blob": "^0.27.0",
+    "puppeteer-core": "^22.0.0",
+    "resend": "^3.2.0",
+    "stripe": "^14.21.0"
   },
   "engines": {
     "node": "24.x"
