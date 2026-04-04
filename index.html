@@ -1383,6 +1383,14 @@
           </div>
         </label>
       </div>
+      <div style="background:var(--steel);border-radius:8px;padding:16px;margin-bottom:16px;">
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+          <input type="checkbox" id="tos-check-construction" style="margin-top:3px;flex-shrink:0;accent-color:var(--amber);">
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5;">
+            I have read and agree to the <a href="/terms" target="_blank" style="color:var(--amber);text-decoration:underline;">Terms of Service</a>. I confirm that all information I have provided is accurate and complete. I understand that LodgeMiLien is a document preparation service, not a law firm, and that no legal advice is provided.
+          </div>
+        </label>
+      </div>
       <button class="stripe-button" id="pay-btn-construction" onclick="doCheckout(this)">Pay Securely — <span id="pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
       <div class="wizard-nav" style="margin-top:16px;"><button class="btn-back" onclick="goBack()">Back</button></div>
@@ -1516,6 +1524,14 @@
         <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="auto-summary-amount">—</span></div>
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="auto-summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
         <div class="summary-row total"><span class="label">Total Due</span><span class="value" id="auto-summary-total">$197</span></div>
+      </div>
+      <div style="background:var(--steel);border-radius:8px;padding:16px;margin-bottom:16px;">
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+          <input type="checkbox" id="tos-check-auto" style="margin-top:3px;flex-shrink:0;accent-color:var(--amber);">
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5;">
+            I have read and agree to the <a href="/terms" target="_blank" style="color:var(--amber);text-decoration:underline;">Terms of Service</a>. I confirm that all information I have provided is accurate and complete. I understand that LodgeMiLien is a document preparation service, not a law firm, and that no legal advice is provided.
+          </div>
+        </label>
       </div>
       <button class="stripe-button" onclick="doCheckout(this)">Pay Securely — <span id="auto-pay-btn-amount">$197</span></button>
       <div class="payment-note">Apple Pay · Google Pay · All major cards · Stripe encrypted</div>
@@ -1974,6 +1990,8 @@
         filingCoordination: autoFilingCoord ? 'true' : 'false',
         rushRequired: daysAgo >= 84,
         proofUrl: uploadedProofUrl,
+        tosAccepted: true,
+        tosAcceptedAt: new Date().toISOString(),
       };
     }
 
@@ -2012,6 +2030,8 @@
       filingCoordination: selectedFilingCoord ? 'true' : 'false',
       rushRequired: daysAgo >= 76,
       proofUrl: uploadedProofUrl,
+      tosAccepted: true,
+      tosAcceptedAt: new Date().toISOString(),
     };
   }
 
@@ -2024,6 +2044,24 @@
 
   async function doCheckout(btn) {
     if (btn.disabled) return;
+
+    // Enforce ToS checkbox
+    const tosId = track === 'automotive' ? 'tos-check-auto' : 'tos-check-construction';
+    const tosCheck = document.getElementById(tosId);
+    if (tosCheck && !tosCheck.checked) {
+      const existing = btn.parentElement.querySelector('.tos-error');
+      if (!existing) {
+        const errDiv = document.createElement('div');
+        errDiv.className = 'tos-error';
+        errDiv.style.cssText = 'color:#e84040;font-size:13px;margin-bottom:8px;text-align:center;';
+        errDiv.textContent = 'Please read and accept the Terms of Service to continue.';
+        btn.insertAdjacentElement('beforebegin', errDiv);
+      }
+      return;
+    }
+    // Clear any previous ToS error
+    const prevErr = btn.parentElement.querySelector('.tos-error');
+    if (prevErr) prevErr.remove();
     btn.disabled = true;
     const originalHtml = btn.innerHTML;
     btn.innerHTML = 'Preparing secure checkout...';
