@@ -1202,7 +1202,7 @@
         </div>
         <div class="role-option" id="wt-auto-option">
           <input type="radio" name="work-type" id="wt-automotive" value="automotive">
-          <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;" id="wt-auto-label">Michigan only — Garage Keeper's Lien</span></label>
+          <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;" id="wt-auto-label">Garage Keeper's Lien</span></label>
         </div>
       </div>
       <div class="wizard-nav">
@@ -1454,7 +1454,7 @@
         <div class="field"><label>Phone <span style="color:#e84040;">*</span></label><input type="tel" placeholder="(248) 555-0100" id="auto-shop-phone" required></div>
         <div class="field"><label>Email (for document delivery) <span style="color:#e84040;">*</span></label><input type="email" placeholder="you@example.com" id="auto-shop-email" required></div>
         <div class="field"><label>Shop Website <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(optional — used for your letterhead)</span></label><input type="url" placeholder="https://yourshop.com" id="auto-shop-website"></div>
-        <div class="field"><label>Repair Facility License Number <span style="color:#e84040;">*</span></label><input type="text" placeholder="Michigan MVSR License #" id="auto-license" required></div>
+        <div class="field"><label>Repair Facility License Number <span style="color:#e84040;">*</span></label><input type="text" placeholder="Facility License #" id="auto-license" required></div>
 
         <div id="compliance-block" style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:16px;margin-top:8px;">
           <p id="compliance-text" style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:12px;line-height:1.6;"></p>
@@ -1504,22 +1504,22 @@
         <div class="role-options">
           <div class="role-option">
             <input type="radio" name="auto-package" id="ap-demand" value="demand" onchange="updateAutoPackage()">
-            <label for="ap-demand">Demand Letter — $97<br><span style="font-size:12px;font-weight:400;">Professional letter citing MCL 570.301. Resolves most disputes.</span></label>
+            <label for="ap-demand">Demand Letter — $97<br><span style="font-size:12px;font-weight:400;" id="ap-demand-desc">Professional letter citing applicable state statute. Resolves most disputes.</span></label>
           </div>
           <div class="role-option">
             <input type="radio" name="auto-package" id="ap-full" value="full" checked onchange="updateAutoPackage()">
-            <label for="ap-full">Full Package — $197<br><span style="font-size:12px;font-weight:400;">Demand letter + BDVR-35 guide + step-by-step filing instructions.</span></label>
+            <label for="ap-full">Full Package — $197<br><span style="font-size:12px;font-weight:400;" id="ap-full-desc">Demand letter + filing guide + step-by-step instructions.</span></label>
           </div>
           <div class="role-option">
             <input type="radio" name="auto-package" id="ap-full-filing" value="full-filing" onchange="updateAutoPackage()">
-            <label for="ap-full-filing">Full Package + Filing — $272<br><span style="font-size:12px;font-weight:400;">We coordinate the BDVR-35 submission with MDOS on your behalf.</span></label>
+            <label for="ap-full-filing">Full Package + Filing — $272<br><span style="font-size:12px;font-weight:400;" id="ap-filing-desc">We coordinate the filing submission with the appropriate state agency on your behalf.</span></label>
           </div>
         </div>
       </div>
 
       <div class="summary-block">
         <div class="summary-row"><span class="label">Package</span><span class="value" id="auto-summary-package">Full Package</span></div>
-        <div class="summary-row"><span class="label">State</span><span class="value">Michigan</span></div>
+        <div class="summary-row"><span class="label">State</span><span class="value" id="auto-summary-state">Michigan</span></div>
         <div class="summary-row"><span class="label">Vehicle</span><span class="value" id="auto-summary-vehicle">—</span></div>
         <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="auto-summary-amount">—</span></div>
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="auto-summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
@@ -1672,8 +1672,14 @@
   }
 
   function updateWorkTypeOptions() {
+    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
     const autoLabel = document.getElementById('wt-auto-label');
-    autoLabel.textContent = 'Vehicle Repair — Garage Keeper\'s Lien';
+    const labels = {
+      MI: "Garage Keeper's Lien — MCL 570.301",
+      OH: "Garage Keeper's Lien — O.R.C. § 4505.101",
+      IN: "Vehicle Mechanic's Lien — I.C. § 9-22-6-2",
+    };
+    autoLabel.textContent = labels[state] || "Garage Keeper's Lien";
     document.getElementById('wt-automotive').disabled = false;
     document.getElementById('wt-auto-option').style.opacity = '1';
     document.getElementById('wt-auto-option').style.pointerEvents = 'auto';
@@ -1812,16 +1818,26 @@
     if (errorEl) errorEl.style.display = 'none';
 
     const last = document.getElementById('auto-date-last').value;
+    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
     const alertBox = document.getElementById('auto-deadline-alert');
+
+    // State-specific deadline days and labels
+    const autoDeadlines = {
+      MI: { days: 105, label: '105-day BDVR-35 filing deadline', urgentDays: 21 },
+      OH: { days: 30,  label: '30-day notice window (O.R.C. § 4505.101)', urgentDays: 7 },
+      IN: { days: 90,  label: '90-day auction notice window (I.C. § 9-22-6-2)', urgentDays: 14 },
+    };
+    const dl = autoDeadlines[state] || autoDeadlines.MI;
+
     if (last) {
       const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
-      const daysLeft = 105 - daysAgo;
-      if (daysLeft <= 21 && daysLeft > 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>Urgent:</strong> You have approximately ' + daysLeft + ' days before the 105-day Garage Keeper\'s Lien deadline. File immediately.</p></div>';
+      const daysLeft = dl.days - daysAgo;
+      if (daysLeft <= dl.urgentDays && daysLeft > 0) {
+        alertBox.innerHTML = `<div class="deadline-alert"><p><strong>Urgent:</strong> You have approximately ${daysLeft} days before the ${dl.label}. File immediately.</p></div>`;
       } else if (daysLeft <= 0) {
-        alertBox.innerHTML = '<div class="deadline-alert"><p><strong>The 105-day deadline may have passed.</strong> Continue and we will review your situation and advise next steps.</p></div>';
+        alertBox.innerHTML = `<div class="deadline-alert"><p><strong>The deadline may have passed.</strong> Continue and we will review your situation and advise next steps.</p></div>`;
       } else {
-        alertBox.innerHTML = '<div style="font-size:13px;color:#2ea043;margin-top:8px;">You have approximately ' + daysLeft + ' days remaining to file. You\'re in good shape.</div>';
+        alertBox.innerHTML = `<div style="font-size:13px;color:#2ea043;margin-top:8px;">You have approximately ${daysLeft} days remaining. ${dl.label}.</div>`;
       }
     }
     goNext();
@@ -1934,9 +1950,35 @@
   function updateAutoSummary() {
     const vehicle = document.getElementById('auto-vehicle').value;
     const amount = document.getElementById('auto-amount').value;
+    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana' };
     if (vehicle) document.getElementById('auto-summary-vehicle').textContent = vehicle;
     if (amount) document.getElementById('auto-summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
+    document.getElementById('auto-summary-state').textContent = stateNames[state] || 'Michigan';
+
+    // Update package description labels based on state
+    const descs = {
+      MI: {
+        demand: 'Professional letter citing MCL 570.301. Resolves most disputes.',
+        full: 'Demand letter + BDVR-35 guide + step-by-step filing instructions.',
+        filing: 'We coordinate the BDVR-35 submission with MDOS on your behalf.',
+      },
+      OH: {
+        demand: 'Professional letter citing O.R.C. § 4505.101. Resolves most disputes.',
+        full: 'Demand letter + Ohio BMV affidavit guide + step-by-step filing instructions.',
+        filing: 'We coordinate the affidavit filing with the County Clerk of Courts on your behalf.',
+      },
+      IN: {
+        demand: 'Professional letter citing I.C. § 9-22-6-2. Resolves most disputes.',
+        full: 'Demand letter + Indiana BMV process guide + step-by-step filing instructions.',
+        filing: 'We coordinate the auction notice and BMV filing process on your behalf.',
+      },
+    };
+    const d = descs[state] || descs.MI;
+    if (document.getElementById('ap-demand-desc')) document.getElementById('ap-demand-desc').textContent = d.demand;
+    if (document.getElementById('ap-full-desc')) document.getElementById('ap-full-desc').textContent = d.full;
+    if (document.getElementById('ap-filing-desc')) document.getElementById('ap-filing-desc').textContent = d.filing;
   }
 
   function safeVal(id) {
