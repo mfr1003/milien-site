@@ -43,7 +43,34 @@
     text-transform: uppercase; cursor: pointer;
   }
   .login-btn:hover { background: var(--amber-dark); }
+  .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .login-error { color: #e84040; font-size: 13px; margin-top: 8px; display: none; }
+  .login-attempts { font-size: 12px; color: var(--muted); margin-top: 6px; display: none; }
+  .lockout-msg { color: var(--amber); font-size: 13px; margin-top: 8px; display: none; font-weight: 600; }
+
+  /* Lock screen */
+  #lock-screen {
+    position: fixed; inset: 0; background: rgba(10,15,25,0.97);
+    display: none; align-items: center; justify-content: center;
+    z-index: 999; backdrop-filter: blur(6px);
+  }
+  #lock-screen.active { display: flex; }
+  .lock-box {
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 12px; padding: 40px 32px; width: 100%; max-width: 340px; text-align: center;
+  }
+  .lock-icon { font-size: 40px; margin-bottom: 12px; }
+  .lock-box h2 { font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    text-transform: uppercase; margin-bottom: 6px; }
+  .lock-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  /* Session info in nav */
+  .session-info { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .session-dot { width: 7px; height: 7px; border-radius: 50%; background: #2ea043; flex-shrink: 0;
+    animation: pulse-dot 2.5s infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .session-warn .session-dot { background: var(--amber); }
+  .session-critical .session-dot { background: #e84040; }
 
   /* ── DASHBOARD ── */
   #dashboard { display: none; }
@@ -54,6 +81,13 @@
   }
   .logo { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--white); }
   .logo span { color: var(--amber); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .lock-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 12px; border-radius: 6px; font-family: var(--font-body);
+    font-size: 12px; cursor: pointer;
+  }
+  .lock-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
   .logout-btn {
     background: transparent; border: 1px solid var(--border); color: var(--muted);
     padding: 8px 16px; border-radius: 6px; font-family: var(--font-body);
@@ -298,9 +332,26 @@
 <div id="login-screen">
   <div class="login-box">
     <h1>Lodge<span>Mi</span>Lien<br>Admin</h1>
-    <input type="password" class="login-input" id="password-input" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
-    <button class="login-btn" onclick="login()">Sign In</button>
+    <input type="password" class="login-input" id="password-input" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()" autocomplete="current-password">
+    <button class="login-btn" id="login-btn" onclick="login()">Sign In</button>
     <div class="login-error" id="login-error">Incorrect password.</div>
+    <div class="login-attempts" id="login-attempts"></div>
+    <div class="lockout-msg" id="lockout-msg"></div>
+  </div>
+</div>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-icon">🔒</div>
+    <h2>Session Locked</h2>
+    <p>Session locked due to inactivity. Re-enter your password to continue.</p>
+    <input type="password" class="login-input" id="lock-password-input" placeholder="Admin password" onkeydown="if(event.key==='Enter')unlockSession()" autocomplete="current-password">
+    <button class="login-btn" onclick="unlockSession()">Unlock</button>
+    <div class="login-error" id="lock-error" style="display:none;">Incorrect password.</div>
+    <div style="margin-top:16px;">
+      <button onclick="logout()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;">Sign out completely</button>
+    </div>
   </div>
 </div>
 
@@ -308,7 +359,14 @@
 <div id="dashboard">
   <nav>
     <div class="logo">Lodge<span>Mi</span>Lien <span style="color:var(--muted);font-size:16px;font-weight:600;">Admin</span></div>
-    <button class="logout-btn" onclick="logout()">Sign Out</button>
+    <div class="nav-right">
+      <div class="session-info" id="session-info">
+        <div class="session-dot"></div>
+        <span id="session-timer">Session active</span>
+      </div>
+      <button class="lock-btn" onclick="lockSession()" title="Lock screen (Ctrl+Shift+L)">🔒 Lock</button>
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
   </nav>
   <div class="main">
     <div class="tabs">
@@ -354,12 +412,170 @@
   let completedLoaded = false;
   let rejectedLoaded = false;
 
-  // Restore session on page load
+  // ── SECURITY CONSTANTS ───────────────────────────────────────────────────────
+  const SESSION_TIMEOUT_MS  = 8 * 60 * 60 * 1000;  // 8 hours
+  const INACTIVITY_MS       = 30 * 60 * 1000;       // 30 min inactivity → lock
+  const MAX_ATTEMPTS        = 5;
+  const LOCKOUT_MS          = 15 * 60 * 1000;       // 15 min lockout after max fails
+
+  // ── SESSION STATE ────────────────────────────────────────────────────────────
+  let sessionStart       = null;
+  let lastActivity       = null;
+  let sessionTimerTick   = null;
+  let inactivityTick     = null;
+
+  function getAttemptState() {
+    try {
+      const raw = sessionStorage.getItem('milien_attempts');
+      return raw ? JSON.parse(raw) : { count: 0, lockedUntil: 0 };
+    } catch { return { count: 0, lockedUntil: 0 }; }
+  }
+
+  function saveAttemptState(state) {
+    sessionStorage.setItem('milien_attempts', JSON.stringify(state));
+  }
+
+  function recordActivity() {
+    lastActivity = Date.now();
+  }
+
+  // ── INACTIVITY LOCK ──────────────────────────────────────────────────────────
+  function startInactivityWatch() {
+    ['mousemove','keydown','click','scroll','touchstart'].forEach(e => {
+      document.addEventListener(e, recordActivity, { passive: true });
+    });
+    clearInterval(inactivityTick);
+    inactivityTick = setInterval(() => {
+      if (!adminPassword) return;
+      if (Date.now() - lastActivity > INACTIVITY_MS) lockSession();
+    }, 60 * 1000); // check every minute
+  }
+
+  // ── SESSION TIMER ────────────────────────────────────────────────────────────
+  function startSessionTimer() {
+    sessionStart = Date.now();
+    lastActivity = Date.now();
+    clearInterval(sessionTimerTick);
+    sessionTimerTick = setInterval(() => {
+      const elapsed = Date.now() - sessionStart;
+      const remaining = SESSION_TIMEOUT_MS - elapsed;
+
+      if (remaining <= 0) { logout(); return; }
+
+      const hrs  = Math.floor(remaining / 3600000);
+      const mins = Math.floor((remaining % 3600000) / 60000);
+      const label = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+
+      const el = document.getElementById('session-timer');
+      const info = document.getElementById('session-info');
+      if (!el) return;
+
+      if (remaining < 30 * 60 * 1000) {
+        el.textContent = `Session expires in ${label}`;
+        info.className = 'session-info session-critical';
+      } else if (remaining < 60 * 60 * 1000) {
+        el.textContent = `Session expires in ${label}`;
+        info.className = 'session-info session-warn';
+      } else {
+        el.textContent = `Session: ${label} remaining`;
+        info.className = 'session-info';
+      }
+    }, 30 * 1000); // update every 30s
+  }
+
+  // ── LOCK / UNLOCK ────────────────────────────────────────────────────────────
+  function lockSession() {
+    document.getElementById('lock-screen').classList.add('active');
+    document.getElementById('lock-password-input').value = '';
+    document.getElementById('lock-error').style.display = 'none';
+    document.getElementById('lock-password-input').focus();
+  }
+
+  function unlockSession() {
+    const pw = document.getElementById('lock-password-input').value;
+    if (pw === adminPassword) {
+      document.getElementById('lock-screen').classList.remove('active');
+      recordActivity();
+    } else {
+      document.getElementById('lock-error').style.display = 'block';
+      document.getElementById('lock-password-input').value = '';
+    }
+  }
+
+  // Ctrl+Shift+L to lock
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'L' && adminPassword) lockSession();
+  });
+
+  // Lock when tab hidden for >5 minutes
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      setTimeout(() => {
+        if (document.hidden && adminPassword) lockSession();
+      }, 5 * 60 * 1000);
+    } else {
+      recordActivity();
+    }
+  });
+
+  // ── LOCKOUT HELPERS ──────────────────────────────────────────────────────────
+  function isLockedOut() {
+    const s = getAttemptState();
+    return s.lockedUntil > Date.now();
+  }
+
+  function getLockoutRemaining() {
+    const s = getAttemptState();
+    return Math.max(0, Math.ceil((s.lockedUntil - Date.now()) / 60000));
+  }
+
+  function updateLoginUI() {
+    const s = getAttemptState();
+    const btn = document.getElementById('login-btn');
+    const attemptsEl = document.getElementById('login-attempts');
+    const lockoutEl = document.getElementById('lockout-msg');
+    const input = document.getElementById('password-input');
+
+    if (s.lockedUntil > Date.now()) {
+      btn.disabled = true;
+      input.disabled = true;
+      attemptsEl.style.display = 'none';
+      lockoutEl.style.display = 'block';
+      lockoutEl.textContent = `Too many failed attempts. Try again in ${getLockoutRemaining()} minute(s).`;
+      // Auto-update countdown
+      setTimeout(updateLoginUI, 30000);
+    } else {
+      btn.disabled = false;
+      input.disabled = false;
+      lockoutEl.style.display = 'none';
+      if (s.count > 0) {
+        attemptsEl.style.display = 'block';
+        attemptsEl.textContent = `${MAX_ATTEMPTS - s.count} attempt(s) remaining before lockout.`;
+      } else {
+        attemptsEl.style.display = 'none';
+      }
+    }
+  }
+
+  // ── RESTORE SESSION ──────────────────────────────────────────────────────────
   window.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('milien_admin_pw');
-    if (saved) {
-      adminPassword = saved;
-      loadOrders();
+    updateLoginUI();
+    // Use sessionStorage only — cleared on browser close
+    const saved = sessionStorage.getItem('milien_admin_pw');
+    const savedTime = sessionStorage.getItem('milien_session_start');
+    if (saved && savedTime) {
+      const elapsed = Date.now() - parseInt(savedTime, 10);
+      if (elapsed < SESSION_TIMEOUT_MS) {
+        adminPassword = saved;
+        sessionStart = parseInt(savedTime, 10);
+        startSessionTimer();
+        startInactivityWatch();
+        loadOrders();
+      } else {
+        // Expired session — clear and show login
+        sessionStorage.removeItem('milien_admin_pw');
+        sessionStorage.removeItem('milien_session_start');
+      }
     }
   });
 
@@ -374,19 +590,27 @@
   }
 
   function login() {
+    if (isLockedOut()) { updateLoginUI(); return; }
+
     const pw = document.getElementById('password-input').value;
     if (!pw) return;
     adminPassword = pw;
-    localStorage.setItem('milien_admin_pw', pw);
     loadOrders();
   }
 
   function logout() {
     adminPassword = '';
-    localStorage.removeItem('milien_admin_pw');
+    sessionStorage.removeItem('milien_admin_pw');
+    sessionStorage.removeItem('milien_session_start');
+    clearInterval(sessionTimerTick);
+    clearInterval(inactivityTick);
+    document.getElementById('lock-screen').classList.remove('active');
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('password-input').value = '';
+    completedLoaded = false;
+    rejectedLoaded = false;
+    updateLoginUI();
   }
 
   async function loadOrders() {
@@ -396,14 +620,33 @@
       });
 
       if (res.status === 401) {
-        document.getElementById('login-error').style.display = 'block';
+        // Record failed attempt
+        const s = getAttemptState();
+        s.count += 1;
+        if (s.count >= MAX_ATTEMPTS) {
+          s.lockedUntil = Date.now() + LOCKOUT_MS;
+          s.count = 0;
+        }
+        saveAttemptState(s);
         adminPassword = '';
+        document.getElementById('login-error').style.display = 'block';
+        updateLoginUI();
         return;
       }
+
+      // Successful login — reset attempts, save session
+      saveAttemptState({ count: 0, lockedUntil: 0 });
+      sessionStorage.setItem('milien_admin_pw', adminPassword);
+      sessionStorage.setItem('milien_session_start', Date.now().toString());
 
       document.getElementById('login-error').style.display = 'none';
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
+
+      if (!sessionStart) {
+        startSessionTimer();
+        startInactivityWatch();
+      }
 
       const data = await res.json();
       const orders = data.orders || [];
