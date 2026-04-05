@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LodgeMiLien — Property Lien Document Preparation · Michigan, Indiana & Ohio</title>
+<title>LodgeMiLien — Property Lien Document Preparation · Michigan, Indiana, Ohio & Florida</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8X21R1S5Q"></script>
 <script>
@@ -907,7 +907,7 @@
     </a>
   </div>
   <div class="hero-trust">
-    <div class="trust-item"><div class="trust-dot"></div>Michigan, Indiana &amp; Ohio · Florida coming soon</div>
+    <div class="trust-item"><div class="trust-dot"></div>Michigan, Indiana, Ohio &amp; Florida</div>
     <div class="trust-item"><div class="trust-dot"></div>Ready in under 24 hours</div>
     <div class="trust-item"><div class="trust-dot"></div>No attorney required</div>
   </div>
@@ -1152,7 +1152,7 @@
 <!-- FOOTER -->
 <footer>
   <p>
-    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana &amp; Ohio · Florida coming soon<br>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana, Ohio &amp; Florida<br>
     LodgeMiLien is a property lien document preparation service and is not a law firm. Information provided is not legal advice.<br>
     <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="/cdn-cgi/l/email-protection#6f070a0303002f03000b080a020603060a01410c0002"><span class="__cf_email__" data-cfemail="e8808d848487a884878c8f8d858184818d86c68b8785">[email&#160;protected]</span></a>
   </p>
@@ -1176,6 +1176,19 @@
         <div class="role-option">
           <input type="radio" name="state-code" id="s-mi" value="MI">
           <label for="s-mi">Michigan<br><span style="font-size:12px;font-weight:400;">MCL 570.1101 / 570.301</span></label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="state-code" id="s-oh" value="OH">
+          <label for="s-oh">Ohio<br><span style="font-size:12px;font-weight:400;">O.R.C. §§ 1311.01 et seq.</span></label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="state-code" id="s-in" value="IN">
+          <label for="s-in">Indiana<br><span style="font-size:12px;font-weight:400;">Ind. Code § 32-28-3</span></label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="state-code" id="s-fl" value="FL">
+          <label for="s-fl">Florida<br><span style="font-size:12px;font-weight:400;">Chapter 713, Florida Statutes</span></label>
+        </div>
         </div>
         <div class="role-option">
           <input type="radio" name="state-code" id="s-oh" value="OH">
@@ -1361,6 +1374,24 @@
     <div class="wizard-step" id="wc-11">
       <h3>Review & Pay</h3>
       <p class="hint">Documents delivered to your email within 24 hours after review.</p>
+
+      <div class="field-group" style="margin-bottom:16px;">
+        <label style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:8px;">Select Your Package</label>
+        <div class="role-options">
+          <div class="role-option">
+            <input type="radio" name="construction-package" id="cp-demand" value="demand" onchange="updateConstructionPackage()">
+            <label for="cp-demand">Demand Letter — $97<br><span style="font-size:12px;font-weight:400;">Professional letter citing applicable statute. Resolves most disputes without filing.</span></label>
+          </div>
+          <div class="role-option">
+            <input type="radio" name="construction-package" id="cp-demand-mailing" value="demand-mailing" onchange="updateConstructionPackage()">
+            <label for="cp-demand-mailing">Demand Letter + Certified Mailing — $172<br><span style="font-size:12px;font-weight:400;">We prepare the letter and send it certified mail on your behalf. You don't touch the post office.</span></label>
+          </div>
+          <div class="role-option">
+            <input type="radio" name="construction-package" id="cp-full" value="full" checked onchange="updateConstructionPackage()">
+            <label for="cp-full">Full Lien Package — $197<br><span style="font-size:12px;font-weight:400;">Demand letter + completed lien document + step-by-step filing instructions.</span></label>
+          </div>
+        </div>
+      </div>
       <div class="summary-block">
         <div class="summary-row"><span class="label">Package</span><span class="value" id="summary-package">Full Lien Package</span></div>
         <div class="summary-row"><span class="label">State</span><span class="value" id="summary-state">Michigan</span></div>
@@ -1379,7 +1410,7 @@
           <div>
             <div style="font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px;">Add Filing Coordination — <span style="color:var(--amber);">+$75</span></div>
             <div style="font-size:12px;color:var(--muted);line-height:1.5;">We coordinate notarization and file with the county Register of Deeds on your behalf. Electronic filing where available, physical filing coordination otherwise.</div>
-            <div id="filing-coord-note" style="display:none;font-size:12px;color:#e84040;margin-top:6px;line-height:1.5;">Filing coordination is currently available in Michigan only. Ohio and Indiana coming soon.</div>
+            <div id="filing-coord-note" style="display:none;font-size:12px;color:#e84040;margin-top:6px;line-height:1.5;">Filing coordination is currently available in Michigan only.</div>
           </div>
         </label>
       </div>
@@ -1507,6 +1538,10 @@
             <label for="ap-demand">Demand Letter — $97<br><span style="font-size:12px;font-weight:400;" id="ap-demand-desc">Professional letter citing applicable state statute. Resolves most disputes.</span></label>
           </div>
           <div class="role-option">
+            <input type="radio" name="auto-package" id="ap-demand-mailing" value="demand-mailing" onchange="updateAutoPackage()">
+            <label for="ap-demand-mailing">Demand Letter + Certified Mailing — $172<br><span style="font-size:12px;font-weight:400;" id="ap-demand-mailing-desc">We prepare the letter and send it certified mail on your behalf.</span></label>
+          </div>
+          <div class="role-option">
             <input type="radio" name="auto-package" id="ap-full" value="full" checked onchange="updateAutoPackage()">
             <label for="ap-full">Full Package — $197<br><span style="font-size:12px;font-weight:400;" id="ap-full-desc">Demand letter + filing guide + step-by-step instructions.</span></label>
           </div>
@@ -1559,6 +1594,7 @@
 
   const PRICES = {
     demand: 97,
+    'demand-mailing': 172,
     full: 197,
   };
 
@@ -1581,6 +1617,7 @@
     MI: ['Wayne','Oakland','Macomb','Kent','Washtenaw','Ingham','Kalamazoo','Genesee','Ottawa','Saginaw','Muskegon','St. Clair','Jackson','Monroe','Berrien','Calhoun','Eaton','Bay','Livingston','Allegan','Other Michigan County'],
     OH: ['Franklin','Cuyahoga','Hamilton','Summit','Montgomery','Lucas','Butler','Stark','Lorain','Lake','Mahoning','Medina','Warren','Clark','Delaware','Licking','Allen','Trumbull','Greene','Clermont','Other Ohio County'],
     IN: ['Marion','Lake','Allen','Hamilton','St. Joseph','Elkhart','Tippecanoe','Vanderburgh','Monroe','Hendricks','Johnson','Kosciusko','Porter','Madison','Delaware','Vigo','Bartholomew','Howard','Clark','Floyd','Other Indiana County'],
+    FL: ['Miami-Dade','Broward','Palm Beach','Hillsborough','Orange','Pinellas','Duval','Lee','Polk','Brevard','Volusia','Sarasota','Manatee','Collier','Seminole','Pasco','Alachua','Leon','Marion','Osceola','Other Florida County'],
   };
 
   function getSequence() {
@@ -1612,7 +1649,12 @@
         if (ownerStateField && !ownerStateField.value) ownerStateField.value = state.value;
       }
     }
-    if (id === 'wc-11') updateConstructionSummary();
+    if (id === 'wc-11') {
+      // Sync radio to selectedPackage (may have been set via openModalWithPackage)
+      const radio = document.querySelector(`input[name="construction-package"][value="${selectedPackage}"]`);
+      if (radio) radio.checked = true;
+      updateConstructionSummary();
+    }
     if (id === 'wa-7') updateAutoSummary();
     if (id === 'wa-5') populateComplianceBlock();
     if (id === 'ws-2') updateWorkTypeOptions();
@@ -1663,9 +1705,12 @@
         yes: 'Yes, we have a signed work order or repair authorization from the vehicle owner',
         warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Indiana law (I.C. § 9-22-6-2) requires that repairs were performed at the request of the vehicle owner. Without a signed work order or authorization, your lien rights may be invalid. We recommend consulting an Indiana attorney before proceeding.',
       },
-    };
-
-    const c = content[state] || content.MI;
+      FL: {
+        heading: 'Florida Motor Vehicle Repair Act Compliance',
+        body: 'Florida Statutes § 713.585 requires that repairs were authorized by the vehicle owner or customer. Under the Florida Motor Vehicle Repair Act (s. 559.905, F.S.), you must have provided a written repair estimate and obtained customer authorization. Please confirm you have a signed work order or repair authorization.',
+        yes: 'Yes, we have a signed repair authorization and complied with the Florida Motor Vehicle Repair Act',
+        warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Florida law (F.S. § 713.585) requires that repairs were authorized by the vehicle owner or customer and that the Florida Motor Vehicle Repair Act was followed. Additionally, Florida requires all lien notices to be sent through FLHSMV-approved third-party vendors (Beacon Software or Auto Data Direct). Without proper authorization and compliance, your lien rights may be invalid.',
+      },
     textEl.innerHTML = `<strong>${c.heading}</strong><br>${c.body}`;
     yesLabel.textContent = c.yes;
     warningEl.innerHTML = c.warning;
@@ -1678,6 +1723,7 @@
       MI: "Garage Keeper's Lien — MCL 570.301",
       OH: "Garage Keeper's Lien — O.R.C. § 4505.101",
       IN: "Vehicle Mechanic's Lien — I.C. § 9-22-6-2",
+      FL: "Vehicle Lien by Sale — F.S. § 713.585",
     };
     autoLabel.textContent = labels[state] || "Garage Keeper's Lien";
     document.getElementById('wt-automotive').disabled = false;
@@ -1788,6 +1834,7 @@
         MI: { residential: 90, commercial: 90 },
         OH: { residential: 60, commercial: 75 },
         IN: { residential: 60, commercial: 90 },
+        FL: { residential: 90, commercial: 90 },
       };
       const maxDays = (deadlines[state] || deadlines.MI)[projectType] || 90;
       const rushThreshold = Math.round(maxDays * 0.15); // ~15% of window left = rush warning
@@ -1826,6 +1873,7 @@
       MI: { days: 105, label: '105-day BDVR-35 filing deadline', urgentDays: 21 },
       OH: { days: 30,  label: '30-day notice window (O.R.C. § 4505.101)', urgentDays: 7 },
       IN: { days: 90,  label: '90-day auction notice window (I.C. § 9-22-6-2)', urgentDays: 14 },
+      FL: { days: 7,   label: '7-business-day notice deadline (F.S. § 713.585)', urgentDays: 2 },
     };
     const dl = autoDeadlines[state] || autoDeadlines.MI;
 
@@ -1883,12 +1931,18 @@
     }
   }
 
-  function updateConstructionSummary() {
+  function updateConstructionPackage() {
+    const selected = document.querySelector('input[name="construction-package"]:checked')?.value || 'full';
+    selectedPackage = selected;
+    updateConstructionSummary();
+  }
     const state = document.querySelector('input[name="state-code"]:checked');
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana' };
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida' };
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
-    const pkgLabel = selectedPackage === 'demand' ? 'Demand Letter' : 'Full Lien Package';
+    const pkgLabel = selectedPackage === 'demand' ? 'Demand Letter'
+      : selectedPackage === 'demand-mailing' ? 'Demand Letter + Certified Mailing'
+      : 'Full Lien Package';
 
     if (state) document.getElementById('summary-state').textContent = stateNames[state.value] || '';
     if (county) document.getElementById('summary-county').textContent = county + ' County';
@@ -1900,6 +1954,10 @@
     // Show filing coord checkbox — always visible for full package
     const filingAddon = document.getElementById('filing-coord-addon');
     if (selectedPackage === 'demand') {
+      filingAddon.style.display = 'none';
+      selectedFilingCoord = false;
+      document.getElementById('filing-coord-check').checked = false;
+    } else if (selectedPackage === 'demand-mailing') {
       filingAddon.style.display = 'none';
       selectedFilingCoord = false;
       document.getElementById('filing-coord-check').checked = false;
@@ -1939,8 +1997,8 @@
 
   function updateAutoPackage() {
     const selected = document.querySelector('input[name="auto-package"]:checked')?.value || 'full';
-    const prices = { demand: 97, full: 197, 'full-filing': 272 };
-    const labels = { demand: 'Demand Letter', full: 'Full Package', 'full-filing': 'Full Package + Filing' };
+    const prices = { demand: 97, 'demand-mailing': 172, full: 197, 'full-filing': 272 };
+    const labels = { demand: 'Demand Letter', 'demand-mailing': 'Demand + Certified Mailing', full: 'Full Package', 'full-filing': 'Full Package + Filing' };
     const total = prices[selected] || 197;
     document.getElementById('auto-summary-package').textContent = labels[selected];
     document.getElementById('auto-summary-total').textContent = '$' + total;
@@ -1951,8 +2009,7 @@
     const vehicle = document.getElementById('auto-vehicle').value;
     const amount = document.getElementById('auto-amount').value;
     const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana' };
-    if (vehicle) document.getElementById('auto-summary-vehicle').textContent = vehicle;
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida' };
     if (amount) document.getElementById('auto-summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
     document.getElementById('auto-summary-state').textContent = stateNames[state] || 'Michigan';
@@ -1974,8 +2031,11 @@
         full: 'Demand letter + Indiana BMV process guide + step-by-step filing instructions.',
         filing: 'We coordinate the auction notice and BMV filing process on your behalf.',
       },
-    };
-    const d = descs[state] || descs.MI;
+      FL: {
+        demand: 'Professional letter citing F.S. § 713.585. Resolves most disputes.',
+        full: 'Demand letter + § 713.585 compliance guide + step-by-step process instructions.',
+        filing: 'Note: FL requires notices via FLHSMV-approved vendor. We prepare documents; you use Beacon Software or Auto Data Direct.',
+      },
     if (document.getElementById('ap-demand-desc')) document.getElementById('ap-demand-desc').textContent = d.demand;
     if (document.getElementById('ap-full-desc')) document.getElementById('ap-full-desc').textContent = d.full;
     if (document.getElementById('ap-filing-desc')) document.getElementById('ap-filing-desc').textContent = d.filing;
@@ -2079,6 +2139,7 @@
 
   const STRIPE_LINKS = {
     demand:           'https://buy.stripe.com/7sYeVceqY13eeDh8Ke0oM02',
+    'demand-mailing': 'https://buy.stripe.com/00w4gyeqY5judzdbWq0oM03',
     full:             'https://buy.stripe.com/4gM7sK0A813e52H9Oi0oM00',
     'full-filing':    'https://buy.stripe.com/28E28q82AdQ0fHlaSm0oM01',
     'demand-filing':  'https://buy.stripe.com/00w4gyeqY5judzdbWq0oM03',
