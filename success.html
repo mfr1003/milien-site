@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Received — LodgeMiLien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117; --ink-soft: #1c2333; --steel: #2a3347;
+    --amber: #f5a623; --amber-dark: #d4891a; --amber-glow: rgba(245,166,35,0.12);
+    --white: #ffffff; --muted: #7a8499; --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  body {
+    font-family: var(--font-body); background: var(--ink); color: var(--white);
+    min-height: 100vh; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    background: rgba(13,17,23,0.95); border-bottom: 1px solid var(--border);
+    padding: 14px 20px; display: flex; align-items: center;
+    backdrop-filter: blur(8px);
+  }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--amber); }
+
+  .main {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 60px 20px;
+  }
+  .card {
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 16px; padding: 48px 40px; max-width: 560px; width: 100%;
+    text-align: center;
+  }
+  .check-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(46,160,67,0.15); border: 2px solid rgba(46,160,67,0.4);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+  }
+  .check-circle svg { width: 36px; height: 36px; }
+  h1 {
+    font-family: var(--font-display); font-size: 42px; font-weight: 800;
+    text-transform: uppercase; line-height: 1.05; margin-bottom: 16px;
+  }
+  h1 span { color: var(--amber); display: block; }
+  .sub {
+    font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.6;
+    margin-bottom: 36px; max-width: 400px; margin-left: auto; margin-right: auto;
+  }
+
+  .timeline {
+    display: flex; flex-direction: column; gap: 0;
+    text-align: left; margin-bottom: 36px;
+  }
+  .timeline-item {
+    display: flex; gap: 16px; padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--amber-glow); border: 1px solid rgba(245,166,35,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 14px; font-weight: 700;
+    color: var(--amber); flex-shrink: 0; margin-top: 1px;
+  }
+  .step-body h4 {
+    font-family: var(--font-display); font-size: 16px; font-weight: 700;
+    text-transform: uppercase; color: var(--white); margin-bottom: 3px;
+  }
+  .step-body p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .notice {
+    background: var(--steel); border-radius: 10px; padding: 20px 24px;
+    text-align: left; margin-bottom: 32px;
+  }
+  .notice p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .notice strong { color: var(--white); }
+
+  .btn-home {
+    display: inline-block; background: var(--amber); color: var(--ink);
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    text-transform: uppercase; padding: 14px 36px; border-radius: 8px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .btn-home:hover { background: var(--amber-dark); }
+
+  footer {
+    background: var(--ink); border-top: 1px solid var(--border);
+    padding: 20px; text-align: center;
+  }
+  footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+  footer a { color: var(--muted); text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .card { padding: 36px 24px; }
+    h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
+</nav>
+
+<div class="main">
+  <div class="card">
+
+    <div class="check-circle">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 18L15 25L28 11" stroke="#2ea043" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1>Order<span>Received</span></h1>
+    <p class="sub">Your payment was processed and your order is in the queue. A confirmation email is on its way to you now.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h4>Payment confirmed</h4>
+          <p>Your order has been received and is awaiting review.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Document review</h4>
+          <p>A human reviewer examines your order for completeness and prepares your documents. This typically takes a few hours during business hours.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Documents delivered</h4>
+          <p>Your completed lien documents are emailed to you as a PDF — within 24 hours of your order, often sooner.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice">
+      <p><strong>Check your email</strong> for a confirmation from <strong>docs@lodgemilien.com</strong>. If you don't see it within a few minutes, check your spam folder. If you have any questions, reply to that email or contact us at <strong>support@lodgemilien.com</strong>.</p>
+    </div>
+
+    <a href="/" class="btn-home">Return to Home</a>
+
+  </div>
+</div>
+
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana &amp; Ohio<br>
+    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a>
+  </p>
+</footer>
+
+</body>
+</html>

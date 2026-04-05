@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — LodgeMiLien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d1117; --ink-soft: #1c2333;
+    --amber: #f5a623; --white: #ffffff; --muted: #7a8499; --border: rgba(255,255,255,0.08);
+    --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
+  }
+  body { font-family: var(--font-body); background: var(--ink); color: var(--white); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  nav {
+    background: rgba(13,17,23,0.95); border-bottom: 1px solid var(--border);
+    padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+  }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--amber); }
+  .content { max-width: 720px; margin: 0 auto; padding: 60px 20px 80px; }
+  .eyebrow {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 16px;
+    padding: 4px 10px; border: 1px solid rgba(245,166,35,0.3); border-radius: 4px;
+    background: rgba(245,166,35,0.08);
+  }
+  h1 { font-family: var(--font-display); font-size: 48px; font-weight: 800; text-transform: uppercase; line-height: 1.05; margin-bottom: 12px; }
+  .effective { font-size: 13px; color: var(--muted); margin-bottom: 48px; }
+  h2 {
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px; color: var(--white);
+    margin: 40px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  p { color: rgba(255,255,255,0.7); margin-bottom: 16px; font-size: 15px; }
+  ul { color: rgba(255,255,255,0.7); font-size: 15px; padding-left: 20px; margin-bottom: 16px; }
+  ul li { margin-bottom: 8px; line-height: 1.6; }
+  strong { color: var(--white); }
+  a { color: var(--amber); }
+  .highlight {
+    background: rgba(245,166,35,0.08); border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0;
+  }
+  .highlight p { margin: 0; font-size: 14px; color: rgba(255,255,255,0.75); }
+  footer { background: var(--ink); border-top: 1px solid var(--border); padding: 24px 20px; text-align: center; }
+  footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+  footer a { color: var(--muted); text-decoration: underline; }
+  @media (min-width: 640px) { .content { padding: 80px 40px 100px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
+</nav>
+
+<div class="content">
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="effective">Effective Date: April 4, 2026 &nbsp;·&nbsp; LodgeMiLien LLC, Troy, Michigan</p>
+
+  <p>LodgeMiLien LLC ("LodgeMiLien," "we," "us," "our") respects your privacy. This Privacy Policy explains what information we collect, how we use it, and your rights regarding that information when you use our website and document preparation service at lodgemilien.com.</p>
+
+  <h2>1. Information We Collect</h2>
+  <p>We collect information you provide directly when using our service:</p>
+  <ul>
+    <li><strong>Contact information:</strong> Name, business name, email address, phone number, mailing address</li>
+    <li><strong>Lien-related information:</strong> Property addresses, vehicle information (VIN, year, make, model), owner names, amounts owed, dates of service, work descriptions</li>
+    <li><strong>License and compliance information:</strong> Repair facility license numbers, contractor information</li>
+    <li><strong>Payment information:</strong> Processed securely through Stripe. We do not store your credit card number, CVV, or full payment details. We receive a payment confirmation and your email address from Stripe.</li>
+    <li><strong>Uploaded documents:</strong> Contracts, invoices, work orders, and other proof of work documents you upload as part of your order</li>
+    <li><strong>Business website:</strong> If provided, used solely to retrieve your logo for document letterhead formatting</li>
+  </ul>
+  <p>We also collect limited technical information automatically, including IP address, browser type, and pages visited through standard web analytics (Google Analytics).</p>
+
+  <h2>2. How We Use Your Information</h2>
+  <p>We use the information you provide solely to:</p>
+  <ul>
+    <li>Prepare the lien documents you ordered</li>
+    <li>Deliver completed documents to your email address</li>
+    <li>Coordinate filing with county Register of Deeds offices when you purchase Filing Coordination</li>
+    <li>Send order confirmation and status communications</li>
+    <li>Respond to your questions or support requests</li>
+    <li>Maintain business records as required by law</li>
+    <li>Improve our service based on usage patterns (via anonymized analytics)</li>
+  </ul>
+  <p><strong>We do not sell your information to third parties. We do not use your information for advertising or marketing to third parties.</strong></p>
+
+  <h2>3. How We Store Your Information</h2>
+  <p>Your order data is stored securely using Vercel Blob storage with access controls. Uploaded proof documents are stored in the same secure environment and are only accessible to LodgeMiLien staff during the review and preparation process.</p>
+  <p>Completed order records are retained for a minimum of three years to support any disputes, refund requests, or legal inquiries related to your order. You may request deletion of your information subject to applicable legal retention requirements.</p>
+
+  <h2>4. Third-Party Services</h2>
+  <p>We use the following third-party services to operate our platform. Each has its own privacy policy:</p>
+  <ul>
+    <li><strong>Stripe</strong> — Payment processing. Stripe receives your payment information directly. We receive only a payment confirmation and your email. See <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a>.</li>
+    <li><strong>Resend</strong> — Email delivery for order confirmations and document delivery. See <a href="https://resend.com/legal/privacy-policy" target="_blank">resend.com/legal/privacy-policy</a>.</li>
+    <li><strong>Vercel</strong> — Hosting and serverless infrastructure. See <a href="https://vercel.com/legal/privacy-policy" target="_blank">vercel.com/legal/privacy-policy</a>.</li>
+    <li><strong>Anthropic Claude API</strong> — Used to generate document drafts based on your order information. Your order data is sent to Anthropic's API for document generation. See <a href="https://www.anthropic.com/legal/privacy" target="_blank">anthropic.com/legal/privacy</a>.</li>
+    <li><strong>Google Analytics</strong> — Anonymous website usage tracking. No personally identifiable information is shared with Google Analytics.</li>
+    <li><strong>NHTSA API</strong> — For automotive orders, your VIN is sent to the National Highway Traffic Safety Administration's public API for vehicle identification verification.</li>
+  </ul>
+
+  <h2>5. Information Shared With Third Parties</h2>
+  <p>We share your information only as necessary to provide our service:</p>
+  <ul>
+    <li>With county Register of Deeds offices when you purchase Filing Coordination — limited to the information required to record your lien document</li>
+    <li>With service providers listed above, only as needed to operate our platform</li>
+    <li>When required by law, court order, or government authority</li>
+    <li>To protect the rights, property, or safety of LodgeMiLien, our customers, or others</li>
+  </ul>
+  <p>We do not sell, rent, or trade your personal information to any third party for their own use.</p>
+
+  <h2>6. Document Security and Watermarking</h2>
+  <p>Documents prepared by LodgeMiLien contain a security watermark identifying the recipient and preparation date. This watermark is embedded to protect document integrity and deter unauthorized redistribution. It does not contain your payment information or any sensitive financial data.</p>
+
+  <h2>7. Your Rights</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li>Request a copy of the information we hold about you</li>
+    <li>Request correction of inaccurate information</li>
+    <li>Request deletion of your information, subject to legal retention requirements</li>
+    <li>Withdraw consent for communications at any time by contacting us</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <a href="mailto:support@lodgemilien.com">support@lodgemilien.com</a>.</p>
+
+  <h2>8. Children's Privacy</h2>
+  <p>Our service is intended for businesses and adults. We do not knowingly collect information from anyone under 18 years of age. If you believe we have inadvertently collected information from a minor, contact us immediately and we will delete it.</p>
+
+  <h2>9. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. The effective date will be updated accordingly. Continued use of our service after any change constitutes your acceptance of the updated policy.</p>
+
+  <h2>10. Contact</h2>
+  <p>LodgeMiLien LLC<br>
+  Troy, Michigan<br>
+  <a href="mailto:support@lodgemilien.com">support@lodgemilien.com</a><br>
+  lodgemilien.com</p>
+
+  <div class="highlight" style="margin-top: 40px;">
+    <p>Questions about this Privacy Policy or your data? Email us at <a href="mailto:support@lodgemilien.com">support@lodgemilien.com</a> and we will respond within 2 business days.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana &amp; Ohio<br>
+    Property lien document preparation service · Not a law firm · <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a>
+  </p>
+</footer>
+
+</body>
+</html>
