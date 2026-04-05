@@ -668,6 +668,225 @@
     }
   }
 
+
+  // ── FILING COORDINATION STEPS ────────────────────────────────────────────
+  // Operational instructions for the person doing the physical filing work.
+  // Written for someone with zero legal knowledge — just do this, go here, mail this.
+
+  const FILING_STEPS = {
+
+    // Demand Letter + Certified Mailing — same process in every state
+    'demand-mailing': [
+      'Print the demand letter on standard white paper. Do not staple — keep single sheets.',
+      'Fold and insert into a standard #10 envelope. Write the recipient name and address on the front exactly as shown in the order.',
+      'Take to any U.S. Post Office counter (not a drop box). Ask for "Certified Mail with Return Receipt." The clerk will give you a green PS Form 3811 card — fill it out.',
+      'Keep the yellow Certified Mail tracking sticker receipt. Photograph both the receipt and the tracking number before leaving the post office.',
+      'Email the photo of the tracking receipt to support@lodgemilien.com with the customer name and order date in the subject line.',
+      'When the green return receipt card comes back in the mail, photograph it immediately and email it to support@lodgemilien.com.',
+    ],
+
+    construction: {
+
+      MI: [
+        'Arrange notarization with the claimant — they must sign in front of a notary. Banks, UPS Stores, and AAA offices offer notary service. The claimant must bring a government-issued photo ID.',
+        'Take the notarized original Claim of Lien to the County Register of Deeds for the county listed in the order. Recording fee is typically $10–15 for the first page plus $3–5 per additional page. Pay by check or cash — call ahead to confirm.',
+        'Ask for a date-stamped recorded copy with the book and page number noted on it. Keep this copy.',
+        'Within 10 days of recording: mail a copy of the recorded lien to the property owner by certified mail, return receipt requested. Use the owner name and address from the order.',
+        'Photograph all receipts (recording receipt + certified mail tracking). Email to support@lodgemilien.com with the order details.',
+        'When the green return receipt card arrives, photograph and email it to support@lodgemilien.com. File is complete.',
+      ],
+
+      OH: [
+        'Arrange notarization with the claimant. They sign in front of a notary with photo ID.',
+        'Take the notarized Claim of Lien to the County Recorder for the county listed in the order. Recording fee is typically $28 for the first page. Call ahead to confirm payment methods.',
+        'Get the recorded/stamped copy with book and page number.',
+        'Within 2 business days of recording: send a copy to the property owner by certified mail, return receipt requested.',
+        'Photograph all receipts and email to support@lodgemilien.com. When the return receipt card arrives, photograph and send it in.',
+      ],
+
+      IN: [
+        'Arrange notarization with the claimant. They sign in front of a notary with photo ID.',
+        'Take the notarized Claim of Lien to the County Recorder for the county listed in the order. Fee is approximately $25 for the first page.',
+        'Get the recorded/stamped copy.',
+        'Send a copy to the property owner by certified mail, return receipt requested.',
+        'Photograph all receipts and email to support@lodgemilien.com.',
+      ],
+
+      FL: [
+        'Arrange notarization with the claimant. Two witnesses are required in addition to the notary — the claimant must bring two witnesses or the signing service must provide them.',
+        'Take the notarized original to the Clerk of Circuit Court for the county listed in the order. This is NOT the same as the courthouse — call ahead to confirm the Clerk\'s recording office location and hours. Fee is typically $10 per page.',
+        'Get the recorded/stamped copy with the Official Record book and page number.',
+        'Within 15 days of recording: serve a copy on the property owner. Mail by certified mail, return receipt requested, to the owner name and address in the order.',
+        'Photograph all receipts and email to support@lodgemilien.com. When the return receipt card arrives, photograph and send it in.',
+      ],
+
+      TX: [
+        'IMPORTANT: Before notarizing, confirm the document includes a LEGAL DESCRIPTION of the property — not just the street address. If missing, contact support@lodgemilien.com before proceeding.',
+        'Arrange notarization with the claimant. They sign in front of a notary with photo ID.',
+        'Take the notarized Mechanic\'s Lien Affidavit to the County Clerk for the county listed in the order. Recording fee is typically $25–40 for the first page. Call ahead.',
+        'Get the recorded/stamped copy with the filing number.',
+        'Within 5 days of filing: send copies by certified mail, return receipt requested, to: (1) the property owner, AND (2) the original contractor if the claimant is a subcontractor. Both addresses are in the order.',
+        'Photograph all receipts and email to support@lodgemilien.com. When the return receipt cards arrive, photograph and send them in.',
+      ],
+
+      NC: [
+        'Arrange notarization with the claimant. They sign in front of a notary with photo ID.',
+        'Take the notarized Notice of Claim of Lien on Real Property to the Clerk of Superior Court for the county listed in the order. This is at the county courthouse. Fee is typically $10–20.',
+        'Get the filed/stamped copy with the docket or case number.',
+        'Within 2 business days of filing: send a copy to the property owner by certified mail, return receipt requested.',
+        'Photograph all receipts and email to support@lodgemilien.com. When the return receipt card arrives, photograph and send it in.',
+      ],
+
+      IL: [
+        'Arrange notarization with the claimant. They sign in front of a notary with photo ID.',
+        'Take the notarized Mechanic\'s Lien Claim to the County Recorder for the county listed in the order. Fee varies, typically $25–60. Call ahead to confirm.',
+        'Get the recorded copy with the recording number, book, and page.',
+        'Serve a copy on the property owner. Acceptable methods: certified mail with return receipt requested, OR FedEx/UPS with tracking (keep the tracking confirmation). Certified mail is preferred.',
+        'Photograph all receipts and email to support@lodgemilien.com.',
+      ],
+
+      GA: [
+        'Arrange notarization with the claimant. They must sign in front of a notary AND have the document witnessed.',
+        'File the Claim of Lien via the GSCCCA eFiling portal (gsccca.org) for the county listed in the order. Most counties require e-filing. Fee is approximately $5–10 online. If you cannot e-file, go to the Clerk of Superior Court at the county courthouse.',
+        'Download and save the filed/stamped copy with the filing confirmation number.',
+        'Within 2 business days of filing: send a copy to the property owner by certified mail, return receipt requested.',
+        'Photograph or screenshot all filing confirmations and email to support@lodgemilien.com. When the return receipt card arrives, send it in.',
+      ],
+    },
+
+    automotive: {
+
+      MI: [
+        'Complete the BDVR-35 form using the guide in the customer documents. The shop owner or authorized representative fills this out.',
+        'Mail the completed BDVR-35, along with a copy of the signed work order and the lien fee (check payable to State of Michigan, typically $10), to: Michigan Department of State, Vehicle Services, P.O. Box 30048, Lansing MI 48909. Use certified mail, return receipt requested.',
+        'Keep the certified mail tracking receipt. Email a photo to support@lodgemilien.com.',
+        'When the MDOS sends back the TR-42 Certificate, photograph it immediately and email to support@lodgemilien.com. A timed sequence of follow-up steps starts when you receive the TR-42.',
+      ],
+
+      OH: [
+        'Complete the Ohio BMV affidavit form using the guide in the customer documents.',
+        'Take or mail the completed affidavit to the County Clerk of Courts for the county where the repair shop is located. Fee varies — call ahead.',
+        'Mail a copy of the filed affidavit to the vehicle owner and any lienholders by certified mail, return receipt requested.',
+        'Keep all receipts and email copies to support@lodgemilien.com.',
+      ],
+
+      IN: [
+        'Place the newspaper advertisement as described in the customer documents. Contact the legal notices department of the local newspaper in the county where the repair shop is located. Keep the written certification from the newspaper confirming the ad ran.',
+        'Simultaneously: mail certified notice to the vehicle owner and all lienholders at their addresses from the customer documents.',
+        'After the notice period: conduct or arrange the public auction. Document all bids and the winning bid.',
+        'Complete the Indiana BMV Sales Certificate form. The buyer needs this to get a new title.',
+        'Photograph all documentation (newspaper cert, certified mail receipts, auction record, sales certificate) and email to support@lodgemilien.com.',
+      ],
+
+      FL: [
+        'STOP — Florida automotive lien notices MUST go through an FLHSMV-approved third-party vendor. LodgeMiLien cannot coordinate Florida automotive filings directly.',
+        'Contact either: Beacon Software (beaconsoftware.com) OR Auto Data Direct (add123.com). These are the only approved vendors.',
+        'Notify the customer that their filing coordination for Florida automotive must be processed through one of these vendors. Refund the filing coordination fee.',
+        'Email support@lodgemilien.com to flag this order for refund processing.',
+      ],
+
+      TX: [
+        'Send the notice by certified mail, return receipt requested, to: (1) the registered vehicle owner, AND (2) every lienholder shown on the vehicle title. Addresses are in the customer documents. Send both simultaneously.',
+        'Within the same 30-day window: take a copy of the notice to the County Tax Assessor-Collector\'s office in the county where the repairs were made. Bring the signed work order copy. Pay the $25 filing fee.',
+        'Get a date-stamped copy of the filed notice from the Tax Assessor-Collector.',
+        'Photograph all receipts (certified mail tracking numbers + county filing receipt) and email to support@lodgemilien.com.',
+        'When the green return receipt cards arrive, photograph and email them in. File is complete.',
+      ],
+
+      NC: [
+        'Send the demand letter by certified mail to the vehicle owner. Keep tracking receipt.',
+        'If unpaid after 10 days: file a written application for a sale order at the Clerk of Superior Court in the county where the vehicle is located. The application states the unpaid amount and requests authorization to sell.',
+        'The Clerk will issue a sale order at least 14 days from your application. Mail copies of the application and order to the owner and all title lienholders by first-class mail.',
+        'Conduct the authorized sale and document all proceeds. Photograph all filings and receipts and email to support@lodgemilien.com.',
+      ],
+
+      IL: [
+        'Send the demand letter by certified mail to the vehicle owner. Keep tracking receipt.',
+        'After 30 days of non-payment: contact the Illinois Secretary of State Vehicle Services office at (217) 785-3000 to get current abandoned vehicle forms and procedures.',
+        'File required forms with SOS and serve notice on all interested parties as directed by SOS.',
+        'Email support@lodgemilien.com with SOS confirmation and all receipts. Await further instructions.',
+      ],
+
+      GA: [
+        'Send the demand letter by certified mail to the vehicle owner. Keep tracking receipt.',
+        'Within 3 business days of the vehicle coming into the shop\'s possession: ensure written notice was sent to the registered owner by certified mail. If not done, send immediately and note the date.',
+        'After 30 days of non-payment: file the abandoned motor vehicle report at the county tag office for the county where the shop is located. Bring the signed work order, proof of certified mail notice, and the title search results.',
+        'Pay the required filing fee (varies by county — call the tag office first).',
+        'Photograph all filings and receipts and email to support@lodgemilien.com.',
+      ],
+    },
+  };
+
+  function renderFilingBubble(m) {
+    const state = m.stateCode || 'MI';
+    const track = m.workType === 'automotive' ? 'automotive' : 'construction';
+    const pkg = m.packageType || 'full';
+    const isDemandMailing = pkg === 'demand-mailing' || pkg === 'demand-filing';
+    const needsFiling = m.filingCoordination === 'true' || isDemandMailing;
+    if (!needsFiling) return '';
+
+    let steps = [];
+    let title = '';
+    let stateLabel = state;
+
+    if (isDemandMailing) {
+      steps = FILING_STEPS['demand-mailing'];
+      title = 'Certified Mailing Steps';
+    } else {
+      steps = (FILING_STEPS[track] && FILING_STEPS[track][state]) || [];
+      const stateNames = { MI:'Michigan', OH:'Ohio', IN:'Indiana', FL:'Florida', TX:'Texas', NC:'North Carolina', IL:'Illinois', GA:'Georgia' };
+      stateLabel = stateNames[state] || state;
+      title = `Filing Coordination — ${stateLabel} ${track === 'automotive' ? 'Automotive' : 'Construction'}`;
+    }
+
+    if (!steps.length) return '';
+
+    const stepItems = steps.map((s, i) =>
+      `<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;">
+        <div style="min-width:22px;height:22px;border-radius:50%;background:var(--amber);color:var(--ink);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">${i+1}</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.55;">${s}</div>
+      </div>`
+    ).join('');
+
+    const ownerLine = m.ownerName ? `Owner/Owner: ${m.ownerName}` : '';
+    const addressLine = m.ownerAddress || m.propertyAddress || '';
+    const countyLine = m.propertyCounty ? `County: ${m.propertyCounty}` : '';
+
+    const sessionRef = m.claimantEmail + '-' + (m.dateLast || m.dateFirst || '');
+
+    return `
+      <div style="margin:12px 16px 0;border:1px solid rgba(245,180,0,0.35);border-radius:8px;background:rgba(245,180,0,0.05);overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(245,180,0,0.1);border-bottom:1px solid rgba(245,180,0,0.2);">
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--amber);">📋 ${title}</div>
+          <button onclick="downloadFilingInstructions(this)" data-title="${title.replace(/"/g,"'")}" data-steps='${JSON.stringify(steps).replace(/'/g,"&#39;")}' data-context="${ownerLine}|${addressLine}|${countyLine}" style="background:transparent;border:1px solid rgba(245,180,0,0.4);color:var(--amber);font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;">⬇ Download TXT</button>
+        </div>
+        <div style="padding:12px 14px;">
+          ${stepItems}
+        </div>
+      </div>`;
+  }
+
+  function downloadFilingInstructions(btn) {
+    const title = btn.getAttribute('data-title');
+    const steps = JSON.parse(btn.getAttribute('data-steps'));
+    const context = btn.getAttribute('data-context').split('|').filter(Boolean);
+    const lines = [
+      `LODGEMILIEN — FILING COORDINATION INSTRUCTIONS`,
+      `${title.toUpperCase()}`,
+      `Generated: ${new Date().toLocaleString()}`,
+      ``,
+      ...(context.length ? [...context, ''] : []),
+      ...steps.map((s, i) => `STEP ${i+1}: ${s}`),
+      ``,
+      `Questions? Contact support@lodgemilien.com`,
+    ];
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `filing-instructions-${title.replace(/[^a-z0-9]/gi,'_').toLowerCase()}.txt`;
+    a.click();
+  }
+
   function renderOrderCard(order) {
     const m = order.metadata || {};
     const isAuto = m.workType === 'automotive';
@@ -719,6 +938,7 @@
           </div>
         </div>
         <div class="verify-panel" id="verify-${order.sessionId}"></div>
+        ${renderFilingBubble(m)}
       </div>
     `;
   }
@@ -1233,6 +1453,7 @@
             Loading documents...
           </div>
         </div>
+        ${renderFilingBubble(m)}
       </div>
     `;
   }
