@@ -1986,7 +1986,8 @@
     selectedPackage = selected;
     updateConstructionSummary();
   }
-    const state = document.querySelector('input[name="state-code"]:checked');
+
+  function updateConstructionSummary() {
     const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida', TX: 'Texas', NC: 'North Carolina', IL: 'Illinois', GA: 'Georgia' };
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
@@ -2106,7 +2107,8 @@
         full: 'Demand letter + Georgia DOR abandoned motor vehicle guide + step-by-step instructions.',
         filing: 'We coordinate the Georgia DOR abandoned motor vehicle filing on your behalf.',
       },
-    if (document.getElementById('ap-demand-desc')) document.getElementById('ap-demand-desc').textContent = d.demand;
+    };
+    const d = descs[state] || descs.MI; document.getElementById('ap-demand-desc').textContent = d.demand;
     if (document.getElementById('ap-full-desc')) document.getElementById('ap-full-desc').textContent = d.full;
     if (document.getElementById('ap-filing-desc')) document.getElementById('ap-filing-desc').textContent = d.filing;
   }
