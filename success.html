@@ -106,6 +106,18 @@
 </head>
 <body>
 
+<script>
+  // Gate: must arrive via Stripe redirect with a valid session_id
+  // Skip gate when opening locally (file:// protocol)
+  if (window.location.protocol !== 'file:') {
+    const params = new URLSearchParams(window.location.search);
+    const sid = params.get('session_id');
+    if (!sid || !sid.startsWith('cs_')) {
+      window.location.replace('https://lodgemilien.com');
+    }
+  }
+</script>
+
 <nav>
   <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
 </nav>
