@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LodgeMiLien — Property Lien Document Preparation · Michigan, Indiana, Ohio & Florida</title>
+<title>LodgeMiLien — Property Lien Document Preparation · Michigan, Indiana, Ohio, Florida & Texas</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8X21R1S5Q"></script>
 <script>
@@ -898,16 +898,16 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Property Lien Document Preparation · Michigan, Indiana, Ohio &amp; Florida</div>
+  <div class="hero-eyebrow">Property Lien Document Preparation · Michigan, Indiana, Ohio, Florida &amp; Texas</div>
   <h1>You Did<br>The Work.<em>Now Get Paid.</em></h1>
-  <p class="hero-sub">Fast, accurate lien documents for contractors and tradespeople in Michigan, Indiana, Ohio, and Florida. We handle the paperwork. You handle the job site.</p>
+  <p class="hero-sub">Fast, accurate lien documents for contractors and tradespeople in Michigan, Indiana, Ohio, Florida, and Texas. We handle the paperwork. You handle the job site.</p>
   <div class="hero-cta-group">
     <a href="#" class="btn-primary" onclick="openModalWithPackage('full', false); return false;">
       File My Lien — Starting at $97
     </a>
   </div>
   <div class="hero-trust">
-    <div class="trust-item"><div class="trust-dot"></div>Michigan, Indiana, Ohio &amp; Florida</div>
+    <div class="trust-item"><div class="trust-dot"></div>Michigan, Indiana, Ohio, Florida &amp; Texas</div>
     <div class="trust-item"><div class="trust-dot"></div>More States Coming Soon!</div>
     <div class="trust-item"><div class="trust-dot"></div>Ready in under 24 hours</div>
     <div class="trust-item"><div class="trust-dot"></div>No attorney required</div>
@@ -1128,7 +1128,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Does this work for commercial jobs too?</div>
-      <div class="faq-a">Yes. Property lien statutes in Michigan, Indiana, Ohio, and Florida cover both residential and commercial projects. The documents and process are similar, though commercial projects may have additional considerations we'll flag during review.</div>
+      <div class="faq-a">Yes. Property lien statutes in Michigan, Indiana, Ohio, Florida, and Texas cover both residential and commercial projects. The documents and process are similar, though commercial projects may have additional considerations we'll flag during review.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">I'm a supplier, not a contractor. Does this apply to me?</div>
@@ -1153,7 +1153,7 @@
 <!-- FOOTER -->
 <footer>
   <p>
-    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana, Ohio &amp; Florida<br>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana, Ohio, Florida &amp; Texas<br>
     LodgeMiLien is a property lien document preparation service and is not a law firm. Information provided is not legal advice.<br>
     <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="/cdn-cgi/l/email-protection#6f070a0303002f03000b080a020603060a01410c0002"><span class="__cf_email__" data-cfemail="e8808d848487a884878c8f8d858184818d86c68b8785">[email&#160;protected]</span></a>
   </p>
@@ -1189,6 +1189,10 @@
         <div class="role-option">
           <input type="radio" name="state-code" id="s-fl" value="FL">
           <label for="s-fl">Florida<br><span style="font-size:12px;font-weight:400;">Chapter 713, Florida Statutes</span></label>
+        </div>
+        <div class="role-option">
+          <input type="radio" name="state-code" id="s-tx" value="TX">
+          <label for="s-tx">Texas<br><span style="font-size:12px;font-weight:400;">Texas Property Code Chapter 53</span></label>
         </div>
       </div>
       <div class="wizard-nav">
@@ -1610,6 +1614,7 @@
     OH: ['Franklin','Cuyahoga','Hamilton','Summit','Montgomery','Lucas','Butler','Stark','Lorain','Lake','Mahoning','Medina','Warren','Clark','Delaware','Licking','Allen','Trumbull','Greene','Clermont','Other Ohio County'],
     IN: ['Marion','Lake','Allen','Hamilton','St. Joseph','Elkhart','Tippecanoe','Vanderburgh','Monroe','Hendricks','Johnson','Kosciusko','Porter','Madison','Delaware','Vigo','Bartholomew','Howard','Clark','Floyd','Other Indiana County'],
     FL: ['Miami-Dade','Broward','Palm Beach','Hillsborough','Orange','Pinellas','Duval','Lee','Polk','Brevard','Volusia','Sarasota','Manatee','Collier','Seminole','Pasco','Alachua','Leon','Marion','Osceola','Other Florida County'],
+    TX: ['Harris','Dallas','Tarrant','Bexar','Travis','Collin','Denton','El Paso','Fort Bend','Montgomery','Williamson','Hidalgo','Nueces','Jefferson','Lubbock','Galveston','Bell','Webb','McLennan','Smith','Other Texas County'],
   };
 
   function getSequence() {
@@ -1703,6 +1708,14 @@
         yes: 'Yes, we have a signed repair authorization and complied with the Florida Motor Vehicle Repair Act',
         warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Florida law (F.S. § 713.585) requires that repairs were authorized by the vehicle owner or customer and that the Florida Motor Vehicle Repair Act was followed. Additionally, Florida requires all lien notices to be sent through FLHSMV-approved third-party vendors (Beacon Software or Auto Data Direct). Without proper authorization and compliance, your lien rights may be invalid.',
       },
+      TX: {
+        heading: 'Texas Worker\'s Lien — Signed Work Order Required',
+        body: 'Texas Property Code § 70.001 requires that repairs were performed pursuant to a signed work order authorized by the vehicle owner. You must have a written work order signed by the customer. Oral authorizations are risky and can undermine your lien rights. Additionally, non-franchised dealers must file notice with the county tax assessor-collector within 30 days of charges accruing.',
+        yes: 'Yes, we have a signed work order authorizing the repairs from the vehicle owner or their authorized representative',
+        warning: '<strong>LodgeMiLien cannot process this order.</strong><br><br>Texas law (Property Code § 70.001) requires that repairs be performed pursuant to a signed work order from the vehicle owner or their authorized representative. Without a signed work order, your lien rights may be invalid or unenforceable. We recommend consulting a Texas attorney before proceeding.',
+      },
+    };
+    const c = content[state] || content.MI;
     textEl.innerHTML = `<strong>${c.heading}</strong><br>${c.body}`;
     yesLabel.textContent = c.yes;
     warningEl.innerHTML = c.warning;
@@ -1716,6 +1729,7 @@
       OH: "Garage Keeper's Lien — O.R.C. § 4505.101",
       IN: "Vehicle Mechanic's Lien — I.C. § 9-22-6-2",
       FL: "Vehicle Lien by Sale — F.S. § 713.585",
+      TX: "Worker's Lien — Texas Property Code § 70.001",
     };
     autoLabel.textContent = labels[state] || "Garage Keeper's Lien";
     document.getElementById('wt-automotive').disabled = false;
@@ -1827,6 +1841,7 @@
         OH: { residential: 60, commercial: 75 },
         IN: { residential: 60, commercial: 90 },
         FL: { residential: 90, commercial: 90 },
+        TX: { residential: 90, commercial: 120 },
       };
       const maxDays = (deadlines[state] || deadlines.MI)[projectType] || 90;
       const rushThreshold = Math.round(maxDays * 0.15); // ~15% of window left = rush warning
@@ -1866,6 +1881,7 @@
       OH: { days: 30,  label: '30-day notice window (O.R.C. § 4505.101)', urgentDays: 7 },
       IN: { days: 90,  label: '90-day auction notice window (I.C. § 9-22-6-2)', urgentDays: 14 },
       FL: { days: 7,   label: '7-business-day notice deadline (F.S. § 713.585)', urgentDays: 2 },
+      TX: { days: 30,  label: '30-day notice and county filing deadline (Tex. Prop. Code § 70.006)', urgentDays: 7 },
     };
     const dl = autoDeadlines[state] || autoDeadlines.MI;
 
@@ -1929,7 +1945,7 @@
     updateConstructionSummary();
   }
     const state = document.querySelector('input[name="state-code"]:checked');
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida' };
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida', TX: 'Texas' };
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
     const pkgLabel = selectedPackage === 'demand' ? 'Demand Letter'
@@ -2001,7 +2017,7 @@
     const vehicle = document.getElementById('auto-vehicle').value;
     const amount = document.getElementById('auto-amount').value;
     const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida' };
+    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida', TX: 'Texas' };
     if (amount) document.getElementById('auto-summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
     document.getElementById('auto-summary-state').textContent = stateNames[state] || 'Michigan';
@@ -2027,6 +2043,11 @@
         demand: 'Professional letter citing F.S. § 713.585. Resolves most disputes.',
         full: 'Demand letter + § 713.585 compliance guide + step-by-step process instructions.',
         filing: 'Note: FL requires notices via FLHSMV-approved vendor. We prepare documents; you use Beacon Software or Auto Data Direct.',
+      },
+      TX: {
+        demand: 'Professional letter citing Tex. Prop. Code § 70.001. Resolves most disputes.',
+        full: 'Demand letter + § 70.006 notice guide + county tax assessor-collector filing instructions.',
+        filing: 'We coordinate the § 70.006 notice and county tax assessor-collector filing on your behalf.',
       },
     if (document.getElementById('ap-demand-desc')) document.getElementById('ap-demand-desc').textContent = d.demand;
     if (document.getElementById('ap-full-desc')) document.getElementById('ap-full-desc').textContent = d.full;
