@@ -220,6 +220,36 @@
   .approve-status.success { color: #2ea043; }
   .approve-status.error { color: #e84040; }
 
+  /* ── MONTH ARCHIVE GROUPS ── */
+  .archive-group { margin-bottom: 24px; }
+  .archive-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; background: var(--steel);
+    border-radius: 8px; cursor: pointer; user-select: none;
+    border: 1px solid var(--border); margin-bottom: 0;
+    transition: background 0.15s;
+  }
+  .archive-header:hover { background: #3d4f6b; }
+  .archive-header.open { border-radius: 8px 8px 0 0; margin-bottom: 0; }
+  .archive-month {
+    font-family: var(--font-display); font-size: 16px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--white);
+  }
+  .archive-meta { display: flex; align-items: center; gap: 12px; }
+  .archive-count {
+    font-size: 12px; color: var(--muted);
+    background: var(--ink); padding: 3px 10px; border-radius: 12px;
+  }
+  .archive-chevron { color: var(--muted); font-size: 18px; transition: transform 0.2s; }
+  .archive-header.open .archive-chevron { transform: rotate(90deg); }
+  .archive-body {
+    display: none; border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 8px 8px; overflow: hidden;
+  }
+  .archive-body.open { display: block; }
+  .archive-body .order-card { border-radius: 0; border-left: none; border-right: none; border-top: none; }
+  .archive-body .order-card:last-child { border-bottom: none; }
+
   /* ── FILING QUEUE ── */
   .county-group { margin-bottom: 32px; }
   .county-header {
@@ -818,6 +848,78 @@
     }
   }
 
+  // ── MONTH ARCHIVE HELPERS ────────────────────────────────────────────────────
+
+  function getMonthKey(dateStr) {
+    if (!dateStr) return 'unknown';
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function getMonthLabel(key) {
+    if (key === 'unknown') return 'Unknown Date';
+    const [year, month] = key.split('-');
+    const d = new Date(parseInt(year), parseInt(month) - 1, 1);
+    return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  function isCurrentMonth(key) {
+    const now = new Date();
+    const currentKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    return key === currentKey;
+  }
+
+  function groupOrdersByMonth(orders, dateField) {
+    const groups = {};
+    orders.forEach(order => {
+      const key = getMonthKey(order[dateField]);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(order);
+    });
+    // Sort keys descending (newest first)
+    return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+  }
+
+  function renderArchiveGroup(monthKey, orders, renderFn, idPrefix) {
+    const isCurrent = isCurrentMonth(monthKey);
+    const label = getMonthLabel(monthKey);
+    const id = `archive-${idPrefix}-${monthKey}`;
+
+    if (isCurrent) {
+      // Current month — show flat, no accordion
+      return `
+        <div class="archive-group">
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:700;text-transform:uppercase;
+            letter-spacing:1px;color:var(--amber);margin-bottom:12px;padding:0 4px;">
+            This Month
+          </div>
+          <div class="orders-list">${orders.map(renderFn).join('')}</div>
+        </div>`;
+    }
+
+    // Past months — collapsible
+    return `
+      <div class="archive-group">
+        <div class="archive-header" id="hdr-${id}" onclick="toggleArchive('${id}')">
+          <span class="archive-month">${label}</span>
+          <div class="archive-meta">
+            <span class="archive-count">${orders.length} order${orders.length !== 1 ? 's' : ''}</span>
+            <span class="archive-chevron">›</span>
+          </div>
+        </div>
+        <div class="archive-body" id="body-${id}">
+          ${orders.map(renderFn).join('')}
+        </div>
+      </div>`;
+  }
+
+  function toggleArchive(id) {
+    const hdr = document.getElementById(`hdr-${id}`);
+    const body = document.getElementById(`body-${id}`);
+    hdr.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
   async function loadCompletedOrders() {
     try {
       const res = await fetch('/api/orders?type=completed', {
@@ -833,7 +935,10 @@
         list.innerHTML = '<div class="empty-state"><strong>Nothing Yet</strong>Completed orders will appear here after approval.</div>';
       } else {
         sub.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''} completed`;
-        list.innerHTML = orders.map(order => renderCompletedCard(order)).join('');
+        const groups = groupOrdersByMonth(orders, 'completedAt');
+        list.innerHTML = groups.map(([key, grpOrders]) =>
+          renderArchiveGroup(key, grpOrders, renderCompletedCard, 'completed')
+        ).join('');
       }
       completedLoaded = true;
     } catch (err) {
@@ -944,7 +1049,10 @@
       }
 
       sub.textContent = `${orders.length} rejected order${orders.length !== 1 ? 's' : ''}`;
-      list.innerHTML = orders.map(order => renderRejectedCard(order)).join('');
+      const groups = groupOrdersByMonth(orders, 'rejectedAt');
+      list.innerHTML = groups.map(([key, grpOrders]) =>
+        renderArchiveGroup(key, grpOrders, renderRejectedCard, 'rejected')
+      ).join('');
       rejectedLoaded = true;
     } catch (err) {
       document.getElementById('rejected-sub').textContent = 'Failed to load rejected orders.';
