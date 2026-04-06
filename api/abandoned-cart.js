@@ -7,8 +7,8 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const MIN_AGE_MS   = 2  * 60 * 60 * 1000;  // 2 hours — give them time to complete
-const MAX_AGE_MS   = 7  * 24 * 60 * 60 * 1000; // 7 days — don't email stale intakes
+const MIN_AGE_MS = 2 * 60 * 60 * 1000;  // 2 hours — give them time to complete
+const FALLBACK_MAX_AGE_MS = 45 * 24 * 60 * 60 * 1000; // 45-day fallback if no deadline calculable
 
 const STATE_NAMES = {
   MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida',
@@ -37,11 +37,10 @@ function getDaysRemaining(dateLast, stateCode, workType) {
   return daysLeft;
 }
 
-function buildEmailHtml(intake) {
+function buildEmailHtml(intake, daysLeft) {
   const stateLabel = STATE_NAMES[intake.stateCode] || intake.stateCode || '';
   const track = intake.workType === 'automotive' ? 'Automotive' : 'Construction';
   const amount = intake.amountOwed ? '$' + parseInt(intake.amountOwed).toLocaleString() : 'your unpaid balance';
-  const daysLeft = getDaysRemaining(intake.dateLast, intake.stateCode, intake.workType);
 
   const deadlineBlock = daysLeft !== null
     ? daysLeft > 0
@@ -149,8 +148,8 @@ export default async function handler(req, res) {
       try {
         const blobAge = now - new Date(blob.uploadedAt).getTime();
 
-        // Skip if too fresh or too old
-        if (blobAge < MIN_AGE_MS || blobAge > MAX_AGE_MS) { skipped++; continue; }
+        // Skip if too fresh
+        if (blobAge < MIN_AGE_MS) { skipped++; continue; }
 
         // Extract session key from blob path: intakes/{key}.json
         const sessionKey = blob.pathname.replace('intakes/', '').replace('.json', '');
@@ -168,6 +167,13 @@ export default async function handler(req, res) {
 
         if (!intake.claimantEmail) { skipped++; continue; }
 
+        // Skip if the lien deadline has already passed — nothing to sell them
+        const daysLeft = getDaysRemaining(intake.dateLast, intake.stateCode, intake.workType);
+        if (daysLeft !== null && daysLeft <= 0) { skipped++; continue; }
+
+        // If we can't calculate a deadline, use the fallback max age
+        if (daysLeft === null && blobAge > FALLBACK_MAX_AGE_MS) { skipped++; continue; }
+
         // Send the follow-up email
         const stateLabel = STATE_NAMES[intake.stateCode] || intake.stateCode || 'your state';
         const track = intake.workType === 'automotive' ? 'Automotive' : 'Construction';
@@ -176,7 +182,7 @@ export default async function handler(req, res) {
           from: 'LodgeMiLien <docs@lodgemilien.com>',
           to: intake.claimantEmail,
           subject: `You didn't finish your ${stateLabel} lien order`,
-          html: buildEmailHtml(intake),
+          html: buildEmailHtml(intake, daysLeft),
         });
 
         // Mark as emailed so we don't send again
