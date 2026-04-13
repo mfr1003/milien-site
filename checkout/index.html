@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Your Lien — LodgeMiLien Document Preparation</title>
+<meta name="description" content="Choose your lien document package. Flat-rate pricing, 24-hour turnaround, human review included. Serving MI, OH, IN, FL, TX, NC, IL and GA.">
+
+<!-- Google tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8X21R1S5Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-T8X21R1S5Q');
+</script>
+
+<!-- Structured data for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "LodgeMiLien Document Preparation",
+  "description": "Flat-rate property lien and garage keeper's lien document preparation for contractors and tradespeople.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "LodgeMiLien LLC",
+    "address": { "@type": "PostalAddress", "addressLocality": "Troy", "addressRegion": "MI" },
+    "email": "support@lodgemilien.com"
+  },
+  "areaServed": ["MI","OH","IN","FL","TX","NC","IL","GA"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Lien Document Packages",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Demand Letter",
+        "price": "97.00",
+        "priceCurrency": "USD",
+        "description": "Professional demand letter citing applicable statute. Resolves most disputes without filing."
+      },
+      {
+        "@type": "Offer",
+        "name": "Demand Letter + Certified Mailing",
+        "price": "172.00",
+        "priceCurrency": "USD",
+        "description": "We prepare the letter and send it certified mail on your behalf."
+      },
+      {
+        "@type": "Offer",
+        "name": "Full Lien Package",
+        "price": "197.00",
+        "priceCurrency": "USD",
+        "description": "Demand letter, completed lien document, and step-by-step filing instructions."
+      },
+      {
+        "@type": "Offer",
+        "name": "Full Package + Filing Coordination",
+        "price": "272.00",
+        "priceCurrency": "USD",
+        "description": "Everything in the Full Package plus we coordinate notarization and county filing."
+      }
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:        #0d1117;
+  --ink-soft:   #1c2333;
+  --steel:      #2a3347;
+  --steel-light:#3d4f6b;
+  --amber:      #f5a623;
+  --amber-dark: #d4891a;
+  --amber-glow: rgba(245,166,35,0.10);
+  --white:      #ffffff;
+  --muted:      #7a8499;
+  --border:     rgba(255,255,255,0.08);
+  --success:    #4caf7d;
+  --font-d:     'Barlow Condensed', sans-serif;
+  --font-b:     'Barlow', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--ink);
+  color: var(--white);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(13,17,23,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: var(--font-d); font-weight: 800; font-size: 26px;
+  letter-spacing: -0.5px; color: var(--white); text-decoration: none;
+}
+.logo span { color: var(--amber); }
+.nav-back {
+  font-size: 13px; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-back:hover { color: var(--white); }
+
+/* ── HEADER ── */
+.page-header {
+  background: var(--ink-soft);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 20px 36px;
+  text-align: center;
+}
+.page-header .eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 14px; padding: 4px 12px;
+  border: 1px solid rgba(245,166,35,0.3); border-radius: 4px;
+  background: var(--amber-glow);
+}
+.page-header h1 {
+  font-family: var(--font-d); font-weight: 800;
+  font-size: clamp(36px, 8vw, 58px);
+  letter-spacing: -0.5px; text-transform: uppercase; line-height: 1.0;
+  margin-bottom: 12px;
+}
+.page-header h1 em { font-style: normal; color: var(--amber); }
+.page-header p {
+  font-size: 15px; color: rgba(255,255,255,0.55);
+  max-width: 440px; margin: 0 auto;
+}
+
+/* ── MAIN LAYOUT ── */
+.checkout-wrap {
+  max-width: 860px; margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex; flex-direction: column; gap: 32px;
+}
+
+/* ── STEP LABELS ── */
+.step-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.step-label::after {
+  content: ''; flex: 1; height: 1px; background: rgba(245,166,35,0.2);
+}
+
+/* ── PACKAGE CARDS ── */
+.packages { display: flex; flex-direction: column; gap: 12px; }
+
+.pkg-card {
+  background: var(--steel);
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex; align-items: flex-start; gap: 16px;
+  position: relative;
+}
+.pkg-card:hover { border-color: rgba(245,166,35,0.4); }
+.pkg-card.selected {
+  border-color: var(--amber);
+  background: rgba(245,166,35,0.06);
+}
+.pkg-card.featured { order: -1; }
+
+.pkg-badge {
+  position: absolute; top: -1px; right: 18px;
+  background: var(--amber); color: var(--ink);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; padding: 3px 10px;
+  border-radius: 0 0 6px 6px;
+}
+
+.pkg-radio {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s;
+}
+.pkg-card.selected .pkg-radio {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+.pkg-card.selected .pkg-radio::after {
+  content: '';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ink);
+}
+
+.pkg-body { flex: 1; }
+.pkg-name {
+  font-family: var(--font-d); font-size: 20px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  margin-bottom: 4px; color: var(--white);
+}
+.pkg-desc {
+  font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.45;
+}
+.pkg-features {
+  list-style: none; display: flex; flex-direction: column; gap: 5px;
+}
+.pkg-features li {
+  font-size: 13px; color: rgba(255,255,255,0.6);
+  display: flex; align-items: flex-start; gap: 7px;
+}
+.pkg-features li::before {
+  content: '✓'; color: var(--amber); flex-shrink: 0; margin-top: 1px;
+}
+
+.pkg-price {
+  text-align: right; flex-shrink: 0;
+}
+.pkg-price .amount {
+  font-family: var(--font-d); font-size: 36px; font-weight: 800;
+  color: var(--white); line-height: 1;
+}
+.pkg-price .flat {
+  font-size: 12px; color: var(--muted); display: block; text-align: center;
+}
+
+/* ── PROMO CODE ── */
+.promo-row {
+  display: flex; gap: 10px; align-items: center;
+}
+.promo-input {
+  flex: 1;
+  background: var(--steel);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 13px 16px;
+  font-family: var(--font-b); font-size: 15px;
+  color: var(--white); outline: none;
+  text-transform: uppercase; letter-spacing: 1px;
+  transition: border-color 0.15s;
+}
+.promo-input::placeholder { color: rgba(255,255,255,0.2); letter-spacing: 0; text-transform: none; }
+.promo-input:focus { border-color: var(--amber); }
+.promo-btn {
+  background: var(--steel-light); color: var(--white);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 13px 20px;
+  font-family: var(--font-d); font-size: 16px; font-weight: 700;
+  text-transform: uppercase; cursor: pointer;
+  transition: background 0.15s;
+}
+.promo-btn:hover { background: var(--amber); color: var(--ink); }
+.promo-msg {
+  font-size: 13px; margin-top: 8px; display: none;
+}
+.promo-msg.success { color: var(--success); display: block; }
+.promo-msg.error   { color: #e84040; display: block; }
+
+/* ── ORDER SUMMARY ── */
+.summary-box {
+  background: var(--ink-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 24px;
+}
+.summary-box h3 {
+  font-family: var(--font-d); font-size: 18px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 16px;
+}
+.summary-rows { display: flex; flex-direction: column; gap: 0; }
+.summary-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 0; font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .lbl { color: var(--muted); }
+.summary-row .val { color: var(--white); font-weight: 500; }
+.summary-row.total-row {
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12);
+  margin-top: 4px; border-bottom: none;
+}
+.summary-row.total-row .lbl {
+  font-family: var(--font-d); font-size: 16px; font-weight: 700;
+  text-transform: uppercase; color: var(--white);
+}
+.summary-row.total-row .val {
+  font-family: var(--font-d); font-size: 28px; font-weight: 800;
+  color: var(--amber);
+}
+.discount-row .val { color: var(--success); }
+
+/* ── CHECKOUT BUTTON ── */
+.checkout-section { display: flex; flex-direction: column; gap: 12px; }
+
+.terms-check {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+.terms-check input[type="checkbox"] {
+  width: 18px; height: 18px; flex-shrink: 0;
+  accent-color: var(--amber); margin-top: 1px; cursor: pointer;
+}
+.terms-check a { color: var(--amber); }
+
+.btn-checkout {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%; padding: 18px 24px;
+  background: var(--amber); color: var(--ink);
+  border: none; border-radius: 10px;
+  font-family: var(--font-d); font-size: 22px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+}
+.btn-checkout:hover { background: var(--amber-dark); }
+.btn-checkout:active { transform: scale(0.99); }
+.btn-checkout:disabled {
+  background: var(--steel); color: var(--muted); cursor: not-allowed;
+  transform: none;
+}
+.btn-checkout .spinner {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: var(--ink);
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+.btn-checkout.loading .spinner { display: block; }
+.btn-checkout.loading .btn-text { opacity: 0.6; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.payment-trust {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; font-size: 12px; color: var(--muted);
+}
+.payment-trust svg { opacity: 0.5; }
+
+.error-msg {
+  background: rgba(232,64,64,0.1); border: 1px solid rgba(232,64,64,0.25);
+  border-radius: 8px; padding: 12px 16px;
+  font-size: 13px; color: rgba(255,180,180,0.9);
+  display: none; line-height: 1.5;
+}
+.error-msg.visible { display: block; }
+
+/* ── GUARANTEE STRIP ── */
+.guarantee-strip {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  padding: 20px; background: var(--steel);
+  border-radius: 10px; border: 1px solid var(--border);
+}
+.g-item {
+  flex: 1; min-width: 120px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.g-icon { font-size: 20px; flex-shrink: 0; }
+.g-text { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+.g-text strong { color: var(--white); display: block; font-size: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); border-top: 1px solid var(--border);
+  padding: 24px 20px; text-align: center;
+}
+footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+footer a { color: var(--muted); text-decoration: underline; }
+
+/* ── RESPONSIVE ── */
+@media (min-width: 600px) {
+  .packages { display: grid; grid-template-columns: 1fr 1fr; }
+  .pkg-card.featured { order: 0; grid-column: span 2; }
+}
+@media (min-width: 900px) {
+  .checkout-wrap { flex-direction: row; align-items: flex-start; gap: 40px; }
+  .left-col { flex: 1; }
+  .right-col { width: 320px; flex-shrink: 0; position: sticky; top: 80px; }
+  .packages { display: flex; flex-direction: column; }
+  .pkg-card.featured { order: -1; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">Mi<span>Lien</span></a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="eyebrow">Flat-Rate Document Preparation · No Hidden Fees</div>
+  <h1>Choose Your<em>Package</em></h1>
+  <p>Human review included on every order. Documents delivered within 24 hours.</p>
+</div>
+
+<!-- MAIN -->
+<div class="checkout-wrap">
+
+  <!-- LEFT: PACKAGES + PROMO -->
+  <div class="left-col">
+
+    <div class="step-label">Step 1 — Select a Package</div>
+
+    <div class="packages" id="packages">
+
+      <!-- $97 Demand Letter -->
+      <div class="pkg-card" data-price="price_1TGlizAJ0dE5MMdg8NffjKa5" data-amount="97" data-name="Demand Letter" onclick="selectPackage(this)">
+        <div class="pkg-radio"></div>
+        <div class="pkg-body">
+          <div class="pkg-name">Demand Letter</div>
+          <div class="pkg-desc">A professionally drafted demand letter citing the applicable statute. Resolves most disputes before a lien is ever filed.</div>
+          <ul class="pkg-features">
+            <li>State-compliant statutory demand language</li>
+            <li>Professional letterhead</li>
+            <li>Human review before delivery</li>
+            <li>Ready within 24 hours</li>
+          </ul>
+        </div>
+        <div class="pkg-price">
+          <div class="amount">$97</div>
+          <span class="flat">flat</span>
+        </div>
+      </div>
+
+      <!-- $172 Demand + Certified Mailing -->
+      <div class="pkg-card" data-price="price_1TGlkdAJ0dE5MMdgHhpX3dWj" data-amount="172" data-name="Demand Letter + Certified Mailing" onclick="selectPackage(this)">
+        <div class="pkg-radio"></div>
+        <div class="pkg-body">
+          <div class="pkg-name">Demand + Certified Mailing</div>
+          <div class="pkg-desc">We draft the letter and send it certified mail on your behalf. You don't touch the post office.</div>
+          <ul class="pkg-features">
+            <li>Everything in Demand Letter</li>
+            <li>We send certified mail for you</li>
+            <li>USPS tracking confirmation</li>
+            <li>Creates documented legal record</li>
+          </ul>
+        </div>
+        <div class="pkg-price">
+          <div class="amount">$172</div>
+          <span class="flat">flat</span>
+        </div>
+      </div>
+
+      <!-- $197 Full Lien Package — FEATURED -->
+      <div class="pkg-card featured selected" data-price="price_1TGkYhAJ0dE5MMdgZQ2HcsxZ" data-amount="197" data-name="Full Lien Package" onclick="selectPackage(this)">
+        <div class="pkg-badge">Most Common</div>
+        <div class="pkg-radio">
+          <div></div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-name">Full Lien Package</div>
+          <div class="pkg-desc">The complete document set. Demand letter, completed lien document, deadline calculations, and county-specific filing instructions.</div>
+          <ul class="pkg-features">
+            <li>Demand letter</li>
+            <li>Completed Claim of Lien document</li>
+            <li>Deadline calculation for your state</li>
+            <li>County-specific filing instructions</li>
+            <li>Human review on everything</li>
+          </ul>
+        </div>
+        <div class="pkg-price">
+          <div class="amount">$197</div>
+          <span class="flat">flat</span>
+        </div>
+      </div>
+
+      <!-- $272 Full + Filing Coordination -->
+      <div class="pkg-card" data-price="price_1TGlfnAJ0dE5MMdgk2SHbtiv" data-amount="272" data-name="Full Package + Filing Coordination" onclick="selectPackage(this)">
+        <div class="pkg-radio"></div>
+        <div class="pkg-body">
+          <div class="pkg-name">Full + Filing Coordination</div>
+          <div class="pkg-desc">We coordinate notarization and file with the county Register of Deeds on your behalf. Michigan only.</div>
+          <ul class="pkg-features">
+            <li>Everything in Full Lien Package</li>
+            <li>We coordinate notarization</li>
+            <li>Electronic filing where available</li>
+            <li>Physical filing coordination otherwise</li>
+            <li>Confirmation and filing receipt</li>
+          </ul>
+        </div>
+        <div class="pkg-price">
+          <div class="amount">$272</div>
+          <span class="flat">full service</span>
+        </div>
+      </div>
+
+    </div><!-- /packages -->
+
+    <!-- PROMO CODE -->
+    <div style="margin-top: 24px;">
+      <div class="step-label">Have a Promo Code?</div>
+      <div class="promo-row">
+        <input type="text" class="promo-input" id="promoInput" placeholder="Enter code" maxlength="20" autocomplete="off">
+        <button class="promo-btn" onclick="applyPromo()">Apply</button>
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
+    </div>
+
+    <!-- GUARANTEE STRIP -->
+    <div class="guarantee-strip" style="margin-top: 28px;">
+      <div class="g-item">
+        <div class="g-icon">⚡</div>
+        <div class="g-text"><strong>24-Hour Turnaround</strong>Documents ready within 24 hours of intake.</div>
+      </div>
+      <div class="g-item">
+        <div class="g-icon">📋</div>
+        <div class="g-text"><strong>Human Review</strong>Every document checked before delivery.</div>
+      </div>
+      <div class="g-item">
+        <div class="g-icon">🔒</div>
+        <div class="g-text"><strong>Fix Guarantee</strong>If we get something wrong, we fix it free.</div>
+      </div>
+      <div class="g-item">
+        <div class="g-icon">📱</div>
+        <div class="g-text"><strong>Mobile-First</strong>Start from the job site. No desktop required.</div>
+      </div>
+    </div>
+
+  </div><!-- /left-col -->
+
+  <!-- RIGHT: ORDER SUMMARY + CHECKOUT -->
+  <div class="right-col">
+
+    <div class="step-label">Step 2 — Review &amp; Pay</div>
+
+    <div class="summary-box">
+      <h3>Order Summary</h3>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span class="lbl">Package</span>
+          <span class="val" id="summaryName">Full Lien Package</span>
+        </div>
+        <div class="summary-row">
+          <span class="lbl">Review</span>
+          <span class="val">Human · Included</span>
+        </div>
+        <div class="summary-row">
+          <span class="lbl">Turnaround</span>
+          <span class="val">Under 24 hours</span>
+        </div>
+        <div class="summary-row discount-row" id="discountRow" style="display:none;">
+          <span class="lbl">Promo Discount</span>
+          <span class="val" id="discountAmt">−$0</span>
+        </div>
+        <div class="summary-row total-row">
+          <span class="lbl">Total Due</span>
+          <span class="val" id="summaryTotal">$197</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-section" style="margin-top: 16px;">
+
+      <label class="terms-check">
+        <input type="checkbox" id="termsCheck" onchange="updateCheckoutBtn()">
+        <span>I agree to the <a href="/terms" target="_blank">Terms of Service</a>. I understand LodgeMiLien is a document preparation service, not a law firm, and no legal advice is provided.</span>
+      </label>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button class="btn-checkout" id="checkoutBtn" onclick="startCheckout()" disabled>
+        <div class="spinner"></div>
+        <span class="btn-text">Pay Securely</span>
+      </button>
+
+      <div class="payment-trust">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Apple Pay · Google Pay · All major cards · Stripe encrypted
+      </div>
+
+    </div>
+
+  </div><!-- /right-col -->
+
+</div><!-- /checkout-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong>LodgeMiLien LLC</strong> · Troy, Michigan · Serving MI, IN, OH, FL, TX, NC, IL &amp; GA<br>
+    LodgeMiLien is a document preparation service and is not a law firm. Information provided is not legal advice.<br>
+    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="mailto:support@lodgemilien.com">support@lodgemilien.com</a>
+  </p>
+</footer>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let selectedPriceId  = 'price_1TGkYhAJ0dE5MMdgZQ2HcsxZ';
+let selectedAmount   = 197;
+let selectedName     = 'Full Lien Package';
+let promoApplied     = false;
+let promoDiscount    = 0;  // dollars off
+let promoCode        = '';
+
+// Known promo codes — server-side validation happens in the API
+// Client only shows UX feedback; final discount enforced server-side
+const PROMOS = {
+  'BETATEST': { type: 'percent', value: 100, label: '100% off (beta)' },
+};
+
+// ── Package selection ───────────────────────────────────────────────────────
+function selectPackage(el) {
+  document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPriceId = el.dataset.price;
+  selectedAmount  = parseInt(el.dataset.amount, 10);
+  selectedName    = el.dataset.name;
+
+  // Reapply promo if active
+  if (promoApplied) applyPromoCalc();
+  else updateSummary(selectedAmount);
+}
+
+function updateSummary(total) {
+  document.getElementById('summaryName').textContent  = selectedName;
+  document.getElementById('summaryTotal').textContent = total === 0 ? 'FREE' : '$' + total;
+}
+
+// ── Promo ──────────────────────────────────────────────────────────────────
+function applyPromo() {
+  const raw  = document.getElementById('promoInput').value.trim().toUpperCase();
+  const msg  = document.getElementById('promoMsg');
+
+  if (!raw) {
+    msg.textContent = 'Enter a promo code first.';
+    msg.className = 'promo-msg error';
+    return;
+  }
+
+  const promo = PROMOS[raw];
+  if (!promo) {
+    msg.textContent = 'Code not recognized. Check the spelling and try again.';
+    msg.className = 'promo-msg error';
+    promoApplied = false;
+    promoDiscount = 0;
+    document.getElementById('discountRow').style.display = 'none';
+    updateSummary(selectedAmount);
+    return;
+  }
+
+  promoCode    = raw;
+  promoApplied = true;
+  applyPromoCalc();
+  msg.textContent = '✓ Code applied: ' + promo.label;
+  msg.className = 'promo-msg success';
+}
+
+function applyPromoCalc() {
+  const promo = PROMOS[promoCode];
+  if (!promo) return;
+
+  let discount = 0;
+  if (promo.type === 'percent') {
+    discount = Math.round(selectedAmount * promo.value / 100);
+  } else if (promo.type === 'fixed') {
+    discount = Math.min(promo.value, selectedAmount);
+  }
+
+  promoDiscount = discount;
+  const total   = Math.max(0, selectedAmount - discount);
+
+  document.getElementById('discountAmt').textContent = '−$' + discount;
+  document.getElementById('discountRow').style.display = 'flex';
+  updateSummary(total);
+}
+
+// ── Terms checkbox ─────────────────────────────────────────────────────────
+function updateCheckoutBtn() {
+  const checked = document.getElementById('termsCheck').checked;
+  document.getElementById('checkoutBtn').disabled = !checked;
+}
+
+// ── Checkout ───────────────────────────────────────────────────────────────
+function startCheckout() {
+  const btn = document.getElementById('checkoutBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'begin_checkout', {
+      currency: 'USD',
+      value: Math.max(0, selectedAmount - promoDiscount),
+      items: [{ item_name: selectedName, price: selectedAmount }]
+    });
+  }
+
+  const pkgMap = {
+    'price_1TGlizAJ0dE5MMdg8NffjKa5': 'demand',
+    'price_1TGlkdAJ0dE5MMdgHhpX3dWj': 'demand-certified',
+    'price_1TGkYhAJ0dE5MMdgZQ2HcsxZ': 'full',
+    'price_1TGlfnAJ0dE5MMdgk2SHbtiv': 'full-filing',
+  };
+  const pkg = pkgMap[selectedPriceId] || 'full';
+  const promo = promoApplied ? '&promo=' + encodeURIComponent(promoCode) : '';
+  window.location.href = '/?pkg=' + pkg + promo + '#start';
+}
+
+// ── Init: pre-select featured card radio dot ───────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const featured = document.querySelector('.pkg-card.featured');
+  if (featured) {
+    const dot = featured.querySelector('.pkg-radio');
+    dot.innerHTML = '<div style="width:8px;height:8px;border-radius:50%;background:var(--ink)"></div>';
+  }
+});
+</script>
+
+</body>
+</html>
