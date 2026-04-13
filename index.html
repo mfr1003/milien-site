@@ -2273,6 +2273,43 @@
     }
   }
 </script>
+<!-- Checkout redirect handler — add just before </body> in index.html -->
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const hash   = window.location.hash;
 
+  if (hash === '#start' && params.has('pkg')) {
+    const pkg   = params.get('pkg');
+    const promo = params.get('promo') || '';
+
+    // Map pkg param back to modal package type
+    const isAuto = false; // construction default
+    let packageType = 'full';
+    let filingCoord = false;
+
+    if (pkg === 'demand' || pkg === 'demand-certified') packageType = 'demand';
+    if (pkg === 'full-filing') filingCoord = true;
+
+    // Pre-fill promo code if passed
+    if (promo) {
+      const promoEl = document.getElementById('promoInput');
+      if (promoEl) {
+        promoEl.value = promo;
+        // Auto-apply after modal opens
+        setTimeout(() => { if (typeof applyPromo === 'function') applyPromo(); }, 300);
+      }
+    }
+
+    // Open the modal
+    if (typeof openModalWithPackage === 'function') {
+      setTimeout(() => openModalWithPackage(packageType, filingCoord), 100);
+    }
+
+    // Clean URL without reloading
+    history.replaceState(null, '', '/');
+  }
+})();
+</script>
 </body>
 </html>
