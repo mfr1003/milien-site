@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LodgeMiLien — Property Lien Document Preparation · MI, IN, OH, FL, TX, NC, IL & GA</title>
+<title>LodgeMiLien — Property Lien Document Preparation · All 50 States</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8X21R1S5Q"></script>
 <script>
@@ -14,6 +14,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="/state-data.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
  
@@ -898,17 +899,17 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Property Lien Document Preparation · 8 States and Growing</div>
+  <div class="hero-eyebrow">Property Lien Document Preparation · All 50 States</div>
   <h1>You Did<br>The Work.<em>Now Get Paid.</em></h1>
-  <p class="hero-sub">Fast, accurate lien documents for contractors and tradespeople in Michigan, Indiana, Ohio, Florida, Texas, North Carolina, Illinois, and Georgia. We handle the paperwork. You handle the job site.</p>
+  <p class="hero-sub">Fast, accurate lien documents for contractors, tradespeople, and repair shops in all 50 states. We handle the paperwork. You handle the job site.</p>
   <div class="hero-cta-group">
     <a href="#" class="btn-primary" onclick="openModalWithPackage('full', false); return false;">
       File My Lien — Starting at $97
     </a>
   </div>
   <div class="hero-trust">
-    <div class="trust-item"><div class="trust-dot"></div>MI · IN · OH · FL · TX · NC · IL · GA</div>
-    <div class="trust-item"><div class="trust-dot"></div>More States Coming Soon!</div>
+    <div class="trust-item"><div class="trust-dot"></div>All 50 States Covered</div>
+    <div class="trust-item"><div class="trust-dot"></div>Construction &amp; Automotive Track</div>
     <div class="trust-item"><div class="trust-dot"></div>Ready in under 24 hours</div>
     <div class="trust-item"><div class="trust-dot"></div>No attorney required</div>
   </div>
@@ -1153,7 +1154,7 @@
 <!-- FOOTER -->
 <footer>
   <p>
-    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving MI, IN, OH, FL, TX, NC, IL &amp; GA<br>
+    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · All 50 States<br>
     LodgeMiLien is a property lien document preparation service and is not a law firm. Information provided is not legal advice.<br>
     <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="/cdn-cgi/l/email-protection#6f070a0303002f03000b080a020603060a01410c0002"><span class="__cf_email__" data-cfemail="e8808d848487a884878c8f8d858184818d86c68b8785">[email&#160;protected]</span></a>
   </p>
@@ -1172,43 +1173,19 @@
     <!-- SHARED: STEP 1 — State -->
     <div class="wizard-step active" id="ws-1">
       <h3>Which State Was The Job In?</h3>
-      <p class="hint">Lien laws vary by state. Select where the work was performed.</p>
-      <div class="role-options field-group">
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-mi" value="MI">
-          <label for="s-mi">Michigan<br><span style="font-size:12px;font-weight:400;">MCL 570.1101 / 570.301</span></label>
+      <p class="hint">Lien laws vary by state. We cover all 50 states.</p>
+      <div class="field-group" style="max-width:400px;margin:0 auto 8px;">
+        <div class="field">
+          <label for="state-select" style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:10px;">Select State</label>
+          <select id="state-select" onchange="onStateChange()" style="width:100%;padding:13px 16px;font-size:16px;font-family:var(--font-body);border:2px solid var(--steel-light);border-radius:8px;background:var(--steel);color:var(--white);appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;12&quot; height=&quot;8&quot; viewBox=&quot;0 0 12 8&quot;><path fill=&quot;%23f5a623&quot; d=&quot;M1 1l5 5 5-5&quot; stroke=&quot;%23f5a623&quot; stroke-width=&quot;1.5&quot; fill=&quot;none&quot;/></svg>');background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;">
+            <option value="">— Select a state —</option>
+          </select>
         </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-oh" value="OH">
-          <label for="s-oh">Ohio<br><span style="font-size:12px;font-weight:400;">O.R.C. §§ 1311.01 et seq.</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-in" value="IN">
-          <label for="s-in">Indiana<br><span style="font-size:12px;font-weight:400;">Ind. Code § 32-28-3</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-fl" value="FL">
-          <label for="s-fl">Florida<br><span style="font-size:12px;font-weight:400;">Chapter 713, Florida Statutes</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-tx" value="TX">
-          <label for="s-tx">Texas<br><span style="font-size:12px;font-weight:400;">Texas Property Code Chapter 53</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-nc" value="NC">
-          <label for="s-nc">North Carolina<br><span style="font-size:12px;font-weight:400;">Chapter 44A, NC General Statutes</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-il" value="IL">
-          <label for="s-il">Illinois<br><span style="font-size:12px;font-weight:400;">770 ILCS 60 — Mechanics Lien Act</span></label>
-        </div>
-        <div class="role-option">
-          <input type="radio" name="state-code" id="s-ga" value="GA">
-          <label for="s-ga">Georgia<br><span style="font-size:12px;font-weight:400;">O.C.G.A. § 44-14-360 et seq.</span></label>
-        </div>
+        <div id="state-hint" style="font-size:12px;color:rgba(245,166,35,0.7);margin-top:6px;min-height:18px;padding-left:2px;"></div>
       </div>
+      <div id="ws-1-error" style="color:#e84040;font-size:13px;margin-bottom:8px;text-align:center;display:none;">Please select a state to continue.</div>
       <div class="wizard-nav">
-        <button class="btn-next" onclick="goNext()">Continue →</button>
+        <button class="btn-next" onclick="validateStateAndNext()">Continue →</button>
       </div>
     </div>
 
@@ -1614,6 +1591,7 @@
     trackPos = 0;
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    initStateDropdown();
     showStepId('ws-1');
   }
 
@@ -1621,16 +1599,46 @@
     openModalWithPackage('full', false);
   }
 
-  const STATE_COUNTIES = {
-    MI: ['Wayne','Oakland','Macomb','Kent','Washtenaw','Ingham','Kalamazoo','Genesee','Ottawa','Saginaw','Muskegon','St. Clair','Jackson','Monroe','Berrien','Calhoun','Eaton','Bay','Livingston','Allegan','Other Michigan County'],
-    OH: ['Franklin','Cuyahoga','Hamilton','Summit','Montgomery','Lucas','Butler','Stark','Lorain','Lake','Mahoning','Medina','Warren','Clark','Delaware','Licking','Allen','Trumbull','Greene','Clermont','Other Ohio County'],
-    IN: ['Marion','Lake','Allen','Hamilton','St. Joseph','Elkhart','Tippecanoe','Vanderburgh','Monroe','Hendricks','Johnson','Kosciusko','Porter','Madison','Delaware','Vigo','Bartholomew','Howard','Clark','Floyd','Other Indiana County'],
-    FL: ['Miami-Dade','Broward','Palm Beach','Hillsborough','Orange','Pinellas','Duval','Lee','Polk','Brevard','Volusia','Sarasota','Manatee','Collier','Seminole','Pasco','Alachua','Leon','Marion','Osceola','Other Florida County'],
-    TX: ['Harris','Dallas','Tarrant','Bexar','Travis','Collin','Denton','El Paso','Fort Bend','Montgomery','Williamson','Hidalgo','Nueces','Jefferson','Lubbock','Galveston','Bell','Webb','McLennan','Smith','Other Texas County'],
-    NC: ['Mecklenburg','Wake','Guilford','Forsyth','Durham','Cumberland','Union','Buncombe','Cabarrus','Gaston','Onslow','Johnston','New Hanover','Catawba','Alamance','Rowan','Davidson','Pitt','Randolph','Harnett','Other North Carolina County'],
-    IL: ['Cook','DuPage','Lake','Will','Kane','McHenry','Winnebago','St. Clair','Madison','Champaign','Sangamon','Peoria','McLean','Rock Island','Tazewell','Macon','Kankakee','Kendall','DeKalb','LaSalle','Other Illinois County'],
-    GA: ['Fulton','Gwinnett','Cobb','DeKalb','Cherokee','Forsyth','Hall','Clayton','Henry','Columbia','Richmond','Chatham','Muscogee','Clarke','Bibb','Houston','Carroll','Paulding','Coweta','Bartow','Other Georgia County'],
-  };
+  // ── State helpers — driven by state-data.js (loaded in <head>) ───────────────
+
+  function initStateDropdown() {
+    const select = document.getElementById('state-select');
+    if (!select || select.options.length > 1) return; // already populated
+    for (const [code, data] of STATE_LIST) {
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = data.name;
+      select.appendChild(opt);
+    }
+  }
+
+  function getStateCode() {
+    return document.getElementById('state-select')?.value || '';
+  }
+
+  function onStateChange() {
+    const code = getStateCode();
+    const hint = document.getElementById('state-hint');
+    if (hint) {
+      hint.textContent = (code && STATE_DATA[code]?.filingOffice)
+        ? 'Filed with: ' + STATE_DATA[code].filingOffice
+        : '';
+    }
+  }
+
+  function validateStateAndNext() {
+    const code = getStateCode();
+    const errEl = document.getElementById('ws-1-error');
+    const sel = document.getElementById('state-select');
+    if (!code) {
+      if (errEl) errEl.style.display = 'block';
+      sel.style.borderColor = '#e84040';
+      setTimeout(() => { sel.style.borderColor = 'var(--steel-light)'; }, 2000);
+      return;
+    }
+    if (errEl) errEl.style.display = 'none';
+    goNext();
+  }
 
   function getSequence() {
     return [...TRACKS.shared, ...TRACKS[track]];
@@ -1653,12 +1661,12 @@
     // Side effects on specific steps
     if (id === 'wc-5') populateCounties();
     if (id === 'wc-9') {
-      const state = document.querySelector('input[name="state-code"]:checked');
-      if (state) {
+      const code = getStateCode();
+      if (code) {
         const stateField = document.getElementById('claimant-state');
-        if (stateField && !stateField.value) stateField.value = state.value;
+        if (stateField && !stateField.value) stateField.value = code;
         const ownerStateField = document.getElementById('owner-state');
-        if (ownerStateField && !ownerStateField.value) ownerStateField.value = state.value;
+        if (ownerStateField && !ownerStateField.value) ownerStateField.value = code;
       }
     }
     if (id === 'wc-11') {
@@ -1691,7 +1699,7 @@
   }
 
   function populateComplianceBlock() {
-    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+    const state = getStateCode() || 'MI';
     const textEl = document.getElementById('compliance-text');
     const yesLabel = document.getElementById('compliance-yes-label');
     const warningEl = document.getElementById('compliance-warning-text');
@@ -1755,22 +1763,42 @@
   }
 
   function updateWorkTypeOptions() {
-    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+    const code = getStateCode();
+    const autoOption = document.getElementById('wt-auto-option');
     const autoLabel = document.getElementById('wt-auto-label');
-    const labels = {
+    const autoRadio = document.getElementById('wt-automotive');
+
+    // Show automotive only for states that have AUTO_MODULES coverage
+    const stateHasAuto = !!(code && STATE_DATA[code]?.hasAuto);
+    if (autoOption) {
+      autoOption.style.display = stateHasAuto ? 'flex' : 'none';
+      autoOption.style.opacity = '1';
+      autoOption.style.pointerEvents = 'auto';
+    }
+    if (autoRadio) autoRadio.disabled = false;
+
+    // Update the automotive label to show the state-specific statute
+    const statutes = {
       MI: "Garage Keeper's Lien — MCL 570.301",
       OH: "Garage Keeper's Lien — O.R.C. § 4505.101",
       IN: "Vehicle Mechanic's Lien — I.C. § 9-22-6-2",
-      FL: "Vehicle Lien by Sale — F.S. § 713.585",
+      FL: "Vehicle Lien — F.S. § 713.585 / FLHSMV",
       TX: "Worker's Lien — Texas Property Code § 70.001",
       NC: "Vehicle Repair Lien — N.C.G.S. § 44A-2",
       IL: "Garage Keeper's Lien — 770 ILCS 95/",
       GA: "Abandoned Vehicle Lien — O.C.G.A. § 40-11-1",
+      NY: "Garage Keeper's Lien — NY Lien Law §§ 184-201",
+      PA: "Garageman's Lien — 42 Pa. C.S. § 8306",
+      VA: "Garage Keeper's Lien — Va. Code § 46.2-644.01",
     };
-    autoLabel.textContent = labels[state] || "Garage Keeper's Lien";
-    document.getElementById('wt-automotive').disabled = false;
-    document.getElementById('wt-auto-option').style.opacity = '1';
-    document.getElementById('wt-auto-option').style.pointerEvents = 'auto';
+    if (autoLabel) {
+      autoLabel.textContent = statutes[code] || "Garage Keeper's Lien";
+    }
+
+    // If automotive was selected but this state doesn't support it, reset
+    if (autoRadio?.checked && !stateHasAuto) {
+      autoRadio.checked = false;
+    }
   }
 
   function selectTrack() {
@@ -1856,35 +1884,25 @@
   });
 
   function populateCounties() {
-    const state = document.querySelector('input[name="state-code"]:checked');
-    const code = state ? state.value : 'MI';
+    const code = getStateCode();
     const select = document.getElementById('prop-county');
-    const counties = STATE_COUNTIES[code] || STATE_COUNTIES.MI;
+    if (!select) return;
+    const counties = (code && STATE_DATA[code]?.counties) || [];
     select.innerHTML = '<option value="">Select county...</option>' +
-      counties.map(c => `<option>${c}</option>`).join('');
+      counties.map(c => `<option value="${c}">${c}</option>`).join('');
   }
 
   function checkDates() {
     const last = document.getElementById('date-last').value;
     const alertBox = document.getElementById('deadline-alert-box');
     if (last) {
-      const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+      const code = getStateCode() || 'MI';
       const projectType = document.querySelector('input[name="project-type"]:checked')?.value || 'commercial';
-
-      // Deadline days by state and project type
-      const deadlines = {
-        MI: { residential: 90,  commercial: 90  },
-        OH: { residential: 60,  commercial: 75  },
-        IN: { residential: 60,  commercial: 90  },
-        FL: { residential: 90,  commercial: 90  },
-        TX: { residential: 90,  commercial: 120 },
-        NC: { residential: 120, commercial: 120 },
-        IL: { residential: 120, commercial: 120 },
-        GA: { residential: 90,  commercial: 90  },
-      };
-      const maxDays = (deadlines[state] || deadlines.MI)[projectType] || 90;
-      const rushThreshold = Math.round(maxDays * 0.15); // ~15% of window left = rush warning
-
+      const stateData = STATE_DATA[code] || STATE_DATA['MI'];
+      const maxDays = projectType === 'residential'
+        ? stateData.lienDays.residential
+        : stateData.lienDays.commercial;
+      const rushThreshold = Math.round(maxDays * 0.15);
       const daysAgo = Math.floor((new Date() - new Date(last)) / 86400000);
       const daysLeft = maxDays - daysAgo;
 
@@ -1911,7 +1929,7 @@
     if (errorEl) errorEl.style.display = 'none';
 
     const last = document.getElementById('auto-date-last').value;
-    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
+    const state = getStateCode() || 'MI';
     const alertBox = document.getElementById('auto-deadline-alert');
 
     // State-specific deadline days and labels
@@ -1988,14 +2006,15 @@
   }
 
   function updateConstructionSummary() {
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida', TX: 'Texas', NC: 'North Carolina', IL: 'Illinois', GA: 'Georgia' };
+    const code = getStateCode();
+    const stateName = (code && STATE_DATA[code]?.name) || '';
     const county = document.getElementById('prop-county').value;
     const amount = document.getElementById('amount-owed').value;
     const pkgLabel = selectedPackage === 'demand' ? 'Demand Letter'
       : selectedPackage === 'demand-mailing' ? 'Demand Letter + Certified Mailing'
       : 'Full Lien Package';
 
-    if (state) document.getElementById('summary-state').textContent = stateNames[state.value] || '';
+    if (stateName) document.getElementById('summary-state').textContent = stateName;
     if (county) document.getElementById('summary-county').textContent = county + ' County';
     if (amount) document.getElementById('summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('summary-proof').textContent = 'Document uploaded';
@@ -2023,20 +2042,26 @@
   function updatePriceSummary() {
     const base = PRICES[selectedPackage] || 197;
     const filingCheck = document.getElementById('filing-coord-check');
-    const stateForFiling = document.querySelector('input[name="state-code"]:checked')?.value;
-    const michiganOnly = stateForFiling === 'MI';
     const filingNote = document.getElementById('filing-coord-note');
+    const code = getStateCode();
+    const workTrack = document.querySelector('input[name="work-type"]:checked')?.value;
 
-    if (!michiganOnly && filingCheck) {
+    // FL automotive requires FLHSMV vendor — filing coord not available
+    const filingCoordBlocked = (code === 'FL' && workTrack === 'automotive');
+
+    if (filingCoordBlocked && filingCheck) {
       filingCheck.checked = false;
       filingCheck.disabled = true;
-      if (filingNote) filingNote.style.display = 'block';
+      if (filingNote) {
+        filingNote.textContent = 'Florida automotive lien notices must go through Beacon Software or Auto Data Direct (FLHSMV-approved vendors). LodgeMiLien prepares your demand letter; contact your FLHSMV vendor for the statutory filing.';
+        filingNote.style.display = 'block';
+      }
     } else if (filingCheck) {
       filingCheck.disabled = false;
       if (filingNote) filingNote.style.display = 'none';
     }
 
-    const addFiling = filingCheck && filingCheck.checked && michiganOnly;
+    const addFiling = filingCheck && filingCheck.checked && !filingCoordBlocked;
     const total = base + (addFiling ? 75 : 0);
     const filingRow = document.getElementById('filing-coord-row');
 
@@ -2059,13 +2084,14 @@
   function updateAutoSummary() {
     const vehicle = document.getElementById('auto-vehicle').value;
     const amount = document.getElementById('auto-amount').value;
-    const state = document.querySelector('input[name="state-code"]:checked')?.value || 'MI';
-    const stateNames = { MI: 'Michigan', OH: 'Ohio', IN: 'Indiana', FL: 'Florida', TX: 'Texas', NC: 'North Carolina', IL: 'Illinois', GA: 'Georgia' };
+    const code = getStateCode() || 'MI';
+    const stateName = (STATE_DATA[code]?.name) || 'Michigan';
     if (amount) document.getElementById('auto-summary-amount').textContent = '$' + parseInt(amount).toLocaleString();
     if (uploadedProofUrl) document.getElementById('auto-summary-proof').textContent = 'Document uploaded';
-    document.getElementById('auto-summary-state').textContent = stateNames[state] || 'Michigan';
+    document.getElementById('auto-summary-state').textContent = stateName;
 
     // Update package description labels based on state
+    // stateName already declared above — reused here for default descs
     const descs = {
       MI: {
         demand: 'Professional letter citing MCL 570.301. Resolves most disputes.',
@@ -2107,8 +2133,28 @@
         full: 'Demand letter + Georgia DOR abandoned motor vehicle guide + step-by-step instructions.',
         filing: 'We coordinate the Georgia DOR abandoned motor vehicle filing on your behalf.',
       },
+      NY: {
+        demand: `Professional letter citing NY Lien Law §§ 184-201. Resolves most disputes.`,
+        full: 'Demand letter + NY garage keeper lien guide + step-by-step instructions.',
+        filing: 'We coordinate the notice and sale process with NY DMV documentation on your behalf.',
+      },
+      PA: {
+        demand: `Professional letter citing 42 Pa. C.S. § 8306. Resolves most disputes.`,
+        full: 'Demand letter + PA Court of Common Pleas petition guide + step-by-step instructions.',
+        filing: 'We coordinate the Court of Common Pleas petition process on your behalf.',
+      },
+      VA: {
+        demand: `Professional letter citing Va. Code § 46.2-644.01. Resolves most disputes.`,
+        full: 'Demand letter + VA General District Court guide + step-by-step instructions.',
+        filing: 'We coordinate the General District Court petition and DMV process on your behalf.',
+      },
     };
-    const d = descs[state] || descs.MI; document.getElementById('ap-demand-desc').textContent = d.demand;
+    const defaultDesc = {
+      demand: `Professional demand letter for a ${stateName} vehicle repair lien. Resolves most disputes.`,
+      full: `Demand letter + ${stateName} vehicle lien process guide + step-by-step filing instructions.`,
+      filing: `We coordinate the ${stateName} vehicle lien filing process on your behalf.`,
+    };
+    const d = descs[code] || defaultDesc; document.getElementById('ap-demand-desc').textContent = d.demand;
     if (document.getElementById('ap-full-desc')) document.getElementById('ap-full-desc').textContent = d.full;
     if (document.getElementById('ap-filing-desc')) document.getElementById('ap-filing-desc').textContent = d.filing;
   }
@@ -2124,8 +2170,7 @@
   }
 
   function collectFormData() {
-    const state = document.querySelector('input[name="state-code"]:checked');
-    const stateCode = state ? state.value : 'MI';
+    const stateCode = getStateCode() || 'MI';
 
     if (track === 'automotive') {
       const last = safeVal('auto-date-last');
