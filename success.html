@@ -10,169 +10,289 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --ink: #0d1117; --ink-soft: #1c2333; --steel: #2a3347;
-    --amber: #f5a623; --amber-dark: #d4891a; --amber-glow: rgba(245,166,35,0.12);
+    --amber: #f5a623; --amber-dark: #d4891a; --amber-glow: rgba(245,166,35,0.10);
     --white: #ffffff; --muted: #7a8499; --border: rgba(255,255,255,0.08);
-    --font-display: 'Barlow Condensed', sans-serif;
-    --font-body: 'Barlow', sans-serif;
+    --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
   }
-  body {
-    font-family: var(--font-body); background: var(--ink); color: var(--white);
-    min-height: 100vh; display: flex; flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-  }
+  body { font-family: var(--font-body); background: var(--ink); color: var(--white);
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    min-height: 100vh; display: flex; flex-direction: column; }
   nav {
-    background: rgba(13,17,23,0.95); border-bottom: 1px solid var(--border);
+    background: rgba(13,17,23,0.97); border-bottom: 1px solid var(--border);
     padding: 14px 20px; display: flex; align-items: center;
-    backdrop-filter: blur(8px);
   }
-  .logo { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--white); text-decoration: none; }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 26px;
+    color: var(--white); text-decoration: none; letter-spacing: -0.5px; }
   .logo span { color: var(--amber); }
 
-  .main {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    padding: 60px 20px;
-  }
-  .card {
-    background: var(--ink-soft); border: 1px solid var(--border);
-    border-radius: 16px; padding: 48px 40px; max-width: 560px; width: 100%;
-    text-align: center;
-  }
+  .main { flex: 1; max-width: 560px; margin: 0 auto; padding: 48px 20px; width: 100%; }
+
   .check-circle {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: rgba(46,160,67,0.15); border: 2px solid rgba(46,160,67,0.4);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 28px;
+    width: 72px; height: 72px; background: rgba(46,160,67,0.12);
+    border: 2px solid #2ea043; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 24px;
   }
-  .check-circle svg { width: 36px; height: 36px; }
-  h1 {
-    font-family: var(--font-display); font-size: 42px; font-weight: 800;
-    text-transform: uppercase; line-height: 1.05; margin-bottom: 16px;
-  }
-  h1 span { color: var(--amber); display: block; }
-  .sub {
-    font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.6;
-    margin-bottom: 36px; max-width: 400px; margin-left: auto; margin-right: auto;
-  }
+
+  h1 { font-family: var(--font-display); font-size: 42px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: -0.5px; text-align: center;
+    margin-bottom: 8px; line-height: 1.05; }
+  h1 em { font-style: normal; color: var(--amber); display: block; }
+
+  .sub { text-align: center; color: rgba(255,255,255,0.55); font-size: 16px;
+    margin-bottom: 36px; line-height: 1.5; }
 
   .timeline {
-    display: flex; flex-direction: column; gap: 0;
-    text-align: left; margin-bottom: 36px;
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; margin-bottom: 24px;
+  }
+  .timeline-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 16px;
   }
   .timeline-item {
-    display: flex; gap: 16px; padding: 16px 0;
+    display: flex; gap: 14px; padding: 12px 0;
     border-bottom: 1px solid var(--border);
   }
-  .timeline-item:last-child { border-bottom: none; }
-  .step-num {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--amber-glow); border: 1px solid rgba(245,166,35,0.3);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 14px; font-weight: 700;
-    color: var(--amber); flex-shrink: 0; margin-top: 1px;
+  .timeline-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .tl-icon {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
   }
-  .step-body h4 {
-    font-family: var(--font-display); font-size: 16px; font-weight: 700;
-    text-transform: uppercase; color: var(--white); margin-bottom: 3px;
-  }
-  .step-body p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .tl-done { background: rgba(46,160,67,0.15); border: 1px solid #2ea043; }
+  .tl-next { background: rgba(245,166,35,0.12); border: 1px solid var(--amber); }
+  .tl-wait { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+  .tl-body h4 { font-family: var(--font-display); font-size: 17px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 2px; }
+  .tl-body p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+  .tl-eta { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: var(--amber);
+    margin-top: 3px; }
 
-  .notice {
-    background: var(--steel); border-radius: 10px; padding: 20px 24px;
-    text-align: left; margin-bottom: 32px;
+  .action-card {
+    background: var(--steel); border-radius: 10px; padding: 20px;
+    margin-bottom: 16px; border: 1px solid var(--border);
   }
-  .notice p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
-  .notice strong { color: var(--white); }
+  .action-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 8px; }
+  .action-card p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 14px; }
 
-  .btn-home {
-    display: inline-block; background: var(--amber); color: var(--ink);
-    font-family: var(--font-display); font-size: 18px; font-weight: 700;
-    text-transform: uppercase; padding: 14px 36px; border-radius: 8px;
-    text-decoration: none; transition: background 0.15s;
+  .notary-options { display: flex; flex-direction: column; gap: 10px; }
+  .notary-option {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--ink-soft); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; text-decoration: none;
+    color: var(--white); transition: border-color 0.15s;
   }
-  .btn-home:hover { background: var(--amber-dark); }
-
-  footer {
-    background: var(--ink); border-top: 1px solid var(--border);
-    padding: 20px; text-align: center;
+  .notary-option:hover { border-color: rgba(245,166,35,0.4); }
+  .notary-icon { font-size: 22px; flex-shrink: 0; }
+  .notary-name { font-weight: 600; font-size: 15px; margin-bottom: 1px; }
+  .notary-desc { font-size: 12px; color: var(--muted); }
+  .notary-tag {
+    margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 3px 8px; border-radius: 4px; background: var(--amber-glow);
+    color: var(--amber); white-space: nowrap; flex-shrink: 0;
   }
-  footer p { font-size: 12px; color: var(--muted); line-height: 1.8; }
-  footer a { color: var(--muted); text-decoration: underline; }
 
-  @media (max-width: 560px) {
-    .card { padding: 36px 24px; }
-    h1 { font-size: 34px; }
+  .skip-note {
+    background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2);
+    border-radius: 8px; padding: 16px; margin-bottom: 16px; display: none;
+  }
+  .skip-note p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .skip-note strong { color: var(--amber); }
+
+  .referral-note {
+    background: rgba(46,160,67,0.06); border: 1px solid rgba(46,160,67,0.2);
+    border-radius: 8px; padding: 16px; margin-bottom: 24px; display: none;
+  }
+  .referral-note p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+  .btn-outline {
+    display: block; width: 100%; text-align: center; padding: 14px;
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+    color: var(--muted); font-family: var(--font-body); font-size: 15px;
+    text-decoration: none; transition: all 0.15s; margin-top: 10px;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
+
+  footer { border-top: 1px solid var(--border); padding: 20px;
+    text-align: center; font-size: 12px; color: var(--muted); }
+  footer a { color: var(--muted); }
+
+  @media (min-width: 600px) {
+    .notary-options { flex-direction: row; }
+    .notary-option { flex: 1; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .notary-tag { margin-left: 0; }
   }
 </style>
 </head>
 <body>
-
-<script>
-  // Gate: must arrive via Stripe redirect with a valid session_id
-  // Skip gate when opening locally (file:// protocol)
-  if (window.location.protocol !== 'file:') {
-    const params = new URLSearchParams(window.location.search);
-    const sid = params.get('session_id');
-    if (!sid || !sid.startsWith('cs_')) {
-      window.location.replace('https://lodgemilien.com');
-    }
-  }
-</script>
 
 <nav>
   <a href="/" class="logo">Lodge<span>Mi</span>Lien</a>
 </nav>
 
 <div class="main">
-  <div class="card">
+  <div class="check-circle">✓</div>
 
-    <div class="check-circle">
-      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 18L15 25L28 11" stroke="#2ea043" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
+  <h1>Order<em>Received.</em></h1>
+  <p class="sub" id="success-sub">Your documents are in the queue. You'll hear from us within 24 hours.</p>
 
-    <h1>Order<span>Received</span></h1>
-    <p class="sub">Your payment was processed and your order is in the queue. A confirmation email is on its way to you now.</p>
-
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="step-num">✓</div>
-        <div class="step-body">
-          <h4>Payment confirmed</h4>
-          <p>Your order has been received and is awaiting review.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h4>Document review</h4>
-          <p>A human reviewer examines your order for completeness and prepares your documents. This typically takes a few hours during business hours.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h4>Documents delivered</h4>
-          <p>Your completed lien documents are emailed to you as a PDF — within 24 hours of your order, often sooner.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="notice">
-      <p><strong>Check your email</strong> for a confirmation from <strong>docs@lodgemilien.com</strong>. If you don't see it within a few minutes, check your spam folder. If you have any questions, reply to that email or contact us at <strong><a href="mailto:support@lodgemilien.com" style="color:var(--amber);text-decoration:none;">support@lodgemilien.com</a></strong>.</p>
-    </div>
-
-    <a href="/" class="btn-home">Return to Home</a>
-
+  <!-- Skipped upload notice -->
+  <div class="skip-note" id="skip-note">
+    <p>📎 <strong>Don't forget to send your proof of work.</strong> Your order is being held for 24 hours. Email your signed contract, invoice, or work order to <strong>docs@lodgemilien.com</strong> with your name in the subject line.</p>
   </div>
+
+  <!-- Referral thank-you -->
+  <div class="referral-note" id="referral-note">
+    <p>👋 Thanks for mentioning who referred you. Referrals are how we grow — we're glad someone you trust pointed you here.</p>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <div class="timeline-label">What Happens Next</div>
+    <div class="timeline-item">
+      <div class="tl-icon tl-done">✓</div>
+      <div class="tl-body">
+        <h4>Order Confirmed</h4>
+        <p>Payment received. Your intake data is saved and your order is in the queue.</p>
+        <div class="tl-eta">Done</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-icon tl-next">⚡</div>
+      <div class="tl-body">
+        <h4>Documents Generated</h4>
+        <p>We generate your state-specific lien documents — demand letter, lien claim, and filing guide — using your case details.</p>
+        <div class="tl-eta">Within a few minutes</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-icon tl-wait">👁</div>
+      <div class="tl-body">
+        <h4>Human Review</h4>
+        <p>A person checks your documents for accuracy — dates, county, amounts, legal description. Everything verified before delivery.</p>
+        <div class="tl-eta">Within 24 hours</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-icon tl-wait">📧</div>
+      <div class="tl-body">
+        <h4>Delivered to Your Email</h4>
+        <p>Your complete document package arrives by email. Step-by-step filing instructions included.</p>
+        <div class="tl-eta">Within 24 hours</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-icon tl-wait">📋</div>
+      <div class="tl-body">
+        <h4>You Notarize &amp; File</h4>
+        <p>Get the document notarized, then file with your county. Instructions in your package tell you exactly where to go and what to say.</p>
+        <div class="tl-eta" id="tl-deadline-line">Your deadline shown in your documents</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notarization -->
+  <div class="action-card" id="notary-card">
+    <h3>Get a Notary Ready</h3>
+    <p>Most lien documents require notarization before filing. You can do it online in minutes — no appointment, no driving.</p>
+    <div class="notary-options">
+      <a href="https://www.notarize.com" target="_blank" class="notary-option">
+        <div class="notary-icon">💻</div>
+        <div>
+          <div class="notary-name">Notarize.com</div>
+          <div class="notary-desc">Online, 24/7</div>
+        </div>
+        <div class="notary-tag">Recommended</div>
+      </a>
+      <a href="https://www.notarycam.com" target="_blank" class="notary-option">
+        <div class="notary-icon">📹</div>
+        <div>
+          <div class="notary-name">NotaryCam</div>
+          <div class="notary-desc">Video notarization</div>
+        </div>
+        <div class="notary-tag">Online</div>
+      </a>
+      <a href="https://locations.theupsstore.com/notary" target="_blank" class="notary-option">
+        <div class="notary-icon">📦</div>
+        <div>
+          <div class="notary-name">UPS Store</div>
+          <div class="notary-desc">Walk-in notary</div>
+        </div>
+        <div class="notary-tag">In Person</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- While you wait -->
+  <div class="action-card">
+    <h3>While You Wait</h3>
+    <p>A few things that will speed things up when your documents arrive:</p>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+      <li style="font-size:14px;color:rgba(255,255,255,0.65);display:flex;gap:8px;"><span style="color:var(--amber);flex-shrink:0;">→</span>Find the legal description of the property (from the deed or county assessor website)</li>
+      <li style="font-size:14px;color:rgba(255,255,255,0.65);display:flex;gap:8px;"><span style="color:var(--amber);flex-shrink:0;">→</span>Confirm the exact property owner name from county records — it must match your documents</li>
+      <li style="font-size:14px;color:rgba(255,255,255,0.65);display:flex;gap:8px;"><span style="color:var(--amber);flex-shrink:0;">→</span>Gather your contract, invoices, and any text messages or emails confirming the work</li>
+      <li style="font-size:14px;color:rgba(255,255,255,0.65);display:flex;gap:8px;"><span style="color:var(--amber);flex-shrink:0;">→</span>Locate the filing office for your county — your documents will include the address</li>
+    </ul>
+  </div>
+
+  <a href="/" class="btn-outline">← Back to LodgeMiLien</a>
 </div>
 
 <footer>
-  <p>
-    <strong style="color:rgba(255,255,255,0.6)">LodgeMiLien LLC</strong> · Troy, Michigan · Serving Michigan, Indiana &amp; Ohio<br>
-    <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a>
-  </p>
+  <p>LodgeMiLien LLC · Troy, Michigan · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></p>
 </footer>
 
+<script>
+(function() {
+  // Read Stripe session params and any state passed via sessionStorage
+  const params = new URLSearchParams(window.location.search);
+  const stored = (() => {
+    try { return JSON.parse(sessionStorage.getItem('milien_last_order') || '{}'); }
+    catch(e) { return {}; }
+  })();
+
+  // Show skip-upload note if they skipped
+  if (stored.proofSkipped) {
+    document.getElementById('skip-note').style.display = 'block';
+  }
+
+  // Show referral thank-you if they entered one
+  if (stored.referralEntry && stored.referralEntry.trim()) {
+    document.getElementById('referral-note').style.display = 'block';
+  }
+
+  // Show deadline in timeline if we have the data
+  const code = stored.stateCode;
+  const last = stored.dateLast;
+  const projectType = stored.projectType || 'commercial';
+  if (code && last && window.STATE_DATA && STATE_DATA[code]) {
+    const stateData = STATE_DATA[code];
+    const maxDays = projectType === 'residential'
+      ? stateData.lienDays.residential
+      : stateData.lienDays.commercial;
+    const lastDate = new Date(last);
+    const deadlineDate = new Date(lastDate.getTime() + maxDays * 86400000);
+    const daysLeft = Math.ceil((deadlineDate - Date.now()) / 86400000);
+    const deadlineStr = deadlineDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const tlLine = document.getElementById('tl-deadline-line');
+    if (tlLine) {
+      tlLine.textContent = `Your deadline: ${deadlineStr} (${daysLeft} days)`;
+      tlLine.style.color = daysLeft <= 14 ? '#e84040' : daysLeft <= 30 ? 'var(--amber)' : '#2ea043';
+    }
+    const sub = document.getElementById('success-sub');
+    if (sub && stateData.name) {
+      sub.textContent = `Your ${stateData.name} lien documents are in the queue. You'll hear from us within 24 hours.`;
+    }
+  }
+
+  // Hide notary card for automotive track (no notarization needed)
+  if (stored.workType === 'automotive') {
+    const notaryCard = document.getElementById('notary-card');
+    if (notaryCard) notaryCard.style.display = 'none';
+  }
+})();
+</script>
+<script src="/state-data.js"></script>
 </body>
 </html>
