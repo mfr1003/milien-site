@@ -1258,7 +1258,7 @@ const STATE_LIST = Object.entries(STATE_DATA).sort((a,b)=>a[1].name.localeCompar
           <input type="radio" name="work-type" id="wt-construction" value="construction">
           <label for="wt-construction">Construction / Property<br><span style="font-size:12px;font-weight:400;">Building, remodel, materials</span></label>
         </div>
-        <div class="role-option" id="wt-auto-option">
+        <div class="role-option" id="wt-auto-option" style="display:none;">
           <input type="radio" name="work-type" id="wt-automotive" value="automotive">
           <label for="wt-automotive">Automotive / Vehicle Repair<br><span style="font-size:12px;font-weight:400;" id="wt-auto-label">Garage Keeper's Lien</span></label>
         </div>
@@ -1877,6 +1877,7 @@ const STATE_LIST = Object.entries(STATE_DATA).sort((a,b)=>a[1].name.localeCompar
       return;
     }
     if (errEl) errEl.style.display = 'none';
+    updateWorkTypeOptions(); // pre-compute automotive visibility before ws-2 shows
     goNext();
   }
 
