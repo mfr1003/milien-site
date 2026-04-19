@@ -1184,6 +1184,12 @@
         <div id="state-hint" style="font-size:12px;color:rgba(245,166,35,0.7);margin-top:6px;min-height:18px;padding-left:2px;"></div>
       </div>
       <div id="ws-1-error" style="color:#e84040;font-size:13px;margin-bottom:8px;text-align:center;display:none;">Please select a state to continue.</div>
+      <div class="field-group" style="max-width:400px;margin:16px auto 0;">
+        <div class="field">
+          <label for="referral-entry" style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);display:block;margin-bottom:8px;">Who Referred You? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <input type="text" id="referral-entry" placeholder="Name or business who sent you here" style="width:100%;padding:11px 14px;font-size:15px;font-family:var(--font-body);border:1px solid var(--steel-light);border-radius:8px;background:var(--steel);color:var(--white);">
+        </div>
+      </div>
       <div class="wizard-nav">
         <button class="btn-next" onclick="validateStateAndNext()">Continue →</button>
       </div>
@@ -1258,8 +1264,14 @@
       <p class="hint">The lien must be filed in the county where the property is located.</p>
       <div class="field-group">
         <div class="field"><label>Property Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="123 Main St" id="prop-address" required></div>
-        <div class="field"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Detroit" id="prop-city" required></div>
-        <div class="field"><label>County <span style="color:#e84040;">*</span></label><select id="prop-county" required><option value="">Select county...</option></select></div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;">
+          <div class="field" style="margin-bottom:0;"><label>City <span style="color:#e84040;">*</span></label><input type="text" placeholder="Detroit" id="prop-city" required></div>
+          <div class="field" style="margin-bottom:0;width:110px;"><label>ZIP Code</label><input type="text" placeholder="48201" id="prop-zip" maxlength="10" oninput="autoFillCountyFromZip()" style="font-family:monospace;"></div>
+        </div>
+        <div class="field">
+          <label>County <span style="color:#e84040;">*</span> <span id="county-auto-label" style="font-size:11px;color:#2ea043;font-weight:400;text-transform:none;letter-spacing:0;display:none;">— auto-filled from ZIP</span></label>
+          <select id="prop-county" required><option value="">Select county...</option></select>
+        </div>
       </div>
       <div id="wc-5-error" style="color:#e84040;font-size:13px;margin-bottom:8px;display:none;">Please fill in all required fields.</div>
       <div class="wizard-nav">
@@ -1322,6 +1334,17 @@
     <div class="wizard-step" id="wc-9">
       <h3>Your Information</h3>
       <p class="hint">This appears on your documents. Use your legal business name if you operate as an LLC or Corp.</p>
+
+      <!-- Return customer lookup -->
+      <div style="background:var(--steel);border:1px solid var(--steel-light);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+        <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;">Filed with us before? Load your saved info.</p>
+        <div style="display:flex;gap:8px;">
+          <input type="email" id="returning-email" placeholder="your@email.com" style="flex:1;padding:10px 12px;font-size:14px;font-family:var(--font-body);border:1px solid var(--steel-light);border-radius:6px;background:var(--ink);color:var(--white);">
+          <button onclick="loadReturnCustomer()" style="padding:10px 16px;background:var(--amber);color:var(--ink);font-family:var(--font-display);font-weight:700;font-size:14px;border:none;border-radius:6px;cursor:pointer;white-space:nowrap;">Load Info</button>
+        </div>
+        <div id="return-customer-status" style="font-size:12px;margin-top:6px;min-height:16px;color:var(--muted);"></div>
+      </div>
+
       <div class="field-group">
         <div class="field"><label>Your Name or Business Name <span style="color:#e84040;">*</span></label><input type="text" placeholder="Russo Roofing LLC" id="claimant-name" required></div>
         <div class="field"><label>Street Address <span style="color:#e84040;">*</span></label><input type="text" placeholder="456 Main St" id="claimant-street" required></div>
@@ -1344,14 +1367,18 @@
     <!-- C10: Upload -->
     <div class="wizard-step" id="wc-10">
       <h3>Upload Proof of Work</h3>
-      <p class="hint">Upload a signed contract, invoice, work order, or any document showing the agreement. Required. JPG, PNG, or PDF accepted.</p>
+      <p class="hint">Upload a signed contract, invoice, work order, or any document showing the agreement. JPG, PNG, or PDF. Max 10MB.</p>
       <div class="field-group">
         <div class="field"><label>Proof of Work Document</label><input type="file" id="proof-upload" accept=".jpg,.jpeg,.png,.pdf,.webp" style="background:var(--steel);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);width:100%;"></div>
         <div id="upload-status" style="font-size:13px;color:var(--muted);min-height:20px;"></div>
       </div>
       <div class="wizard-nav">
         <button class="btn-back" onclick="goBack()">Back</button>
-        <button class="btn-next" onclick="uploadAndContinue('construction')">Continue →</button>
+        <button class="btn-next" onclick="uploadAndContinue('construction')">Upload &amp; Continue →</button>
+      </div>
+      <div style="text-align:center;margin-top:12px;">
+        <button onclick="skipUploadAndContinue('construction')" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;padding:4px 8px;">I don't have it handy — email it within 24 hours</button>
+        <p id="skip-upload-note" style="display:none;font-size:12px;color:var(--amber);margin-top:6px;line-height:1.5;">OK — we'll send you a reminder email. Your order will be held for 24 hours while we wait for your document. Email it to <strong>docs@lodgemilien.com</strong> with your name in the subject line.</p>
       </div>
     </div>
 
@@ -1379,15 +1406,23 @@
       </div>
       <div class="summary-block">
         <div class="summary-row"><span class="label">Package</span><span class="value" id="summary-package">Full Lien Package</span></div>
-        <div class="summary-row"><span class="label">State</span><span class="value" id="summary-state">Michigan</span></div>
+        <div class="summary-row"><span class="label">State</span><span class="value" id="summary-state">—</span></div>
         <div class="summary-row"><span class="label">County</span><span class="value" id="summary-county">—</span></div>
         <div class="summary-row"><span class="label">Amount in Dispute</span><span class="value" id="summary-amount">—</span></div>
+        <div class="summary-row" id="summary-deadline-row" style="display:none;">
+          <span class="label" style="color:#e84040;">Filing Deadline</span>
+          <span class="value" id="summary-deadline" style="color:#e84040;font-weight:600;font-size:13px;">—</span>
+        </div>
         <div class="summary-row"><span class="label">Proof Uploaded</span><span class="value" id="summary-proof" style="color:#2ea043;font-size:13px;">—</span></div>
         <div class="summary-row" id="filing-coord-row" style="display:none;">
           <span class="label">Filing Coordination</span>
           <span class="value" style="color:#2ea043;">+$75</span>
         </div>
         <div class="summary-row total"><span class="label">Total Due</span><span class="value" id="summary-total">$197</span></div>
+      </div>
+      <!-- Feature 3: Notarization hint -->
+      <div id="notary-hint" style="display:none;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+        <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5;margin:0;">📋 <strong style="color:var(--amber);">You'll need a notary.</strong> Once you receive your documents, you can use <a href="https://www.notarize.com" target="_blank" style="color:var(--amber);">Notarize.com</a> or <a href="https://www.notarycam.com" target="_blank" style="color:var(--amber);">NotaryCam.com</a> for online notarization in minutes — no appointment needed. Or find a UPS Store or bank branch near you.</p>
       </div>
       <div style="background:var(--steel);border-radius:8px;padding:16px;margin-bottom:16px;" id="filing-coord-addon">
         <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
@@ -1574,6 +1609,7 @@
   let track = 'construction';
   let trackPos = 0;
   let uploadedProofUrl = '';
+  let uploadedSkipped = false;
   let selectedPackage = 'full';
   let selectedFilingCoord = false;
 
@@ -1587,6 +1623,7 @@
     selectedPackage = pkg;
     selectedFilingCoord = filingCoord;
     uploadedProofUrl = '';
+    uploadedSkipped = false;
     track = 'construction';
     trackPos = 0;
     document.getElementById('modal').classList.add('open');
@@ -1599,7 +1636,156 @@
     openModalWithPackage('full', false);
   }
 
-  // ── State helpers — driven by state-data.js (loaded in <head>) ───────────────
+  // ── Feature: ZIP-to-county auto-fill ─────────────────────────────────────────
+  async function autoFillCountyFromZip() {
+    const zip = document.getElementById('prop-zip').value.replace(/\D/g, '');
+    if (zip.length !== 5) return;
+    try {
+      const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const place = data.places?.[0];
+      if (!place) return;
+
+      // Auto-fill city if empty
+      const cityEl = document.getElementById('prop-city');
+      if (cityEl && !cityEl.value) cityEl.value = place['place name'] || '';
+
+      // Try to match county to the state dropdown list
+      const countyName = place['state abbreviation']
+        ? null : null; // zippopotam doesn't return county directly
+
+      // Use Census geocoder for county
+      const censusUrl = `https://geocoding.geo.census.gov/geocoder/geographies/address?` +
+        `street=&city=${encodeURIComponent(place['place name'])}&state=${place['state abbreviation']}&zip=${zip}` +
+        `&benchmark=Public_AR_Current&vintage=Current_Current&format=json&layers=Counties`;
+
+      const censusRes = await fetch(censusUrl);
+      if (!censusRes.ok) return;
+      const censusData = await censusRes.json();
+      const match = censusData.result?.addressMatches?.[0];
+      if (!match) return;
+
+      const rawCounty = match.geographies?.Counties?.[0]?.NAME || '';
+      // rawCounty comes back like "Oakland County" or "Oakland"
+      const countyClean = rawCounty.replace(/ County$/i, '').trim();
+
+      const select = document.getElementById('prop-county');
+      if (!select) return;
+
+      // Find matching option (case-insensitive, partial match)
+      let found = false;
+      for (const opt of select.options) {
+        if (opt.value.toLowerCase().includes(countyClean.toLowerCase()) ||
+            countyClean.toLowerCase().includes(opt.value.toLowerCase().replace(/ county$/i, ''))) {
+          select.value = opt.value;
+          found = true;
+          break;
+        }
+      }
+
+      const label = document.getElementById('county-auto-label');
+      if (label) label.style.display = found ? 'inline' : 'none';
+
+    } catch (e) {
+      // Silently fail — auto-fill is a convenience, not required
+    }
+  }
+
+  // ── Feature: Skip proof upload ────────────────────────────────────────────────
+  function skipUploadAndContinue(uploadTrack) {
+    uploadedProofUrl = '';
+    uploadedSkipped = true;
+    const note = document.getElementById('skip-upload-note');
+    if (note) note.style.display = 'block';
+    // Brief delay so they can read the note, then continue
+    setTimeout(() => {
+      goNext();
+      // Flag for summary
+      const proofEl = document.getElementById('summary-proof');
+      if (proofEl) {
+        proofEl.textContent = 'Email within 24 hrs';
+        proofEl.style.color = 'var(--amber)';
+      }
+    }, 1400);
+  }
+
+  // ── Feature: Return customer lookup ──────────────────────────────────────────
+  async function loadReturnCustomer() {
+    const email = document.getElementById('returning-email').value.trim();
+    const statusEl = document.getElementById('return-customer-status');
+    if (!email || !email.includes('@')) {
+      statusEl.style.color = '#e84040';
+      statusEl.textContent = 'Enter a valid email address.';
+      return;
+    }
+    statusEl.style.color = 'var(--muted)';
+    statusEl.textContent = 'Looking up your info...';
+    try {
+      const res = await fetch('/api/get-claimant-info?email=' + encodeURIComponent(email));
+      if (!res.ok) throw new Error('not found');
+      const data = await res.json();
+      if (!data || !data.claimantName) throw new Error('no data');
+
+      // Fill in the form fields
+      const fields = {
+        'claimant-name': data.claimantName,
+        'claimant-street': data.claimantStreet,
+        'claimant-city': data.claimantCity,
+        'claimant-state': data.claimantState,
+        'claimant-zip': data.claimantZip,
+        'claimant-phone': data.claimantPhone,
+        'claimant-email': data.claimantEmail || email,
+        'claimant-website': data.websiteUrl,
+      };
+      for (const [id, val] of Object.entries(fields)) {
+        const el = document.getElementById(id);
+        if (el && val) el.value = val;
+      }
+      statusEl.style.color = '#2ea043';
+      statusEl.textContent = '✓ Info loaded — review and continue.';
+    } catch (e) {
+      statusEl.style.color = 'var(--muted)';
+      statusEl.textContent = 'No previous orders found for that email. Fill in your info below.';
+    }
+  }
+
+  // ── Feature: Deadline in payment summary ─────────────────────────────────────
+  function updateDeadlineInSummary() {
+    const code = getStateCode();
+    const last = document.getElementById('date-last')?.value;
+    const projectType = document.querySelector('input[name="project-type"]:checked')?.value || 'commercial';
+    const deadlineRow = document.getElementById('summary-deadline-row');
+    const deadlineEl = document.getElementById('summary-deadline');
+    const notaryHint = document.getElementById('notary-hint');
+
+    // Show notary hint for full package on construction track
+    if (notaryHint) {
+      notaryHint.style.display = (selectedPackage === 'full' || selectedPackage === 'full-filing')
+        ? 'block' : 'none';
+    }
+
+    if (!code || !last || !deadlineRow || !deadlineEl) return;
+    const stateData = STATE_DATA[code];
+    if (!stateData) return;
+
+    const maxDays = projectType === 'residential'
+      ? stateData.lienDays.residential
+      : stateData.lienDays.commercial;
+
+    const lastDate = new Date(last);
+    const deadlineDate = new Date(lastDate.getTime() + maxDays * 86400000);
+    const daysLeft = Math.ceil((deadlineDate - Date.now()) / 86400000);
+
+    const deadlineStr = deadlineDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    deadlineEl.textContent = deadlineStr + (daysLeft > 0 ? ` (${daysLeft} days)` : ' — PAST DUE');
+    deadlineEl.style.color = daysLeft <= 14 ? '#e84040' : daysLeft <= 30 ? 'var(--amber)' : '#2ea043';
+    const labelEl = deadlineRow.querySelector('.label');
+    if (labelEl) labelEl.style.color = daysLeft <= 14 ? '#e84040' : 'var(--muted)';
+    deadlineRow.style.display = 'flex';
+  }
+
+
 
   function initStateDropdown() {
     const select = document.getElementById('state-select');
@@ -2021,6 +2207,8 @@
 
     document.getElementById('summary-package').textContent = pkgLabel;
 
+    updateDeadlineInSummary();
+
     // Show filing coord checkbox — always visible for full package
     const filingAddon = document.getElementById('filing-coord-addon');
     if (selectedPackage === 'demand') {
@@ -2209,6 +2397,8 @@
         filingCoordination: autoFilingCoord ? 'true' : 'false',
         rushRequired: daysAgo >= 84,
         proofUrl: uploadedProofUrl,
+        proofSkipped: uploadedSkipped,
+        referralEntry: document.getElementById('referral-entry')?.value?.trim() || '',
         tosAccepted: true,
         tosAcceptedAt: new Date().toISOString(),
       };
@@ -2249,6 +2439,8 @@
       filingCoordination: selectedFilingCoord ? 'true' : 'false',
       rushRequired: daysAgo >= 76,
       proofUrl: uploadedProofUrl,
+      proofSkipped: uploadedSkipped,
+      referralEntry: document.getElementById('referral-entry')?.value?.trim() || '',
       tosAccepted: true,
       tosAcceptedAt: new Date().toISOString(),
     };
@@ -2297,6 +2489,11 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       }).catch(() => {});
+
+      // Save order context for success page
+      try {
+        sessionStorage.setItem('milien_last_order', JSON.stringify(data));
+      } catch(e) {}
 
       // Pick the right Stripe link
       let linkKey = data.packageType || 'full';
